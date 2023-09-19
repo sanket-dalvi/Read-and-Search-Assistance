@@ -1,0 +1,72 @@
+.search-results-container {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.search-result {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.search-result:last-child {
+  border-bottom: none;
+}
+
+.name {
+  font-weight: bold;
+  font-size: 18px;
+}
+.score {
+  display: inline-block;
+  padding: 4px;
+  border-radius: 4px;
+  background-color: #409f05;
+  color: #fff;
+  float: right;
+}
+
+
+.matched-words {
+  margin-top: 5px;
+}
+
+.matched-words-container {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  background: linear-gradient(to right, #7c7aee, #70c9f3);
+  border-radius: 4px;
+}
+
+
+.matched-words-title {
+  font-weight: bold;
+  color: #fff;
+  font-size: 18px;
+  padding-bottom: 8px;
+}
+
+.matched-words-scroll {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.matched-word {
+  display: inline-block;
+  margin-right: 5px;
+  padding: 2px 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 18px;
+  background-color: #fff;
+  color: #3b3e6e;
+  font-weight: 500;
+}
+
+.search-result:last-child {
+  border-bottom: none;
+  padding: 28px 36px;
+}
+

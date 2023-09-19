@@ -5,14 +5,13 @@ const multer = require("multer");
 const path = require("path");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-// D:\Grad\Sem 2\Web info ret\Team 8\project2\my-app\package.json
 const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
 
 
-const fpp="D:/Grad/Sem 2/Web info ret/Team 8/project2/my-app/htmls/uploads";
+const fpp="D:/Grad/Sem 2/WBINFO/project2/my-app/htmls/uploads";
 function getPdfFilePaths(folderPath) {
   const files = fs.readdirSync(folderPath);
   const pdfFiles = files.filter(file => path.extname(file) === '.pdf');
@@ -32,7 +31,7 @@ app.get("/convert-pdf-to-html", (req, res) => {
     console.log("currently trying to convert:  "+pdfFilePaths[i]);
 
     // D:\Grad\Sem 2\Web info ret\project2\my-app\htmls
-  const cmd = `"D:\\Grad\\Sem 2\\Web info ret\\Team 8\\project2\\my-app\\cshell\\pdf2htmlEX.exe" "${pdfFilePaths[i]}"`;
+  const cmd = `"D:\\Grad\\Sem 2\\WBINFO\\project2\\my-app\\cshell\\pdf2htmlEX.exe" "${pdfFilePaths[i]}"`;
 
   // const cmd = `"C:\\pdf2htmlEX\\pdf2htmlEX.exe" "${pdfFilePaths[i]}"`;
 
@@ -57,8 +56,8 @@ app.get("/convert-pdf-to-html", (req, res) => {
 });
 
 const moveHtmlFiles = async () => {
-  const sourceDir = "D:/Grad/Sem 2/Web info ret/Team 8/project2/my-app/htmls/";
-  const destDir = "D:/Grad/Sem 2/Web info ret/Team 8/project2/my-app/public/hms/";
+  const sourceDir = "D:/Grad/Sem 2/WBINFO/project2/my-app/htmls/";
+  const destDir = "D:/Grad/Sem 2/WBINFO/project2/my-app/public/hms/";
   try {
     // Read all files in source directory
     const files = await fs.promises.readdir(sourceDir);
@@ -116,7 +115,7 @@ app.post("/api/upload", (req, res) => {
 
 app.get('/api/getFile/:fileName', (req, res) => {
   const fileName = req.params.fileName;
-  const filePath = "D:/Grad/Sem 2/Web info ret/Team 8/project2/my-app/htmls/"+fileName;
+  const filePath = "D:/Grad/Sem 2/WBINFO/project2/my-app/htmls/"+fileName;
   console.log("looking for html at: "+filePath);
   const readStream = fs.createReadStream(filePath);
 
