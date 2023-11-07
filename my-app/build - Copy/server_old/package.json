@@ -1,0 +1,12 @@
+{
+    "name": "pdf-to-html-server",
+    "version": "1.0.0",
+    "dependencies": {
+      "express": "^4.17.2",
+      "pdf2htmlEX": "^0.18.8"
+    },
+    "scripts": {
+      "start": "node index.js"
+    }
+  }
+  
