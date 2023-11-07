@@ -181,7 +181,10 @@ app.get('/api/getFile/:fileName', (req, res) => {
 
   console.log("react server url----  "+path.join(__dirname, 'my-app/build'));
   const fileName = req.params.fileName;
-  const filePath = "D:/Grad/Sem 2/WBINFO/project2/my-app/htmls/"+fileName;
+  // const filePath = "D:/Grad/Sem 2/WBINFO/project2/my-app/htmls/"+fileName;
+  const ff="../../htmls/"+fileName;
+  const filePath = path.join(__dirname, ff)
+
   console.log("looking for html at: "+filePath);
   const readStream = fs.createReadStream(filePath);
 
