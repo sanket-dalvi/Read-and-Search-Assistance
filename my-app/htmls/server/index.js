@@ -12,7 +12,7 @@ app.use(cors());
 
 // Serve the static build of your React app
 // Serve the static build of your React app
-app.use(express.static(path.join(__dirname, '../../build')));
+app.use(express.static(path.join(__dirname, '../../build old')));
 
 // ...
 
