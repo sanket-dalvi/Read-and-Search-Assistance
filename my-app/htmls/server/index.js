@@ -10,29 +10,47 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
+// Serve the static build of your React app
+// Serve the static build of your React app
+app.use(express.static(path.join(__dirname, '../../build')));
 
-const fpp="D:/Grad/Sem 2/WBINFO/project2/my-app/htmls/uploads";
+// ...
+
+
+const pdfFolderPath = path.join(__dirname, "../../htmls/uploads");
+const pdf2htmlExPath = path.join(__dirname, "../../cshell/pdf2htmlEX.exe");
+
+// bkp
+// const fpp="D:/Grad/Sem 2/WBINFO/project2/my-app/htmls/uploads";
+const fpp=path.join(__dirname, "../../htmls/uploads");
 function getPdfFilePaths(folderPath) {
   const files = fs.readdirSync(folderPath);
   const pdfFiles = files.filter(file => path.extname(file) === '.pdf');
   const pdfFilePaths = pdfFiles.map(file => path.join(folderPath, file));
   return pdfFilePaths;
 }
+app.get("/api/convert-pdf-to-html", (req, res) => {
+// app.get("/api/convert-pdf-to-html", (req, res) => {
 
-app.get("/convert-pdf-to-html", (req, res) => {
+console.log("fpp :   ",fpp);
+  console.log("Received a request to /api/convert-pdf-to-html");
+
   const folderPath = '.';
   const pdfFilePaths = getPdfFilePaths(fpp);
   console.log(pdfFilePaths);
   const nooffiles=pdfFilePaths.length;
   let  filesprocessed=0;
-  
+  res.set('Cache-Control', 'no-store');
   for (let i = 0; i < pdfFilePaths.length; i++) {
     // console.log(pdfFilePaths[i]);
     console.log("currently trying to convert:  "+pdfFilePaths[i]);
 
     // D:\Grad\Sem 2\Web info ret\project2\my-app\htmls
-  const cmd = `"D:\\Grad\\Sem 2\\WBINFO\\project2\\my-app\\cshell\\pdf2htmlEX.exe" "${pdfFilePaths[i]}"`;
-
+  // const cmd = `"D:\\Grad\\Sem 2\\WBINFO\\project2\\my-app\\cshell\\pdf2htmlEX.exe" "${pdfFilePaths[i]}"`;
+  
+  console.log("pdf2htmlExPath     ====  "+pdf2htmlExPath);
+  console.log("pdfFilePaths[i]     ====  "+pdfFilePaths[i]);
+  const cmd = `"${pdf2htmlExPath}" "${pdfFilePaths[i]}"`;
   // const cmd = `"C:\\pdf2htmlEX\\pdf2htmlEX.exe" "${pdfFilePaths[i]}"`;
 
   exec(cmd, (error, stdout, stderr) => {
@@ -55,6 +73,50 @@ app.get("/convert-pdf-to-html", (req, res) => {
 
 });
 
+
+// bkp ends
+
+
+// exper
+
+// function getPdfFilePaths(folderPath) {
+//   const files = fs.readdirSync(folderPath);
+//   const pdfFiles = files.filter(file => path.extname(file) === '.pdf');
+//   const pdfFilePaths = pdfFiles.map(file => path.join(folderPath, file));
+//   return pdfFilePaths;
+// }
+
+// // app.get("/convert-pdf-to-html/:pdfFolderPath", (req, res) => {
+//   app.get("/convert-pdf-to-html", (req, res) => {
+//   const pdfFolderPath = req.params.pdfFolderPath;
+//   const pdf2htmlEXPath = path.join(__dirname, 'cshell', 'pdf2htmlEX.exe');
+//   // console.log("pdf2htmlEXPath000000000000000------" + pdf2htmlEXPath)
+//   const pdfFilePaths = getPdfFilePaths(pdfFolderPath);
+//   console.log(pdfFilePaths);
+//   const nooffiles = pdfFilePaths.length;
+//   let filesprocessed = 0;
+
+//   for (let i = 0; i < pdfFilePaths.length; i++) {
+//     console.log("currently trying to convert: " + pdfFilePaths[i]);
+//     const cmd = `"${pdf2htmlEXPath}" "${pdfFilePaths[i}"`;
+
+//     exec(cmd, (error, stdout, stderr) => {
+//       if (error) {
+//         console.error(`pdf2htmlEX error: ${error.message}`);
+//       }
+//       if (stderr) {
+//         console.error(`pdf2htmlEX stderr: ${stderr}`);
+//       }
+//       filesprocessed = filesprocessed + 1;
+//       if (filesprocessed == nooffiles) {
+//         res.send("All PDF files converted successfully");
+//       }
+//     });
+//   }
+// });
+
+
+// exper ends
 const moveHtmlFiles = async () => {
   const sourceDir = "D:/Grad/Sem 2/WBINFO/project2/my-app/htmls/";
   const destDir = "D:/Grad/Sem 2/WBINFO/project2/my-app/public/hms/";
@@ -101,6 +163,8 @@ const upload = multer({
 }).single("myFile");
 
 app.post("/api/upload", (req, res) => {
+  console.log("react server url----  "+path.join(__dirname, '../../build'));
+
   upload(req, res, (err) => {
     if (err) {
       console.log(err);
@@ -114,6 +178,8 @@ app.post("/api/upload", (req, res) => {
 
 
 app.get('/api/getFile/:fileName', (req, res) => {
+
+  console.log("react server url----  "+path.join(__dirname, 'my-app/build'));
   const fileName = req.params.fileName;
   const filePath = "D:/Grad/Sem 2/WBINFO/project2/my-app/htmls/"+fileName;
   console.log("looking for html at: "+filePath);
@@ -139,6 +205,9 @@ app.get('/api/getFile/:fileName', (req, res) => {
 });
 
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../build', 'index.html'));
+});
 
 app.listen(3001, () => {
   console.log("Server listening on port 3001");

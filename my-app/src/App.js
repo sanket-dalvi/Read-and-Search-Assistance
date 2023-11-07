@@ -10,7 +10,7 @@ import Box from "./Box";
 import pdfjsLib from "pdfjs-dist";
 import axios from "axios";
 import Loader from "./Loader";
-
+const apiUrl = process.env.REACT_APP_API_URL;
 
 export default function App() {
   const [pdf, setPdf] = React.useState("");
@@ -34,14 +34,54 @@ export default function App() {
   const [fileNames, setFileNames] = React.useState([]);
   const [colorMap , setcolorMap ] = React.useState([]);
   const [showpage , setshowpage ] = React.useState(false);
+  const [pdfUrls, setPdfUrls] = useState([]);
+
   
 
+console.log("apiUrl--------------   "+apiUrl)
 
   const [htmls, setHtmls] = React.useState("");
 
   const [checkedTerms, setCheckedTerms] = useState({});
 
 
+  const onMount = async () => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const pdfUrlParam = queryParams.get("pdf_urls");
+    if (pdfUrlParam) {
+      const pdfUrlsArray = pdfUrlParam.split(",");
+      
+      // Download PDFs from the provided URLs
+      const downloadedPdfs = await Promise.all(pdfUrlsArray.map(downloadPdfFromUrl));
+      
+      // Set the downloaded PDFs in the state
+      setPdfUrls("downloadedPdfs");
+      console.log("downloadedPdfs"+ downloadPdfFromUrl)
+      // Continue with your existing logic for processing PDFs
+      // For example, you can call a function here to process the downloaded PDFs.
+    }
+  };
+
+  const downloadPdfFromUrl = async (pdfUrl) => {
+    try {
+
+      console.log("downloading"+ pdfUrl)
+      // const response = await axios.get(pdfUrl, { responseType: "arraybuffer" });
+      // const pdfData = response.data;
+      // // Here, you can save the PDF data or perform any necessary processing.
+      return pdfUrl;
+    } catch (error) {
+      console.error("Error downloading PDF from URL:", pdfUrl, error);
+      return null;
+    }
+  };
+  
+  
+  useEffect(() => {
+    onMount();
+  }, []); // Call onMount when the component mounts
+
+  
   const handleCheckedTerms = (checkedTerms) => {
     console.log("Checked terms:", checkedTerms);
     const trueTerms = Object.keys(checkedTerms).filter(
@@ -133,9 +173,7 @@ export default function App() {
     let pdfFilePath = "./sample.pdf";
     try {
       const response = await fetch(
-        `http://localhost:3001/convert-pdf-to-html?pdfFilePath=${encodeURIComponent(
-          pdfFilePath
-        )}`,
+        `${apiUrl}/api/convert-pdf-to-html?_=${new Date().getTime()}`,
         { timeout: 10000 }
       );
       return await response.text();
@@ -457,7 +495,7 @@ export default function App() {
   const handleFetchFile = async (fileName) => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/api/getFile/${fileName}`
+        `${apiUrl}/api/getFile/${fileName}`
       );
       console.group("found html file "+response.data);
       setHtmls(response.data);
