@@ -192,10 +192,11 @@ console.log("apiUrl--------------   "+apiUrl)
         const resultsdemo = rankTextscos(queryterms, fileText);
 
         console.log(queryterms);
-        console.log(fileText);
+        // console.log(fileText);
         console.log("xxxxxx the results doc" + JSON.stringify(resultsdemo));
         setAllDocsReady(true);
         setDocRanks(resultsdemo);
+        console.log(resultsdemo);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -418,7 +419,9 @@ console.log("apiUrl--------------   "+apiUrl)
     const docVectors = {}; // stores the term frequency vectors for each document
     const docs = Object.keys(texts); // get an array of the document names
     const wordSet = new Set(terms); // create a set of the terms to use for matching
+    console.log("----docs in ranking");
 
+    console.log(texts);
     // iterate over each document to calculate the term frequency vector
     docs.forEach((doc) => {
       const words = texts[doc].toLowerCase().match(/\b\w+\b/g); // split the text into words
@@ -536,7 +539,7 @@ console.log("apiUrl--------------   "+apiUrl)
           </div>
           <div class="f col-sm-6"> 
             <h1>File Upload</h1>
-            <i class="fa-solid fa-cloud-arrow-up"></i> <FileUpload setFileText={setFileText} setFileNames={setFileNames} />
+            <i class="fa-solid fa-cloud-arrow-up"></i> <FileUpload  setIsLoading={setIsLoading} setFileText={setFileText} setFileNames={setFileNames} />
           </div>
             </div>
         </div>

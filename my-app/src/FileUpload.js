@@ -3,7 +3,7 @@ import "./style.css"; // import the CSS file with the styles
 import * as pdfjsLib from 'pdfjs-dist'
 import { pdfjs, Document } from 'react-pdf';
 // import { Document } from 'react-pdf';
-
+const apiUrl = process.env.REACT_APP_API_URL;
 class FileUpload extends Component {
   constructor(props) {
     super(props);
@@ -17,39 +17,91 @@ class FileUpload extends Component {
     };
     pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
   }
-  handleFileChange = (event) => {
 
-    let namf=[];
+  handleFileChange = async (event) => {
     const files = event.target.files;
-    this.setState({
-          files: [...this.state.files, ...files],
-        });
-
-
-    Array.from(files).forEach((file) => {
-      let filename=file.name;
+    const namf = [];
+  
+    for (const file of files) {
+      const filename = file.name;
+      const pdfData = await this.readFileAsync(file);
+      const pdfText = await this.extractTextFromPdf(pdfData);
+  
+      namf.push(filename);
+  
+      this.setState((prevState) => ({
+        files: [...prevState.files, file],
+        text: {
+          ...prevState.text,
+          [filename]: pdfText
+        }
+      }), () => {
+        this.props.setFileText(this.state.text);
+        this.props.setFileNames(namf);
+      });
+    }
+  };
+  
+  readFileAsync = (file) => {
+    return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = async () => {
-        const pdfData = new Uint8Array(reader.result);
-        const pdfText = await this.extractTextFromPdf(pdfData);
-        namf.push(filename);
-        this.setState({
-          text: {
-            ...this.state.text,
-            [filename]: pdfText
-          }
-        },()=>{
-          this.props.setFileText(this.state.text);
-          this.props.setFileNames(namf);
-        
-        });
+  
+      reader.onload = () => {
+        resolve(new Uint8Array(reader.result));
       };
-
+  
+      reader.onerror = (error) => {
+        reject(error);
+      };
+  
       reader.readAsArrayBuffer(file);
     });
-
-
   };
+
+  
+  
+  // handleFileChange = (event) => {
+
+  //   let namf=[];
+  //   const files = event.target.files;
+  //   console.log("files being text processed----");
+  //   console.log(files);
+  //   this.setState({
+  //         files: [...this.state.files, ...files],
+  //       },()=>{
+
+  //         Array.from(files).forEach((file) => {
+  //           let filename=file.name;
+  //           const reader = new FileReader();
+  //           reader.onload = async () => {
+  //             const pdfData = new Uint8Array(reader.result);
+  //             const pdfText = await this.extractTextFromPdf(pdfData);
+  //             namf.push(filename);
+  //             this.setState({
+  //               text: {
+  //                 ...this.state.text,
+  //                 [filename]: pdfText
+  //               }
+  //             },()=>{
+  //               console.log("post set state----");
+  //               console.log(this.state.text);
+  //               this.props.setFileText(this.state.text);
+  //               this.props.setFileNames(namf);
+              
+  //             });
+  //           };
+      
+  //           reader.readAsArrayBuffer(file);
+  //         });
+
+
+  //       });
+
+
+    
+
+
+  // };
 
   extractTextFromPdf = async (pdfData) => {
     const loadingTask = pdfjsLib.getDocument({ data: pdfData });
@@ -72,6 +124,7 @@ class FileUpload extends Component {
   
 
   handleUpload = () => {
+    this.props.setIsLoading(true)
     const chunkSize = 300 * 1024 * 1024; // 10MB
 
     const { files } = this.state;
@@ -88,9 +141,11 @@ class FileUpload extends Component {
         const uploadChunk = (start, end) => {
           const formData = new FormData();
           const newName = file.name;
-          
+        
+
           formData.append("myFile", file.slice(start, end), newName);
-          fetch("http://localhost:3001/api/upload", {
+          // fetch("http://localhost:3001/api/upload", {
+          fetch(`${apiUrl}/api/upload`, {
             method: "POST",
             body: formData,
           })
@@ -109,8 +164,14 @@ class FileUpload extends Component {
                   (currentChunk + 1) * chunkSize
                 );
               } else {
+                
                 currentFile++;
+                if(currentFile == files.length-1){
+                  console.log("all uploaded-------");
+                  this.props.setIsLoading(false)
+              }
                 uploadNextFile();
+
               }
             })
             .catch((error) => {
@@ -123,7 +184,7 @@ class FileUpload extends Component {
         uploadChunk(0, chunkSize);
       }
     };
-
+   
     uploadNextFile();
   };
 

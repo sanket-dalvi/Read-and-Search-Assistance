@@ -7,12 +7,20 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
 
+const corsOptions = {
+  origin: 'http://sysrev2.cs.binghamton.edu:3001',
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
+
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors(corsOptions));
 
 // Serve the static build of your React app
 // Serve the static build of your React app
-app.use(express.static(path.join(__dirname, '../../build old')));
+app.use(express.static(path.join(__dirname, '../../build')));
+
+
 
 // ...
 
@@ -50,7 +58,8 @@ console.log("fpp :   ",fpp);
   
   console.log("pdf2htmlExPath     ====  "+pdf2htmlExPath);
   console.log("pdfFilePaths[i]     ====  "+pdfFilePaths[i]);
-  const cmd = `"${pdf2htmlExPath}" "${pdfFilePaths[i]}"`;
+  // const cmd = `"${pdf2htmlExPath}" "${pdfFilePaths[i]}"`;
+  const cmd = `/usr/local/bin/pdf2htmlEX "${pdfFilePaths[i]}"`;
   // const cmd = `"C:\\pdf2htmlEX\\pdf2htmlEX.exe" "${pdfFilePaths[i]}"`;
 
   exec(cmd, (error, stdout, stderr) => {
