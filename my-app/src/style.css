@@ -27,6 +27,11 @@
     background-color: #005fa3;
     }
     
+    .upload-container button:disabled {
+      background-color: #ccc; /* Change the background color for disabled state to grey */
+      cursor: not-allowed; /* Change the cursor to indicate the button is disabled */
+    }
+    
     .upload-container .progress {
     background-color: #eee;
     height: 20px;

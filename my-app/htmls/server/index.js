@@ -166,24 +166,54 @@ const storage = multer.diskStorage({
   },
 });
 
+// const upload = multer({
+//   storage: storage,
+//   limits: { fileSize: 300000000 }, // 1MB
+// }).single("myFile");
+
+// app.post("/api/upload", (req, res) => {
+//   console.log("react server url----  "+path.join(__dirname, '../../build'));
+
+//   upload(req, res, (err) => {
+//     if (err) {
+//       console.log(err);
+//       res.status(400).json({ message: err.message });
+//     } else {
+//       console.log(req.file);
+//       res.status(200).json({ message: "File uploaded successfully!" });
+//     }
+//   });
+// });
+
+// const upload = multer({
+//   storage: storage,
+//   limits: { fileSize: 30000000000 }, // 1MB
+// }).single("myFile");
+
 const upload = multer({
   storage: storage,
   limits: { fileSize: 300000000 }, // 1MB
-}).single("myFile");
+}).array("myFile", 100);
 
 app.post("/api/upload", (req, res) => {
-  console.log("react server url----  "+path.join(__dirname, '../../build'));
+  console.log("react server url----  " + path.join(__dirname, "../../build"));
 
-  upload(req, res, (err) => {
-    if (err) {
-      console.log(err);
-      res.status(400).json({ message: err.message });
-    } else {
-      console.log(req.file);
-      res.status(200).json({ message: "File uploaded successfully!" });
+  // Handle file upload asynchronously
+  upload(req, res, async (err) => {
+    try {
+      if (err) {
+        console.error(err);
+        throw new Error(err.message);
+      } else {
+        console.log(req.file);
+        res.status(200).json({ message: "File uploaded successfully!" });
+      }
+    } catch (error) {
+      res.status(400).json({ message: error.message });
     }
   });
 });
+
 
 
 app.get('/api/getFile/:fileName', (req, res) => {
