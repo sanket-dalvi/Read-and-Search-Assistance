@@ -22,6 +22,45 @@ app.use(express.static(path.join(__dirname, '../../build')));
 
 
 
+
+
+// open api
+
+// app.post('/openapp', (req, res) => {
+//   // Extract parameters from the request body
+//   const { param1, param2 } = req.body;
+
+//   // Redirect the user to your React.js frontend with the parameters included in the URL
+//   res.redirect(`http://sysrev2.cs.binghamton.edu:3001/?param1=${param1}&param2=${param2}`);
+// });
+
+
+// const open = require('open');
+
+// Inside yo÷ur route handler
+app.post('/openapp', (req, res) => {
+  // Extract parameters from the request body
+  const { param1, param2 } = req.body;
+
+  // Redirect the user to your React.js frontend with the parameters included in the URL
+  const url = `http://sysrev2.cs.binghamton.edu:3001/?param1=${param1}&param2=${param2}`;
+
+  // Open the browser tab with the specified URL
+  // open(url);
+
+  // Respond to the POST request
+  res.send('Browser tab opened successfully');
+});
+
+
+// curl -X POST -H "Content-Type: application/json" -d '{"param1":"value1","param2":"value2"}' http://sysrev2.cs.binghamton.edu:3001/openapp
+// http://sysrev2.cs.binghamton.edu:3001/openapp
+// http://sysrev2.cs.binghamton.edu:3001/
+
+
+
+//---open api
+
 // ...
 
 

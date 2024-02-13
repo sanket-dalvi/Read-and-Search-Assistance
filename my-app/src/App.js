@@ -10,9 +10,16 @@ import Box from "./Box";
 import pdfjsLib from "pdfjs-dist";
 import axios from "axios";
 import Loader from "./Loader";
+
+import { useLocation } from 'react-router-dom';
+import DocumentList from "./DocumentList";
+
+
+
 const apiUrl = process.env.REACT_APP_API_URL;
 
 export default function App() {
+
   const [pdf, setPdf] = React.useState("");
   const [width, setWidth] = React.useState(0);
   const [images, setImages] = React.useState([]);
@@ -32,13 +39,55 @@ export default function App() {
   const [fileData, setFileData] = useState("");
   const [querymap, setquerymap] = React.useState([]);
   const [fileNames, setFileNames] = React.useState([]);
-  const [colorMap , setcolorMap ] = React.useState([]);
-  const [showpage , setshowpage ] = React.useState(false);
+  const [colorMap, setcolorMap] = React.useState([]);
+  const [showpage, setshowpage] = React.useState(false);
   const [pdfUrls, setPdfUrls] = useState([]);
+  const [showDocs, setshowdocs] = useState(false);
 
+  const [documents,setDocuments] = useState(
+    [ ]
+   );
+
+
+  const [param1, setParam1] = useState('');
+  const [param2, setParam2] = useState('');
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const param1Value = queryParams.get('param1');
+    const param2Value = queryParams.get('param2');
+
+    console.log("---------onsole.log(param1Value)")
+    console.log(param1Value)
+    console.log("---------onsole.log(param1Value)")
+    console.log(param2Value)
+    setParam1(param1Value);
+    setParam2(param2Value);
+
+ 
+  }, []);
+
+
+  const openReactAppInNewWindow = () => {
+    const url = 'http://sysrev2.cs.binghamton.edu:3001/openapp';
+    const jsonString = JSON.stringify([
+      { "name": "Document 1", "url": "http://example.com/doc1", "isRanking": true },
+      { "name": "Document 2", "url": "http://example.com/doc2", "isRanking": false },
+      { "name": "Document 3", "url": "http://example.com/doc3", "isRanking": true },
+      { "name": "Document 4", "url": "http://example.com/doc4", "isRanking": false }
+    ]);
+    const queryParams = `json=${encodeURIComponent(jsonString)}`;
+    const finalUrl = `${url}?${queryParams}`;
+    const newWindow = window.open(finalUrl, '_blank', 'width=800,height=600');
   
+    if (newWindow) {
+      // Optional: Add any additional logic if needed, such as handling popup blockers
+    } else {
+      // Handle case where the new window could not be opened, e.g., due to popup blockers
+      console.error('Failed to open new window');
+    }
+  };
 
-console.log("apiUrl--------------   "+apiUrl)
 
   const [htmls, setHtmls] = React.useState("");
 
@@ -48,24 +97,30 @@ console.log("apiUrl--------------   "+apiUrl)
   const onMount = async () => {
     const queryParams = new URLSearchParams(window.location.search);
     const pdfUrlParam = queryParams.get("pdf_urls");
-    if (pdfUrlParam) {
-      const pdfUrlsArray = pdfUrlParam.split(",");
-      
-      // Download PDFs from the provided URLs
-      const downloadedPdfs = await Promise.all(pdfUrlsArray.map(downloadPdfFromUrl));
-      
-      // Set the downloaded PDFs in the state
-      setPdfUrls("downloadedPdfs");
-      console.log("downloadedPdfs"+ downloadPdfFromUrl)
-      // Continue with your existing logic for processing PDFs
-      // For example, you can call a function here to process the downloaded PDFs.
+
+    const jsonDataParam = queryParams.get("json");
+
+    if (jsonDataParam) {
+      try {
+        const jsonData = JSON.parse(decodeURIComponent(jsonDataParam));
+
+        setDocuments(jsonData)
+        console.log('Received JSON data:', jsonData);
+        // Continue with your logic to process the received JSON data
+      } catch (error) {
+        console.error('Error parsing JSON data:', error);
+      }
     }
+
+   
+    console.log("data in api",jsonDataParam);
+   
   };
 
   const downloadPdfFromUrl = async (pdfUrl) => {
     try {
 
-      console.log("downloading"+ pdfUrl)
+      console.log("downloading" + pdfUrl)
       // const response = await axios.get(pdfUrl, { responseType: "arraybuffer" });
       // const pdfData = response.data;
       // // Here, you can save the PDF data or perform any necessary processing.
@@ -75,40 +130,56 @@ console.log("apiUrl--------------   "+apiUrl)
       return null;
     }
   };
-  
-  
+
+
   useEffect(() => {
     onMount();
   }, []); // Call onMount when the component mounts
 
-  
+
   const handleCheckedTerms = (checkedTerms) => {
     console.log("Checked terms:", checkedTerms);
     const trueTerms = Object.keys(checkedTerms).filter(
       (term) => checkedTerms[term]
     );
-  
+
     const falseTerms = Object.keys(checkedTerms).filter(
       (term) => !checkedTerms[term]
     );
-  
+
     // const colorMap = colormap;
-  
+
     let htmltemp = htmls;
-  
+
     for (let i = 0; i < falseTerms.length; i++) {
       const backgroundStyle = `background-color: white;`;
+
+
+
+
       htmltemp = htmltemp.replace(
         new RegExp(falseTerms[i], "gi"),
         `<span style="${backgroundStyle}">${falseTerms[i]}</span>`
       );
     }
-  
+
     for (let i = 0; i < trueTerms.length; i++) {
       const backgroundColor = colorMap[trueTerms[i]];
+
+      // const backgroundStyle = ` background-color: ;      font-weight: bold;
+      // font-size: 1.2em;       display: inline-block;`;
+
       const backgroundStyle = checkedTerms[trueTerms[i]]
         ? `background-color: ${backgroundColor};`
         : `background-color: white;`;
+
+      // const backgroundStyle = checkedTerms[trueTerms[i]]
+      // ? ` background-color: ${backgroundColor};      font-weight: bold;
+      //       display: inline-block;`
+      // : ` background-color: white ;      font-weight: bold;
+      //      display: inline-block;`;
+
+
       const re = new RegExp(`>${trueTerms[i]}<`, "gi");
       htmltemp = htmltemp.replace(re, (match) => {
         return match.replace(/<span style="[^"]*">(.*?)<\/span>/gi, "$1");
@@ -123,13 +194,13 @@ console.log("apiUrl--------------   "+apiUrl)
         }
       );
     }
-  
+
     setHtmls(htmltemp);
   };
-  
-  
 
-  
+
+
+
   function updateTermObject() {
     setquerymap((prevQueryMap) => {
       const updatedQueryMap = { ...prevQueryMap };
@@ -207,7 +278,7 @@ console.log("apiUrl--------------   "+apiUrl)
   function rerankjacc() {
     setIsLoading(true);
     const resultsdemo = rankTextsjacc(queryterms, fileText);
-
+    openReactAppInNewWindow()
     console.log(queryterms);
     console.log(fileText);
     console.log("xxxxxx the results doc" + JSON.stringify(resultsdemo));
@@ -215,6 +286,12 @@ console.log("apiUrl--------------   "+apiUrl)
     setDocRanks(resultsdemo);
     setIsLoading(false);
   }
+
+
+  function setshowingdocs() {
+    setshowdocs(!showDocs)
+  }
+
 
   function rerankbm25() {
     setIsLoading(true);
@@ -500,14 +577,14 @@ console.log("apiUrl--------------   "+apiUrl)
       const response = await axios.get(
         `${apiUrl}/api/getFile/${fileName}`
       );
-      console.group("found html file "+response.data);
+      console.group("found html file " + response.data);
       setHtmls(response.data);
     } catch (error) {
       console.error(`Error fetching file ${fileName}: ${error.message}`);
     }
   };
 
-  function showranks(){
+  function showranks() {
     setshowpage(false);
   }
   function showthispdf(fnamme) {
@@ -515,121 +592,135 @@ console.log("apiUrl--------------   "+apiUrl)
     fnamme = fnamme.replace("pdf", "html");
     handleFetchFile(fnamme);
   }
- 
+
   return (
     <Provider store={store}>
 
-<div className="header">
-  <h1>PaperRank</h1>
-  <h5>"Accelerate Your Research"</h5>
+      <div className="header">
+        <h1>PaperRank</h1>
+        <h5>"Accelerate Your Research"</h5>
 
-</div>
-
-
-
+      </div>
 
       <div className="queryupload">
         <Loader isLoading={isLoading} />
         <div class="section">
-        <div class="container-fluid">
-          <div class="row">
-          <div class="q col-sm-6">
-          <h1>Query</h1>
-          <Box queryterms={queryterms} setcolorMap={setcolorMap} setqueryterms={setqueryterms} />
-          </div>
-          <div class="f col-sm-6"> 
-            <h1>File Upload</h1>
-            <i class="fa-solid fa-cloud-arrow-up"></i> <FileUpload  setIsLoading={setIsLoading} setFileText={setFileText} setFileNames={setFileNames} />
-          </div>
+          <div class="container-fluid">
+            <div class="row">
+              <div class="q col-sm-6">
+                <h1>Query</h1>
+                <Box queryterms={queryterms} setcolorMap={setcolorMap} setqueryterms={setqueryterms} />
+              </div>
+              <div class="f col-sm-6">
+                <h1>File Upload</h1>
+                <i class="fa-solid fa-cloud-arrow-up"></i> <FileUpload setIsLoading={setIsLoading} setFileText={setFileText} setFileNames={setFileNames} />
+              </div>
             </div>
+          </div>
         </div>
-    </div>
-   </div>
+      </div>
 
-   <div className="right-column">
-          <div class="row">
+      <div className="right-column">
+        <div class="row">
           <div id="pdf-contents">
             <div id="pdf-meta">
               <div id="pdf-buttons">
-              <div class="terms col-sm-1"></div>
-              <div class="terms col-sm-2"> 
+                <div class="terms col-sm-1"></div>
+                <div class="terms col-sm-2">
                   <button onClick={startconversion}>Start Ranking</button>
                 </div>
 
-                <div class="terms col-sm-2"> 
+                <div class="terms col-sm-2">
                   <button onClick={rerankcoss}>Start cosine ranking</button>
                 </div>
 
-                <div class="terms col-sm-2"> 
+                <div class="terms col-sm-2">
                   <button onClick={rerankjacc}>Start jaccard ranking</button>
                 </div>
 
-                <div class="terms col-sm-2"> 
+                {/* <div class="terms col-sm-2"> 
                   <button onClick={rerankbm25}>Start bm25 ranking</button>
-                </div>
+                </div> */}
+                
+                {documents.length>0 && <div class="terms col-sm-2">
+                  <button onClick={() => { setshowingdocs() }}>Show docs</button>
+                </div>}
 
-                <div class="terms col-sm-2"> 
+                <div class="terms col-sm-2">
                   <button onClick={showranks}>{"< Back to document ranks"}</button>
                 </div>
                 <div class="terms col-sm-1"></div>
 
-             
+
               </div>
 
               <div></div>
             </div>
           </div>
-          </div>
-          
         </div>
 
-   
-   <div className="afterupload">
+      </div>
+
+
+      <div className="afterupload">
         <div class="p row">
           <div class="col-sm-9">
-         
-{showpage ? (
-            <div id="pdf-main-container">
-            
-              <HtmlViewer html={htmls} />
-            
-          </div>
-          ) : 
-          
-          alldocsready ? (
-            <div id="pdf-main-container"> <div>
-              <SearchResults results={docranks} showthispdf={showthispdf} />
-            </div></div>
-          ) : (
-            ""
-          )
-          
-          }
 
-          </div>
 
-          <div class="terms col-sm-3"> 
-          <div>
-                  <h1>Terms</h1>
-                  <CheckboxList
-                    terms={querymap}
-                    checkedTerms={checkedTerms}
-                    setCheckedTerms={setCheckedTerms}
-                    onCheckedTerms={handleCheckedTerms}
-                  />
+
+            {(documents.length > 0) && showDocs ? (<div id="pdf-main-container">
+
+              <DocumentList handleCheckboxChange={() => { console.log("hc---") }} documents={documents}/>
+
+            </div>)
+
+              :
+
+
+              (showpage ?
+
+                <div id="pdf-main-container">
+
+                  <HtmlViewer html={htmls} />
+
                 </div>
+                // )
+                :
+
+                alldocsready ? (
+                  <div id="pdf-main-container"> <div>
+                    <SearchResults results={docranks} showthispdf={showthispdf} />
+                  </div></div>
+                ) : (
+                  ""
+                )
+
+              )}
 
           </div>
+
+          <div class="terms col-sm-3">
+            <div>
+              <h1>Terms</h1>
+              <CheckboxList
+                terms={querymap}
+                checkedTerms={checkedTerms}
+                setCheckedTerms={setCheckedTerms}
+                onCheckedTerms={handleCheckedTerms}
+              />
             </div>
 
+          </div>
         </div>
 
-      
-
-        <div class="fotter">
+      </div>
 
 
-        </div>
+
+      <div class="fotter">
+
+
+      </div>
     </Provider>
   );
 }

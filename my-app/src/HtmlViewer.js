@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./HTMLViewer.css"; 
+import htmlpdfviewer from 'html-pdf-viewer';
+import Button from 'react-bootstrap/Button';
+
+
 const HTMLViewer = ({ html }) => {
   const [pageNum, setPageNum] = useState(1); // State to keep track of current page number
 
@@ -12,6 +16,13 @@ const HTMLViewer = ({ html }) => {
       setPageNum(pageNum - 1);
     }
   };
+
+  const viewPdf = () => {
+    return htmlpdfviewer(html, { output: { mode: 'display', container: '#iframeId', height: 800 } });
+  }
+
+  
+
 
   const goToNextPage = () => {
     const iframe = document.getElementById("viewer-iframe");
@@ -39,7 +50,15 @@ const HTMLViewer = ({ html }) => {
           }
         }}
       />
-    
+
+{/* <div ref={(html) => { html = html }}>
+  <h2 classname="ui header">Hello world!</h2>
+</div>
+
+<iframe src="" id="iframeId" frameBorder="0"></iframe>
+
+<Button onClick={() => viewPdf()} type="button">View PDF</Button>
+     */}
     </>
   );
 };
