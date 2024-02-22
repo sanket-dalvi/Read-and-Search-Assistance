@@ -1,4 +1,8 @@
 .fotter {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -7,10 +11,7 @@
   background-size: contain;
   background-position: bottom;
   min-height: 258px;
-
-} 
-
-
+}
 
 
 #pdf-contents {
@@ -47,3 +48,40 @@ background: linear-gradient(90deg, rgb(211 117 1 / 50%) 0%, rgba(255,245,240,0.5
   color: #ff5522;
   margin-bottom: 16px;
 }
+
+
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 120vh;
+}
+
+.first-row {
+  display: flex;
+  flex-direction: column;
+  flex: 0.2; /* First row takes up 30% of the container height */
+  position: relative;
+  width: 100%;
+}
+
+.second-row {
+  width: 100%;
+  min-height: 900px;
+  display: flex;
+  flex: 0.8; /* Second row takes up 70% of the container height */
+position: relative;
+  
+}
+
+.first-column {
+  flex: 0 0 90%; /* First column takes up 90% of the available width */
+  max-width: 90%; /* Set maximum width to 90% */
+}
+
+.second-column {
+  flex: 0 0 10%; /* Second column takes up 10% of the available width */
+  max-width: 10%; /* Set maximum width to 10% */
+}
+
+

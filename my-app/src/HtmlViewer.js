@@ -1,11 +1,22 @@
 import React, { useEffect, useState } from "react";
-import "./HTMLViewer.css"; 
+import "./HTMLViewer.css"; // Import your CSS file if needed
 import htmlpdfviewer from 'html-pdf-viewer';
 import Button from 'react-bootstrap/Button';
 
-
 const HTMLViewer = ({ html }) => {
+
+  const [scale, setScale] = useState(1.5); // Initial scale factor
+
   const [pageNum, setPageNum] = useState(1); // State to keep track of current page number
+
+
+  const handleZoomIn = () => {
+    setScale(scale + 0.1); // Increase scale factor by 0.1
+  };
+
+  const handleZoomOut = () => {
+    setScale(scale - 0.1); // Decrease scale factor by 0.1
+  };
 
   useEffect(() => {
     setPageNum(1);
@@ -21,9 +32,6 @@ const HTMLViewer = ({ html }) => {
     return htmlpdfviewer(html, { output: { mode: 'display', container: '#iframeId', height: 800 } });
   }
 
-  
-
-
   const goToNextPage = () => {
     const iframe = document.getElementById("viewer-iframe");
     const numPages = iframe.contentWindow.document.querySelectorAll("body > div").length;
@@ -34,31 +42,24 @@ const HTMLViewer = ({ html }) => {
 
   return (
     <>
-
-      <iframe
-        id="viewer-iframe"
-        title="HTML Viewer"
-        // width="800"
-        // height="500"
-        // style={{ border: "1px solid black" }}
-        srcDoc={html}
-        onLoad={() => {
-          const iframe = document.getElementById("viewer-iframe");
-          const numPages = iframe.contentWindow.document.querySelectorAll("body > div").length;
-          if (numPages === 1) {
-            setPageNum(1);
-          }
-        }}
-      />
-
-{/* <div ref={(html) => { html = html }}>
-  <h2 classname="ui header">Hello world!</h2>
-</div>
-
-<iframe src="" id="iframeId" frameBorder="0"></iframe>
-
-<Button onClick={() => viewPdf()} type="button">View PDF</Button>
-     */}
+      <div>
+      <div>
+        <button onClick={handleZoomIn}>Zoom In</button>
+        <button onClick={handleZoomOut}>Zoom Out</button>
+      </div>
+      <div className="iframe-container">
+        <iframe
+          id="viewer-iframe"
+          title="HTML Viewer"
+          srcDoc={html}
+          style={{
+            transform: `scale(${scale})`, // Dynamically set the scale factor
+            transformOrigin: "0 0", // Set the origin of transformation
+          }}
+        />
+      </div>
+     
+    </div>
     </>
   );
 };

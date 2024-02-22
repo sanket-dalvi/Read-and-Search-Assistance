@@ -1,78 +1,88 @@
 .upload-container {
-    padding: 20px;
-    border-radius: 8px;
-    transition: all 0.3s ease-in-out;
-    box-shadow: rgb(0 0 0 / 21%) 0px 5px 15px;
+  padding: 20px;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+  box-shadow: rgb(0 0 0 / 21%) 0px 5px 15px;
 }
-    
-    .upload-container:hover {
-    transform: scale(1.05);
-    }
-    
-    .upload-container input[type="file"] {
-    display: block;
-    margin-bottom: 10px;
-    }
-    
-    .upload-container button {
-    background-color: #0077be;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    }
-    
-    .upload-container button:hover {
-    background-color: #005fa3;
-    }
-    
-    .upload-container button:disabled {
-      background-color: #ccc; /* Change the background color for disabled state to grey */
-      cursor: not-allowed; /* Change the cursor to indicate the button is disabled */
-    }
-    
-    .upload-container .progress {
-    background-color: #eee;
-    height: 20px;
-    border-radius: 4px;
-    overflow: hidden;
-    }
-    
-    .upload-container .progress-bar {
-    background-color: #0077be;
-    height: 100%;
-    transition: width 0.3s ease-in-out;
-    }
-    
-    .upload-container .error {
-    color: red;
-    font-weight: bold;
-    }
 
-    .fileupload h1 {
-        color: hsl(18.4deg 91.84% 51.96%);
-        text-align: center;
-      }
+.upload-container:hover {
+  transform: scale(1.05);
+}
 
-      div#pdf-main-container {
-         padding: 11px;
-    }
+.upload-container input[type="file"] {
+  display: block;
+  margin-bottom: 10px;
+}
 
-    .afterupload {
-        padding: 22px 175px;
-      }
+.upload-container button {
+  background-color: #0077be;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
 
-      .terms.col-sm-3 {
-        background: hsl(206.57deg 99.06% 41.57%);
-        min-height: 540px;
-        color: #fff;
-        text-align: center;
-        border-radius: 8px;
-    }
+.upload-container button:hover {
+  background-color: #005fa3;
+}
 
-    .h1{
-      font-size: 16px;
-    }
+.upload-container button:disabled {
+  background-color: #ccc;
+  /* Change the background color for disabled state to grey */
+  cursor: not-allowed;
+  /* Change the cursor to indicate the button is disabled */
+}
 
-      
+.upload-container .progress {
+  background-color: #eee;
+  height: 20px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.upload-container .progress-bar {
+  background-color: #0077be;
+  height: 100%;
+  transition: width 0.3s ease-in-out;
+}
+
+.upload-container .error {
+  color: red;
+  font-weight: bold;
+}
+
+.fileupload h1 {
+  color: hsl(18.4deg 91.84% 51.96%);
+  text-align: center;
+}
+
+div#pdf-main-container {
+  padding: 11px;
+  min-height: 500px;
+}
+
+.afterupload {
+  padding: 22px;
+ width: 100%;
+}
+
+.terms.col-sm-3 {
+  min-width: 220px; /* Adjust as needed */
+  max-width: 220px; /* Limit the maximum width */
+  background: hsl(206.57deg 99.06% 41.57%);
+  min-height: 540px;
+  max-height: 600px; /* Set maximum height before scrolling activates */
+  overflow-y: auto; /* Enable vertical scrolling if content exceeds height */
+  color: #fff;
+  text-align: center;
+  border-radius: 8px;
+  margin-bottom: 50px;
+  word-wrap: break-word; /* Wrap long words and prevent them from overflowing */
+}
+
+
+
+.h1 {
+  font-size: 16px;
+}

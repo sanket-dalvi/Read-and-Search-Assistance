@@ -44,9 +44,9 @@ export default function App() {
   const [pdfUrls, setPdfUrls] = useState([]);
   const [showDocs, setshowdocs] = useState(false);
 
-  const [documents,setDocuments] = useState(
-    [ ]
-   );
+  const [documents, setDocuments] = useState(
+    []
+  );
 
 
   const [param1, setParam1] = useState('');
@@ -64,22 +64,106 @@ export default function App() {
     setParam1(param1Value);
     setParam2(param2Value);
 
- 
+
   }, []);
 
 
   const openReactAppInNewWindow = () => {
     const url = 'http://sysrev2.cs.binghamton.edu:3001/openapp';
-    const jsonString = JSON.stringify([
-      { "name": "Document 1", "url": "http://example.com/doc1", "isRanking": true },
-      { "name": "Document 2", "url": "http://example.com/doc2", "isRanking": false },
-      { "name": "Document 3", "url": "http://example.com/doc3", "isRanking": true },
-      { "name": "Document 4", "url": "http://example.com/doc4", "isRanking": false }
-    ]);
+    const jsonString = JSON.stringify([{
+      "resultId": 1971,
+      "document": {
+        "title": "Distributional Reinforcement Learning in the Brain.",
+        "articleDate": "2020 Dec",
+        "authorNames": [
+          "Lowet AS",
+          "Zheng Q",
+          "Matias S",
+          "Drugowitsch J",
+          "Uchida N"
+        ],
+        "affiliationCountry": null,
+        "publicationName": "distributional reinforcement learning in the brain",
+        "issn": "0166-2236",
+        "affiliationNames": null,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/33092893"
+      },
+      "priority": 0,
+      "datasource": "PUBMED"
+    },
+    {
+      "resultId": 1972,
+      "document": {
+        "title": "Reinforcement Distributional Learning in the Brain.",
+        "articleDate": "2020 Dec",
+        "authorNames": [
+          "Lowet AS",
+          "Zheng Q",
+          "Matias S",
+          "Drugowitsch J",
+          "Uchida N"
+        ],
+        "affiliationCountry": null,
+        "publicationName": "distributional reinforcement learning in the brain",
+        "issn": "0166-2236",
+        "affiliationNames": null,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/33092893"
+      },
+      "priority": 0,
+      "datasource": "PUBMED"
+    },
+    {
+      "resultId": 1973,
+      "document": {
+        "title": "Learning Distributional Reinforcement in the Brain.",
+        "articleDate": "2020 Dec",
+        "authorNames": [
+          "Lowet AS",
+          "Zheng Q",
+          "Matias S",
+          "Drugowitsch J",
+          "Uchida N"
+        ],
+        "affiliationCountry": null,
+        "publicationName": "distributional reinforcement learning in the brain",
+        "issn": "0166-2236",
+        "affiliationNames": null,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/33092893"
+      },
+      "priority": 0,
+      "datasource": "PUBMED"
+    },
+    {
+      "resultId": 1974,
+      "document": {
+        "title": "Brain Distributional Reinforcement Learning in the.",
+        "articleDate": "2020 Dec",
+        "authorNames": [
+          "Lowet AS",
+          "Zheng Q",
+          "Matias S",
+          "Drugowitsch J",
+          "Uchida N"
+        ],
+        "affiliationCountry": null,
+        "publicationName": "distributional reinforcement learning in the brain",
+        "issn": "0166-2236",
+        "affiliationNames": null,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/33092893"
+      },
+      "priority": 0,
+      "datasource": "PUBMED"
+    }]
+
+
+
+
+
+    );
     const queryParams = `json=${encodeURIComponent(jsonString)}`;
     const finalUrl = `${url}?${queryParams}`;
     const newWindow = window.open(finalUrl, '_blank', 'width=800,height=600');
-  
+
     if (newWindow) {
       // Optional: Add any additional logic if needed, such as handling popup blockers
     } else {
@@ -112,9 +196,9 @@ export default function App() {
       }
     }
 
-   
-    console.log("data in api",jsonDataParam);
-   
+
+    console.log("data in api", jsonDataParam);
+
   };
 
   const downloadPdfFromUrl = async (pdfUrl) => {
@@ -241,6 +325,22 @@ export default function App() {
   }
 
   const convertPDFToHTML = async () => {
+    console.log("name of all files--=-=-=-=-",fileNames);
+    let pdfFilePath = "./sample.pdf";
+    try {
+      const response = await fetch(
+        `${apiUrl}/api/convert-pdf-to-html?_=${new Date().getTime()}`,
+        { timeout: 10000 }
+      );
+      return await response.text();
+    } catch (error) {
+      console.error(error);
+      throw new Error("Failed to convert PDF to HTML");
+    }
+  };
+
+  
+  const getAllPDFS = async () => {
     let pdfFilePath = "./sample.pdf";
     try {
       const response = await fetch(
@@ -268,6 +368,7 @@ export default function App() {
         setAllDocsReady(true);
         setDocRanks(resultsdemo);
         console.log(resultsdemo);
+
         setIsLoading(false);
       })
       .catch((error) => {
@@ -278,7 +379,7 @@ export default function App() {
   function rerankjacc() {
     setIsLoading(true);
     const resultsdemo = rankTextsjacc(queryterms, fileText);
-    openReactAppInNewWindow()
+    // openReactAppInNewWindow()
     console.log(queryterms);
     console.log(fileText);
     console.log("xxxxxx the results doc" + JSON.stringify(resultsdemo));
@@ -595,9 +696,10 @@ export default function App() {
 
   return (
     <Provider store={store}>
-
+      <div className="container">
+<div className="first-row">
       <div className="header">
-        <h1>PaperRank</h1>
+        <h2>PaperRank</h2>
         <h5>"Accelerate Your Research"</h5>
 
       </div>
@@ -608,11 +710,11 @@ export default function App() {
           <div class="container-fluid">
             <div class="row">
               <div class="q col-sm-6">
-                <h1>Query</h1>
+                <h4>Query</h4>
                 <Box queryterms={queryterms} setcolorMap={setcolorMap} setqueryterms={setqueryterms} />
               </div>
               <div class="f col-sm-6">
-                <h1>File Upload</h1>
+                <h4>File Upload</h4>
                 <i class="fa-solid fa-cloud-arrow-up"></i> <FileUpload setIsLoading={setIsLoading} setFileText={setFileText} setFileNames={setFileNames} />
               </div>
             </div>
@@ -641,8 +743,8 @@ export default function App() {
                 {/* <div class="terms col-sm-2"> 
                   <button onClick={rerankbm25}>Start bm25 ranking</button>
                 </div> */}
-                
-                {documents.length>0 && <div class="terms col-sm-2">
+
+                {documents.length > 0 && <div class="terms col-sm-2">
                   <button onClick={() => { setshowingdocs() }}>Show docs</button>
                 </div>}
 
@@ -660,17 +762,17 @@ export default function App() {
         </div>
 
       </div>
-
-
+      </div>
+      <div className="second-row">
       <div className="afterupload">
         <div class="p row">
-          <div class="col-sm-9">
+          <div class="first-column">
 
 
 
             {(documents.length > 0) && showDocs ? (<div id="pdf-main-container">
 
-              <DocumentList handleCheckboxChange={() => { console.log("hc---") }} documents={documents}/>
+              <DocumentList handleCheckboxChange={() => { console.log("hc---") }} documents={documents} />
 
             </div>)
 
@@ -686,7 +788,6 @@ export default function App() {
                 </div>
                 // )
                 :
-
                 alldocsready ? (
                   <div id="pdf-main-container"> <div>
                     <SearchResults results={docranks} showthispdf={showthispdf} />
@@ -694,33 +795,32 @@ export default function App() {
                 ) : (
                   ""
                 )
-
               )}
-
           </div>
-
+          <div className="second-column"> 
           <div class="terms col-sm-3">
-            <div>
-              <h1>Terms</h1>
-              <CheckboxList
-                terms={querymap}
-                checkedTerms={checkedTerms}
-                setCheckedTerms={setCheckedTerms}
-                onCheckedTerms={handleCheckedTerms}
-              />
+         
+            <h1>Terms</h1>
+            <CheckboxList
+              terms={querymap}
+              checkedTerms={checkedTerms}
+              setCheckedTerms={setCheckedTerms}
+              onCheckedTerms={handleCheckedTerms}
+            />
             </div>
+      
 
-          </div>
+        </div>
         </div>
 
-      </div>
-
-
-
-      <div class="fotter">
-
+     
 
       </div>
+
+      </div>
+      </div>
+      {/* <div class="fotter">
+      </div> */}
     </Provider>
   );
 }

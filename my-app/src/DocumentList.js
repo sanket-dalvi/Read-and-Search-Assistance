@@ -1,7 +1,10 @@
 import React from "react";
 import "./stylesSR.css";
 
-function SearchResult({ name, url, isRanking }) {
+function SearchResult({ doc}) {
+
+  const title = doc?.document?.title ?? "";
+  const url=doc?.document?.url ?? "";
 
 
   const handleButtonClick = (url) => {
@@ -13,7 +16,7 @@ function SearchResult({ name, url, isRanking }) {
 
   return (
     <div className="search-result">
-    <div className="name">{name}</div>
+    <div className="name">{title}</div>
     {/* <div className="score"> */}
     {/* </div> */}
    
@@ -50,7 +53,7 @@ export default function DocumentList({ documents, handleCheckboxChange }) {
   return (
     <div className="search-results-container">
       {documents.map((doc, index) => (
-        <SearchResult key={index} {...doc} />
+        <SearchResult key={index} doc={doc} />
       ))}
     </div>
   );

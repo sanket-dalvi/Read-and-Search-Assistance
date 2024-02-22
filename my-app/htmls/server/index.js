@@ -235,19 +235,24 @@ const upload = multer({
 }).array("myFile", 100);
 
 app.post("/api/upload", (req, res) => {
+  console.log("hi its express server");
   console.log("react server url----  " + path.join(__dirname, "../../build"));
 
   // Handle file upload asynchronously
   upload(req, res, async (err) => {
+   
     try {
       if (err) {
+        console.log("in here 1")
         console.error(err);
         throw new Error(err.message);
       } else {
+        console.log("in here 2")
         console.log(req.file);
         res.status(200).json({ message: "File uploaded successfully!" });
       }
     } catch (error) {
+      console.log("in here 3")
       res.status(400).json({ message: error.message });
     }
   });

@@ -40,6 +40,7 @@
   
   .queryterms-container {
     overflow-x: auto;
+    max-height: 150px;
   }
   
   .term {
@@ -76,7 +77,10 @@
     background-image: url("/public/assets/images/Header.png");
     background-repeat: round;
     background-position: unset;
-    min-height: 82px;
+    min-height: 52px;
+ 
+    position: relative;
+
 }
 
 .header h1 {
@@ -92,7 +96,10 @@
 
 .p.row {
   box-shadow: rgb(0 0 0 / 21%) 0px 5px 15px;
-  padding: 25px;
+  padding: 5px 5px;
+    display: flex;
+    flex-wrap: wrap; 
+    width: 100%; 
 }
 
 .terms.col-sm-2 button {
@@ -110,19 +117,23 @@
   box-shadow: rgb(0 0 0 / 21%) 0px 5px 15px;
 }
 
-.terms.col-sm-3 h1 {
-  background: #fff;
-  color: hsl(206.57deg 99.06% 41.57%);
-  border-radius: 3px;
-  padding: 4px;
-  box-shadow: rgb(0 0 0 / 21%) 0px 5px 15px;
-  margin-bottom: 26px;
-  text-transform: uppercase;
-  font-size: 28px;
-}
+
 
 .header h5 {
   font-size: 22px;
   letter-spacing: 4.5px;
+}
+@media (max-width: 768px) {
+  .afterupload {
+    padding: 22px 0; /* Adjust padding for smaller screens */
+  }
+}
+
+@media (max-width: 576px) {
+  .terms.col-sm-3 {
+    flex: 1 100%; /* Allow terms section to take full width on smaller screens */
+    margin-right: 0; /* Remove margin between columns */
+    margin-bottom: 10px; /* Add some margin between rows */
+  }
 }
 
