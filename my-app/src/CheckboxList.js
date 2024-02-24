@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-function CheckboxList({ terms, checkedTerms, setCheckedTerms, onCheckedTerms }) {
+function CheckboxList({ terms, checkedTerms, setCheckedTerms, onCheckedTerms, colorMap }) {
 
   useEffect(() => {
     onCheckedTerms(checkedTerms);
@@ -30,7 +30,16 @@ function CheckboxList({ terms, checkedTerms, setCheckedTerms, onCheckedTerms }) 
               onChange={handleCheckboxChange}
             />
             {term}
-          </label>
+          </label> <span style={{ display: 'inline-block', marginLeft: '10px' }}>
+            <div
+              style={{
+                width: '15px',
+                height: '15px',
+                borderRadius: '50%',
+                backgroundColor: colorMap[term],
+              }}
+            ></div>
+          </span>
         </div>
       ))}
     </form>

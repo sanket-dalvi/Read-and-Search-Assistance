@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import "./HTMLViewer.css"; // Import your CSS file if needed
 import htmlpdfviewer from 'html-pdf-viewer';
 import Button from 'react-bootstrap/Button';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearchPlus, faSearchMinus } from '@fortawesome/free-solid-svg-icons';
+
 
 const HTMLViewer = ({ html }) => {
 
@@ -15,7 +18,10 @@ const HTMLViewer = ({ html }) => {
   };
 
   const handleZoomOut = () => {
-    setScale(scale - 0.1); // Decrease scale factor by 0.1
+    if(scale>1.1){
+      setScale(scale - 0.1); 
+    }
+    // Decrease scale factor by 0.1
   };
 
   useEffect(() => {
@@ -44,8 +50,17 @@ const HTMLViewer = ({ html }) => {
     <>
       <div>
       <div>
-        <button onClick={handleZoomIn}>Zoom In</button>
-        <button onClick={handleZoomOut}>Zoom Out</button>
+        {/* <button onClick={handleZoomIn}>Zoom In</button>
+        <button onClick={handleZoomOut}>Zoom Out</button> */}
+
+        <button onClick={handleZoomIn}>
+  <FontAwesomeIcon icon={faSearchPlus} /> Zoom In
+</button>
+<button onClick={handleZoomOut}>
+  <FontAwesomeIcon icon={faSearchMinus} /> Zoom Out
+</button>
+
+
       </div>
       <div className="iframe-container">
         <iframe

@@ -43,6 +43,51 @@ export default function App() {
   const [showpage, setshowpage] = React.useState(false);
   const [pdfUrls, setPdfUrls] = useState([]);
   const [showDocs, setshowdocs] = useState(false);
+  const [allHtmls, setAllHtmls] = useState({});
+  const [currShowing, setCurrShowing] = useState("");
+
+  const generateUniqueHighlightColors = () => {
+    const result = [];
+    const hues = [0, 45, 90, 135, 180, 225, 270, 315]; // More diverse hues
+    const saturation = 70; // Fixed saturation for better consistency
+  
+    for (let hue of hues) {
+      for (let lightness = 60; lightness <= 90; lightness += 10) {
+        const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`; // Use HSL color model for bright and light colors
+        result.push(color);
+      }
+    }
+  
+    return result;
+  };
+  // const generateUniqueHighlightColors = () => {
+  //   const result = [];
+  //   const hues = [0, 60, 120, 180, 240, 300]; // More diverse hues
+  //   const saturations = [50, 70, 90]; // Different saturation levels for variation
+  
+  //   for (let hue of hues) {
+  //     for (let saturation of saturations) {
+  //       const lightness = Math.floor(Math.random() * 30) + 60; // Random lightness between 60 and 90
+  //       const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`; // Use HSL color model for bright and light colors
+  //       result.push(color);
+  //     }
+  //   }
+  
+  //   return result;
+  // };
+  
+  
+  // const brightColors = generateUniqueHighlightColors();
+  
+  const [brightColors,setbrightColors] =useState(generateUniqueHighlightColors());
+
+  const colorObject = {};
+
+  brightColors.forEach(color => {
+    colorObject[color] = false;
+  });
+
+
 
   const [documents, setDocuments] = useState(
     []
@@ -233,41 +278,38 @@ export default function App() {
 
     // const colorMap = colormap;
 
-    let htmltemp = htmls;
+    // let htmltemp = htmls;
+    let htmltemp = allHtmls[currShowing];
 
-    for (let i = 0; i < falseTerms.length; i++) {
-      const backgroundStyle = `background-color: white;`;
+    // for (let i = 0; i < falseTerms.length; i++) {
+    //   const backgroundStyle = `background-color: white;`;
 
 
 
 
-      htmltemp = htmltemp.replace(
-        new RegExp(falseTerms[i], "gi"),
-        `<span style="${backgroundStyle}">${falseTerms[i]}</span>`
-      );
-    }
+    //   htmltemp = htmltemp.replace(
+    //     new RegExp(falseTerms[i], "gi"),
+    //     `<span style="${backgroundStyle}">${falseTerms[i]}</span>`
+    //   );
+    // }
 
     for (let i = 0; i < trueTerms.length; i++) {
       const backgroundColor = colorMap[trueTerms[i]];
-
-      // const backgroundStyle = ` background-color: ;      font-weight: bold;
-      // font-size: 1.2em;       display: inline-block;`;
-
-      const backgroundStyle = checkedTerms[trueTerms[i]]
-        ? `background-color: ${backgroundColor};`
+        const backgroundStyle = checkedTerms[trueTerms[i]]
+        ? `
+          background-color: ${backgroundColor};
+          border-radius: 3px; /* Rounded corners */
+          box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3); /* Drop shadow */
+          padding: 2px 4px; /* Padding for better spacing */
+          color: white; /* Text color on highlighted background */
+        `
         : `background-color: white;`;
-
-      // const backgroundStyle = checkedTerms[trueTerms[i]]
-      // ? ` background-color: ${backgroundColor};      font-weight: bold;
-      //       display: inline-block;`
-      // : ` background-color: white ;      font-weight: bold;
-      //      display: inline-block;`;
-
 
       const re = new RegExp(`>${trueTerms[i]}<`, "gi");
       htmltemp = htmltemp.replace(re, (match) => {
         return match.replace(/<span style="[^"]*">(.*?)<\/span>/gi, "$1");
       });
+
       htmltemp = htmltemp.replace(
         new RegExp(`>[^<]*(${trueTerms[i]})[^<]*<`, "gi"),
         (match) => {
@@ -277,6 +319,7 @@ export default function App() {
           );
         }
       );
+
     }
 
     setHtmls(htmltemp);
@@ -324,13 +367,34 @@ export default function App() {
     }
   }
 
+  // const convertPDFToHTML = async () => {
+  //   console.log("name of all files--=-=-=-=-",fileNames);
+  //   let pdfFilePath = "./sample.pdf";
+  //   try {
+  //     const response = await fetch(
+  //       `${apiUrl}/api/convert-pdf-to-html?_=${new Date().getTime()}`,
+  //       { timeout: 10000 }
+  //     );
+  //     return await response.text();
+  //   } catch (error) {
+  //     console.error(error);
+  //     throw new Error("Failed to convert PDF to HTML");
+  //   }
+  // };
+
   const convertPDFToHTML = async () => {
-    console.log("name of all files--=-=-=-=-",fileNames);
+    console.log("name of all files--=-=-=-=-", fileNames);
     let pdfFilePath = "./sample.pdf";
     try {
       const response = await fetch(
-        `${apiUrl}/api/convert-pdf-to-html?_=${new Date().getTime()}`,
-        { timeout: 10000 }
+        `${apiUrl}/api/convert-pdf-to-html`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ fileNames })
+        }
       );
       return await response.text();
     } catch (error) {
@@ -339,20 +403,6 @@ export default function App() {
     }
   };
 
-  
-  const getAllPDFS = async () => {
-    let pdfFilePath = "./sample.pdf";
-    try {
-      const response = await fetch(
-        `${apiUrl}/api/convert-pdf-to-html?_=${new Date().getTime()}`,
-        { timeout: 10000 }
-      );
-      return await response.text();
-    } catch (error) {
-      console.error(error);
-      throw new Error("Failed to convert PDF to HTML");
-    }
-  };
 
   const startconversion = async () => {
     setIsLoading(true);
@@ -368,7 +418,8 @@ export default function App() {
         setAllDocsReady(true);
         setDocRanks(resultsdemo);
         console.log(resultsdemo);
-
+        // getAllHTML();
+        handleFetchFile();
         setIsLoading(false);
       })
       .catch((error) => {
@@ -673,17 +724,46 @@ export default function App() {
     return results;
   }
 
-  const handleFetchFile = async (fileName) => {
+  // const handleFetchFile = async (fileName) => {
+  //   try {
+  //     const response = await axios.get(
+  //       `${apiUrl}/api/getFile/${fileName}`
+  //     );
+  //     console.group("found html file " + response.data);
+  //     setHtmls(response.data);
+  //   } catch (error) {
+  //     console.error(`Error fetching file ${fileName}: ${error.message}`);
+  //   }
+  // };
+
+  const handleFetchFile = async (fileName = "") => {
+    console.log("handleFetchFile called")
+
+    if (fileName != "" && allHtmls.hasOwnProperty(fileName)) {
+      setHtmls(allHtmls[fileName]);
+      return;
+    }
     try {
-      const response = await axios.get(
-        `${apiUrl}/api/getFile/${fileName}`
-      );
-      console.group("found html file " + response.data);
-      setHtmls(response.data);
+      const promises = fileNames.map(async (fn) => {
+        fn = fn.replace("pdf", "html");
+        const response = await axios.get(`${apiUrl}/api/getFile/${fn}`);
+        return { [fn]: response.data }; // Return an object with file name as key and file content as value
+      });
+
+      const filesData = await Promise.all(promises);
+
+      // Combine file data into a single object
+      const filesObject = filesData.reduce((acc, cur) => ({ ...acc, ...cur }), {});
+      setAllHtmls(filesObject)
+      if (fileName != "") {
+        setHtmls(filesObject[fileName]);
+      }
+
     } catch (error) {
-      console.error(`Error fetching file ${fileName}: ${error.message}`);
+      console.error(`Error fetching files: ${error.message}`);
     }
   };
+
 
   function showranks() {
     setshowpage(false);
@@ -691,133 +771,135 @@ export default function App() {
   function showthispdf(fnamme) {
     setshowpage(true);
     fnamme = fnamme.replace("pdf", "html");
+    setCurrShowing(fnamme);
     handleFetchFile(fnamme);
   }
 
   return (
     <Provider store={store}>
       <div className="container">
-<div className="first-row">
-      <div className="header">
-        <h2>PaperRank</h2>
-        <h5>"Accelerate Your Research"</h5>
+        <div className="first-row">
+          <div className="header">
+            <h2>PaperRank</h2>
+            <h5>"Accelerate Your Research"</h5>
 
-      </div>
+          </div>
 
-      <div className="queryupload">
-        <Loader isLoading={isLoading} />
-        <div class="section">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="q col-sm-6">
-                <h4>Query</h4>
-                <Box queryterms={queryterms} setcolorMap={setcolorMap} setqueryterms={setqueryterms} />
-              </div>
-              <div class="f col-sm-6">
-                <h4>File Upload</h4>
-                <i class="fa-solid fa-cloud-arrow-up"></i> <FileUpload setIsLoading={setIsLoading} setFileText={setFileText} setFileNames={setFileNames} />
+          <div className="queryupload">
+            <Loader isLoading={isLoading} />
+            <div class="section">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="q col-sm-6">
+                    <h4>Query</h4>
+                    <Box queryterms={queryterms} brightColors = {brightColors} setbrightColors={setbrightColors} setcolorMap={setcolorMap} setqueryterms={setqueryterms} />
+                  </div>
+                  <div class="f col-sm-6">
+                    <h4>File Upload</h4>
+                    <i class="fa-solid fa-cloud-arrow-up"></i> <FileUpload setIsLoading={setIsLoading} setFileText={setFileText} setFileNames={setFileNames} />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      <div className="right-column">
-        <div class="row">
-          <div id="pdf-contents">
-            <div id="pdf-meta">
-              <div id="pdf-buttons">
-                <div class="terms col-sm-1"></div>
-                <div class="terms col-sm-2">
-                  <button onClick={startconversion}>Start Ranking</button>
-                </div>
+          <div className="right-column">
+            <div class="row">
+              <div id="pdf-contents">
+                <div id="pdf-meta">
+                  <div id="pdf-buttons">
+                    <div class="terms col-sm-1"></div>
+                    <div class="terms col-sm-2">
+                      <button onClick={startconversion}>Start Ranking</button>
+                    </div>
 
-                <div class="terms col-sm-2">
-                  <button onClick={rerankcoss}>Start cosine ranking</button>
-                </div>
+                    <div class="terms col-sm-2">
+                      <button onClick={rerankcoss}>Start cosine ranking</button>
+                    </div>
 
-                <div class="terms col-sm-2">
-                  <button onClick={rerankjacc}>Start jaccard ranking</button>
-                </div>
+                    <div class="terms col-sm-2">
+                      <button onClick={rerankjacc}>Start jaccard ranking</button>
+                    </div>
 
-                {/* <div class="terms col-sm-2"> 
+                    {/* <div class="terms col-sm-2"> 
                   <button onClick={rerankbm25}>Start bm25 ranking</button>
                 </div> */}
 
-                {documents.length > 0 && <div class="terms col-sm-2">
-                  <button onClick={() => { setshowingdocs() }}>Show docs</button>
-                </div>}
+                    {documents.length > 0 && <div class="terms col-sm-2">
+                      <button onClick={() => { setshowingdocs() }}>Show docs</button>
+                    </div>}
 
-                <div class="terms col-sm-2">
-                  <button onClick={showranks}>{"< Back to document ranks"}</button>
+                    <div class="terms col-sm-2">
+                      <button onClick={showranks}>{"< Back to document ranks"}</button>
+                    </div>
+                    <div class="terms col-sm-1"></div>
+
+
+                  </div>
+
+                  <div></div>
                 </div>
-                <div class="terms col-sm-1"></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div className="second-row">
+          <div className="afterupload">
+            <div class="p row">
+              <div class="first-column">
+
+
+
+                {(documents.length > 0) && showDocs ? (<div id="pdf-main-container">
+
+                  <DocumentList handleCheckboxChange={() => { console.log("hc---") }} documents={documents} />
+
+                </div>)
+
+                  :
+
+
+                  (showpage ?
+
+                    <div id="pdf-main-container">
+
+                      <HtmlViewer html={htmls} />
+
+                    </div>
+                    // )
+                    :
+                    alldocsready ? (
+                      <div id="pdf-main-container"> <div>
+                        <SearchResults results={docranks} showthispdf={showthispdf} />
+                      </div></div>
+                    ) : (
+                      ""
+                    )
+                  )}
+              </div>
+              <div className="second-column">
+                <div class="terms col-sm-3">
+
+                  <h1>Terms</h1>
+                  <CheckboxList
+                    terms={querymap}
+                    colorMap={colorMap}
+                    checkedTerms={checkedTerms}
+                    setCheckedTerms={setCheckedTerms}
+                    onCheckedTerms={handleCheckedTerms}
+                  />
+                </div>
 
 
               </div>
-
-              <div></div>
             </div>
+
+
+
           </div>
-        </div>
-
-      </div>
-      </div>
-      <div className="second-row">
-      <div className="afterupload">
-        <div class="p row">
-          <div class="first-column">
-
-
-
-            {(documents.length > 0) && showDocs ? (<div id="pdf-main-container">
-
-              <DocumentList handleCheckboxChange={() => { console.log("hc---") }} documents={documents} />
-
-            </div>)
-
-              :
-
-
-              (showpage ?
-
-                <div id="pdf-main-container">
-
-                  <HtmlViewer html={htmls} />
-
-                </div>
-                // )
-                :
-                alldocsready ? (
-                  <div id="pdf-main-container"> <div>
-                    <SearchResults results={docranks} showthispdf={showthispdf} />
-                  </div></div>
-                ) : (
-                  ""
-                )
-              )}
-          </div>
-          <div className="second-column"> 
-          <div class="terms col-sm-3">
-         
-            <h1>Terms</h1>
-            <CheckboxList
-              terms={querymap}
-              checkedTerms={checkedTerms}
-              setCheckedTerms={setCheckedTerms}
-              onCheckedTerms={handleCheckedTerms}
-            />
-            </div>
-      
 
         </div>
-        </div>
-
-     
-
-      </div>
-
-      </div>
       </div>
       {/* <div class="fotter">
       </div> */}

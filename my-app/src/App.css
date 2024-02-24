@@ -75,13 +75,13 @@ position: relative;
 }
 
 .first-column {
-  flex: 0 0 90%; /* First column takes up 90% of the available width */
-  max-width: 90%; /* Set maximum width to 90% */
+  flex: 0 0 85%; /* First column takes up 90% of the available width */
+  max-width: 85%; /* Set maximum width to 90% */
 }
 
 .second-column {
-  flex: 0 0 10%; /* Second column takes up 10% of the available width */
-  max-width: 10%; /* Set maximum width to 10% */
+  flex: 0 0 15%; /* Second column takes up 10% of the available width */
+  max-width: 15%; /* Set maximum width to 10% */
 }
 
 

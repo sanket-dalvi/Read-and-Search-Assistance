@@ -11,6 +11,7 @@ const corsOptions = {
   origin: 'http://sysrev2.cs.binghamton.edu:3001',
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
+// const bodyParser = require('body-parser');
 
 
 app.use(bodyParser.json());
@@ -76,51 +77,107 @@ function getPdfFilePaths(folderPath) {
   const pdfFilePaths = pdfFiles.map(file => path.join(folderPath, file));
   return pdfFilePaths;
 }
-app.get("/api/convert-pdf-to-html", (req, res) => {
 // app.get("/api/convert-pdf-to-html", (req, res) => {
+// // app.get("/api/convert-pdf-to-html", (req, res) => {
 
-console.log("fpp :   ",fpp);
-  console.log("Received a request to /api/convert-pdf-to-html");
+// console.log("fpp :   ",fpp);
+//   console.log("Received a request to /api/convert-pdf-to-html");
 
-  const folderPath = '.';
-  const pdfFilePaths = getPdfFilePaths(fpp);
-  console.log(pdfFilePaths);
-  const nooffiles=pdfFilePaths.length;
-  let  filesprocessed=0;
-  res.set('Cache-Control', 'no-store');
-  for (let i = 0; i < pdfFilePaths.length; i++) {
-    // console.log(pdfFilePaths[i]);
-    console.log("currently trying to convert:  "+pdfFilePaths[i]);
+//   const folderPath = '.';
+//   const pdfFilePaths = getPdfFilePaths(fpp);
+//   console.log(pdfFilePaths);
+//   const nooffiles=pdfFilePaths.length;
+//   let  filesprocessed=0;
+//   res.set('Cache-Control', 'no-store');
+//   for (let i = 0; i < pdfFilePaths.length; i++) {
+//     // console.log(pdfFilePaths[i]);
+//     console.log("currently trying to convert:  "+pdfFilePaths[i]);
 
-    // D:\Grad\Sem 2\Web info ret\project2\my-app\htmls
-  // const cmd = `"D:\\Grad\\Sem 2\\WBINFO\\project2\\my-app\\cshell\\pdf2htmlEX.exe" "${pdfFilePaths[i]}"`;
+//     // D:\Grad\Sem 2\Web info ret\project2\my-app\htmls
+//   // const cmd = `"D:\\Grad\\Sem 2\\WBINFO\\project2\\my-app\\cshell\\pdf2htmlEX.exe" "${pdfFilePaths[i]}"`;
   
-  console.log("pdf2htmlExPath     ====  "+pdf2htmlExPath);
-  console.log("pdfFilePaths[i]     ====  "+pdfFilePaths[i]);
-  // const cmd = `"${pdf2htmlExPath}" "${pdfFilePaths[i]}"`;
-  const cmd = `/usr/local/bin/pdf2htmlEX "${pdfFilePaths[i]}"`;
-  // const cmd = `"C:\\pdf2htmlEX\\pdf2htmlEX.exe" "${pdfFilePaths[i]}"`;
+//   console.log("pdf2htmlExPath     ====  "+pdf2htmlExPath);
+//   console.log("pdfFilePaths[i]     ====  "+pdfFilePaths[i]);
+//   // const cmd = `"${pdf2htmlExPath}" "${pdfFilePaths[i]}"`;
+//   const cmd = `/usr/local/bin/pdf2htmlEX "${pdfFilePaths[i]}"`;
+//   // const cmd = `"C:\\pdf2htmlEX\\pdf2htmlEX.exe" "${pdfFilePaths[i]}"`;
 
-  exec(cmd, (error, stdout, stderr) => {
-    if (error) {
+//   exec(cmd, (error, stdout, stderr) => {
+//     if (error) {
 
-      console.error(`pdf2htmlEX error: ${error.message}`);
-      // return res.status(500).send(`pdf2htmlEX error: ${error.message}`);
+//       console.error(`pdf2htmlEX error: ${error.message}`);
+//       // return res.status(500).send(`pdf2htmlEX error: ${error.message}`);
+//     }
+//     if (stderr) {
+//       console.error(`pdf2htmlEX stderr: ${stderr}`);
+//       // return res.status(500).send(`pdf2htmlEX stderr: ${stderr}`);
+//     }
+//     filesprocessed=filesprocessed+1;
+//     if(filesprocessed==nooffiles){
+//       // moveHtmlFiles();
+//       res.send("All PDF files converted successfully");
+//     }
+//   });
+//   }
+
+// });
+
+app.post("/api/convert-pdf-to-html", (req, res) => {
+  console.log("Received a request to /api/convert-pdf-to-html");
+  
+  const { fileNames } = req.body;
+  // console.log("File names received:-=-=-=-=-", fileNames);
+
+  // for (let i = 0; i < fileNames.length; i++) {
+  //   console.log("File names received-=-=-=--=",path.join(__dirname, fileNames[i]));
+  // }
+
+  console.log("fpp :   ",fpp);
+    console.log("Received a request to /api/convert-pdf-to-html");
+  
+    const folderPath = '.';
+    // const pdfFilePaths = getPdfFilePaths(fpp);
+    // console.log(pdfFilePaths);
+   
+    let  filesprocessed=0;
+    res.set('Cache-Control', 'no-store');
+    const pdfFilePaths=fileNames.map((fn)=>{
+      return path.join(pdfFolderPath, fn);
+
+    })
+    const nooffiles=pdfFilePaths.length;
+    for (let i = 0; i < pdfFilePaths.length; i++) {
+      // console.log(pdfFilePaths[i]);
+      console.log("currently trying to convert:  "+pdfFilePaths[i]);
+  
+      // D:\Grad\Sem 2\Web info ret\project2\my-app\htmls
+    // const cmd = `"D:\\Grad\\Sem 2\\WBINFO\\project2\\my-app\\cshell\\pdf2htmlEX.exe" "${pdfFilePaths[i]}"`;
+    
+    console.log("pdf2htmlExPath     ====  "+pdf2htmlExPath);
+    console.log("pdfFilePaths[i]     ====  "+pdfFilePaths[i]);
+    // const cmd = `"${pdf2htmlExPath}" "${pdfFilePaths[i]}"`;
+    const cmd = `/usr/local/bin/pdf2htmlEX "${pdfFilePaths[i]}"`;
+    // const cmd = `"C:\\pdf2htmlEX\\pdf2htmlEX.exe" "${pdfFilePaths[i]}"`;
+  
+    exec(cmd, (error, stdout, stderr) => {
+      if (error) {
+  
+        console.error(`pdf2htmlEX error: ${error.message}`);
+        // return res.status(500).send(`pdf2htmlEX error: ${error.message}`);
+      }
+      if (stderr) {
+        console.error(`pdf2htmlEX stderr: ${stderr}`);
+        // return res.status(500).send(`pdf2htmlEX stderr: ${stderr}`);
+      }
+      filesprocessed=filesprocessed+1;
+      if(filesprocessed==nooffiles){
+        // moveHtmlFiles();
+        res.send("All PDF files converted successfully");
+      }
+    });
     }
-    if (stderr) {
-      console.error(`pdf2htmlEX stderr: ${stderr}`);
-      // return res.status(500).send(`pdf2htmlEX stderr: ${stderr}`);
-    }
-    filesprocessed=filesprocessed+1;
-    if(filesprocessed==nooffiles){
-      // moveHtmlFiles();
-      res.send("All PDF files converted successfully");
-    }
+  
   });
-  }
-
-});
-
 
 // bkp ends
 

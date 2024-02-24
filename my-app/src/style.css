@@ -68,8 +68,8 @@ div#pdf-main-container {
 }
 
 .terms.col-sm-3 {
-  min-width: 220px; /* Adjust as needed */
-  max-width: 220px; /* Limit the maximum width */
+  /* min-width: 300px;  */
+  width: 100%; /* Limit the maximum width */
   background: hsl(206.57deg 99.06% 41.57%);
   min-height: 540px;
   max-height: 600px; /* Set maximum height before scrolling activates */

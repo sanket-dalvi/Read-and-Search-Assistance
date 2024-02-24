@@ -1,8 +1,29 @@
 import React, { useState } from "react";
 import "./Box.css";
 
-function Box({ queryterms, setqueryterms,setcolorMap }) {
+
+
+// Custom hook for synchronous color assignment
+const useColorAssignment = (initialColors) => {
+  const [colors, setColors] = useState(initialColors);
+
+  const assignColor = () => {
+    if (colors.length === 0) return null;
+
+    const randomIndex = Math.floor(Math.random() * colors.length);
+    const color = colors[randomIndex];
+    setColors((prevColors) => prevColors.filter((c, index) => index !== randomIndex));
+
+    return color;
+  };
+
+  return assignColor;
+};
+
+
+function Box({ queryterms, setqueryterms,setcolorMap,brightColors, setbrightColors }) {
   const [inputValue, setInputValue] = useState("");
+  const assignColor = useColorAssignment(brightColors);
 
   const handleInputOnChange = (e) => {
     setInputValue(e.target.value);
@@ -27,17 +48,21 @@ function Box({ queryterms, setqueryterms,setcolorMap }) {
       .split(";")
       .filter((term) => term.trim() !== "")
       .map((term) => term.trim().toLowerCase());
+
     setqueryterms((prevTerms) => [...prevTerms, ...newTerms]);
   
     setcolorMap((prevColorMap) => {
-      const newColorMap = {...prevColorMap};
+      const newColorMap = { ...prevColorMap };
+
       for (const term of newTerms) {
         if (!newColorMap[term]) {
-          // Generate a new random color code for the term
-          const colorCode = "#" + Math.floor(Math.random() * 16777215).toString(16);
-          newColorMap[term] = colorCode;
+          const randomColor = assignColor();
+          if (randomColor) {
+            newColorMap[term] = randomColor;
+          }
         }
       }
+      console.log(newColorMap);
       return newColorMap;
     });
   
