@@ -310,15 +310,52 @@ export default function App() {
         return match.replace(/<span style="[^"]*">(.*?)<\/span>/gi, "$1");
       });
 
+      // htmltemp = htmltemp.replace(
+      //   new RegExp(`>[^<]*(${trueTerms[i]})[^<]*<`, "gi"),
+      //   (match) => {
+      //     return match.replace(
+      //       new RegExp(`(${trueTerms[i]})`, "gi"),
+      //       `<span style="${backgroundStyle}">$1</span>`
+      //     );
+      //   }
+      // );
+
+      const iframe = document.getElementById('viewer-iframe');
+
+
+      iframe.contentWindow.handleClick = function(event, term) {
+        event.preventDefault(); // Prevent default behavior of clicking on the span tag
+        const targetId = term;
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+            // Scroll to the target element within the iframe
+            targetElement.scrollIntoView();
+        }
+    };
+
       htmltemp = htmltemp.replace(
-        new RegExp(`>[^<]*(${trueTerms[i]})[^<]*<`, "gi"),
+        new RegExp(`(?<![\\w</])(${trueTerms[i]})(?![\\w/>:=])`, "gi"),
+
         (match) => {
+          console.log("matched words----",match)
           return match.replace(
-            new RegExp(`(${trueTerms[i]})`, "gi"),
-            `<span style="${backgroundStyle}">$1</span>`
+            new RegExp(`(?<![\\w</])(${trueTerms[i]})(?![\\w/>:=])`, "gi"),
+            `<span style="${backgroundStyle}" >$1</span>`
+            // `<span style="${backgroundStyle}" >$1</span>`
+            // `<span style="${backgroundStyle}" pointer-events: none;>$1</span>`
+            // <span style="${backgroundStyle}; pointer-events: auto;" onclick="window.location.href = 'http://sysrev2.cs.binghamton.edu:3001/#pf1'">$1</span>
+
           );
         }
       );
+
+      // htmltemp = htmltemp.replace(
+      //   new RegExp(`([^<>]*>)?([^<]*(${trueTerms[i]})([^<]*<)?[^<>]*)`, "gi"),
+      //   (match, before, term, after) => {
+      //     return `${before}<span style="${backgroundStyle}">${term}</span>${after}`;
+      //   }
+      // );
+      
 
     }
 
