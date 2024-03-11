@@ -50,21 +50,21 @@ export default function App() {
     const result = [];
     const hues = [0, 45, 90, 135, 180, 225, 270, 315]; // More diverse hues
     const saturation = 70; // Fixed saturation for better consistency
-  
+
     for (let hue of hues) {
       for (let lightness = 60; lightness <= 90; lightness += 10) {
         const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`; // Use HSL color model for bright and light colors
         result.push(color);
       }
     }
-  
+
     return result;
   };
   // const generateUniqueHighlightColors = () => {
   //   const result = [];
   //   const hues = [0, 60, 120, 180, 240, 300]; // More diverse hues
   //   const saturations = [50, 70, 90]; // Different saturation levels for variation
-  
+
   //   for (let hue of hues) {
   //     for (let saturation of saturations) {
   //       const lightness = Math.floor(Math.random() * 30) + 60; // Random lightness between 60 and 90
@@ -72,14 +72,14 @@ export default function App() {
   //       result.push(color);
   //     }
   //   }
-  
+
   //   return result;
   // };
-  
-  
+
+
   // const brightColors = generateUniqueHighlightColors();
-  
-  const [brightColors,setbrightColors] =useState(generateUniqueHighlightColors());
+
+  const [brightColors, setbrightColors] = useState(generateUniqueHighlightColors());
 
   const colorObject = {};
 
@@ -295,19 +295,20 @@ export default function App() {
 
     for (let i = 0; i < trueTerms.length; i++) {
       const backgroundColor = colorMap[trueTerms[i]];
-        const backgroundStyle = checkedTerms[trueTerms[i]]
+      const backgroundStyle = checkedTerms[trueTerms[i]]
         ? `
           background-color: ${backgroundColor};
           border-radius: 3px; /* Rounded corners */
           box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3); /* Drop shadow */
           padding: 2px 4px; /* Padding for better spacing */
           color: white; /* Text color on highlighted background */
+          pointer-events: none;
         `
         : `background-color: white;`;
 
       const re = new RegExp(`>${trueTerms[i]}<`, "gi");
       htmltemp = htmltemp.replace(re, (match) => {
-        return match.replace(/<span style="[^"]*">(.*?)<\/span>/gi, "$1");
+        return match.replace(/<span name = "highlightedtextdebug" style="[^"]*">(.*?)<\/span>/gi, "$1");
       });
 
       // htmltemp = htmltemp.replace(
@@ -323,23 +324,58 @@ export default function App() {
       const iframe = document.getElementById('viewer-iframe');
 
 
-      iframe.contentWindow.handleClick = function(event, term) {
+      iframe.contentWindow.handleClick = function (event, term) {
         event.preventDefault(); // Prevent default behavior of clicking on the span tag
         const targetId = term;
         const targetElement = document.getElementById(targetId);
         if (targetElement) {
-            // Scroll to the target element within the iframe
-            targetElement.scrollIntoView();
+          // Scroll to the target element within the iframe
+          targetElement.scrollIntoView();
         }
-    };
+      };
 
       htmltemp = htmltemp.replace(
         new RegExp(`(?<![\\w</])(${trueTerms[i]})(?![\\w/>:=])`, "gi"),
+        
 
-        (match) => {
-          console.log("matched words----",match)
+        // new RegExp(`(?<=^|>)[^<]*(?<![:=])(${trueTerms[i]})(?![^<]*<|[:=])`, "gi"),
+
+
+
+        (match, word,index) => {
+
+          const sentence = htmltemp.substring(index - 15, index+20);
+          console.log("Sentence:", sentence);
+          console.log("printing index",index);
+          const bodyStartIndex = htmltemp.indexOf('<body');
+          const bodyEndIndex = htmltemp.indexOf('</body>');
+
+          if(bodyStartIndex > index || bodyEndIndex < index){
+            return match;
+          }
+
+
+          const lastopen = htmltemp.substring(bodyStartIndex,index).lastIndexOf("<");
+          const lastclosed= htmltemp.substring(bodyStartIndex,index).lastIndexOf(">");
+          const firstopen=htmltemp.substring(index,bodyEndIndex).indexOf("<");
+          const firstclose=htmltemp.substring(index,bodyEndIndex).indexOf(">");
+
+          console.log("lastopen words----", lastopen);
+          console.log("lastclosed words----", lastclosed);
+          console.log("firstopen words----", firstopen);
+          console.log("firstclose words----", firstclose);
+
+          if(lastopen > lastclosed || firstopen > firstclose){
+            return match;
+          }
+
+          console.log("matched words----", match)
+
           return match.replace(
             new RegExp(`(?<![\\w</])(${trueTerms[i]})(?![\\w/>:=])`, "gi"),
+            // new RegExp(`(?<=[>])(\\b${trueTerms[i]}\\b)(?![^<]*<)`, "gi"),
+            // new RegExp(`(?<=^|>)[^<]*(?<![:=])(${trueTerms[i]})(?![^<]*<|[:=])`, "gi"),
+
             `<span style="${backgroundStyle}" >$1</span>`
             // `<span style="${backgroundStyle}" >$1</span>`
             // `<span style="${backgroundStyle}" pointer-events: none;>$1</span>`
@@ -355,7 +391,7 @@ export default function App() {
       //     return `${before}<span style="${backgroundStyle}">${term}</span>${after}`;
       //   }
       // );
-      
+
 
     }
 
@@ -829,7 +865,7 @@ export default function App() {
                 <div class="row">
                   <div class="q col-sm-6">
                     <h4>Query</h4>
-                    <Box queryterms={queryterms} brightColors = {brightColors} setbrightColors={setbrightColors} setcolorMap={setcolorMap} setqueryterms={setqueryterms} />
+                    <Box queryterms={queryterms} brightColors={brightColors} setbrightColors={setbrightColors} setcolorMap={setcolorMap} setqueryterms={setqueryterms} />
                   </div>
                   <div class="f col-sm-6">
                     <h4>File Upload</h4>

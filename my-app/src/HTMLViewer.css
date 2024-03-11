@@ -1,6 +1,7 @@
 .iframe-container {
   width: 100%; /* Adjust as needed */
-  height: 800px; /* Adjust as needed */
+  height: 900px; 
+  /* height: 300%; */
   border: 12px solid hsl(20deg 89.64% 49.22% / 69%);
   border-radius: 12px;
   overflow: scroll; /* Ensure iframe scales within the container */

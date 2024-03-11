@@ -59,7 +59,7 @@
 
 div#pdf-main-container {
   padding: 11px;
-  min-height: 500px;
+  /* min-height: 500px; */
 }
 
 .afterupload {
