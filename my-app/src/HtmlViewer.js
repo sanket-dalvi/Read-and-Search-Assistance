@@ -11,8 +11,7 @@ const HTMLViewer = ({ html }) => {
   const [scale, setScale] = useState(1.5); // Initial scale factor
 
   const [pageNum, setPageNum] = useState(1); // State to keep track of current page number
-
-
+ 
   const handleZoomIn = () => {
     setScale(scale + 0.1); // Increase scale factor by 0.1
   };
@@ -26,6 +25,8 @@ const HTMLViewer = ({ html }) => {
 
   useEffect(() => {
     setPageNum(1);
+
+   
   }, [html]); // Reset page number whenever the HTML changes
 
   const goToPrevPage = () => {

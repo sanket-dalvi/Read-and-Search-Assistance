@@ -334,38 +334,54 @@ export default function App() {
         }
       };
 
+      // const stylePattern = /<style[^>]*>.*?<\/style>/gs;
+
+      // // Match and replace the style attribute
+      // htmltemp = htmltemp.replace(stylePattern, (match) => {
+
+      //     // Remove or modify the style for #page-container here
+      //     return match.replace(/#page-container/g, '#mo-page-container');
+      // });
+
+      // const originalSubstring = "#page-container{bottom:0;right:0;overflow:auto}";
+      // const replacementSubstring = "#page-container{bottom:0;overflow:auto}";
+
+      // htmltemp = htmltemp.replace(originalSubstring, replacementSubstring);
+
+
+
       htmltemp = htmltemp.replace(
         new RegExp(`(?<![\\w</])(${trueTerms[i]})(?![\\w/>:=])`, "gi"),
-        
+
 
         // new RegExp(`(?<=^|>)[^<]*(?<![:=])(${trueTerms[i]})(?![^<]*<|[:=])`, "gi"),
 
 
 
-        (match, word,index) => {
+        (match, word, index) => {
 
-          const sentence = htmltemp.substring(index - 15, index+20);
+          const sentence = htmltemp.substring(index - 15, index + 20);
           console.log("Sentence:", sentence);
-          console.log("printing index",index);
+          console.log("printing index", index);
           const bodyStartIndex = htmltemp.indexOf('<body');
           const bodyEndIndex = htmltemp.indexOf('</body>');
 
-          if(bodyStartIndex > index || bodyEndIndex < index){
+          if (bodyStartIndex > index || bodyEndIndex < index) {
             return match;
           }
 
 
-          const lastopen = htmltemp.substring(bodyStartIndex,index).lastIndexOf("<");
-          const lastclosed= htmltemp.substring(bodyStartIndex,index).lastIndexOf(">");
-          const firstopen=htmltemp.substring(index,bodyEndIndex).indexOf("<");
-          const firstclose=htmltemp.substring(index,bodyEndIndex).indexOf(">");
+          const lastopen = htmltemp.substring(bodyStartIndex, index).lastIndexOf("<");
+          const lastclosed = htmltemp.substring(bodyStartIndex, index).lastIndexOf(">");
+          const firstopen = htmltemp.substring(index, bodyEndIndex).indexOf("<");
+          const firstclose = htmltemp.substring(index, bodyEndIndex).indexOf(">");
 
           console.log("lastopen words----", lastopen);
           console.log("lastclosed words----", lastclosed);
           console.log("firstopen words----", firstopen);
           console.log("firstclose words----", firstclose);
 
-          if(lastopen > lastclosed || firstopen > firstclose){
+          if (lastopen > lastclosed || firstopen > firstclose) {
             return match;
           }
 
@@ -433,6 +449,7 @@ export default function App() {
         .then((response) => response.text())
         .then((html) => {
           html = html.replace(/<span class="_ _\d+"><\/span>/g, "");
+        
           setHtmls(html);
         });
     } catch (error) {
@@ -820,7 +837,14 @@ export default function App() {
       const promises = fileNames.map(async (fn) => {
         fn = fn.replace("pdf", "html");
         const response = await axios.get(`${apiUrl}/api/getFile/${fn}`);
-        return { [fn]: response.data }; // Return an object with file name as key and file content as value
+        let hml=response.data;
+        const originalSubstring = "#page-container{bottom:0;right:0;overflow:auto}";
+        const replacementSubstring = "#page-container{bottom:0;overflow:auto}";
+      
+        hml = hml.replace(originalSubstring, replacementSubstring);
+      
+
+        return { [fn]: hml }; // Return an object with file name as key and file content as value
       });
 
       const filesData = await Promise.all(promises);
