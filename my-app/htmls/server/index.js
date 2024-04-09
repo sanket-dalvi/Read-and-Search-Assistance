@@ -8,9 +8,12 @@ const cors = require("cors");
 const app = express();
 
 const corsOptions = {
-  origin: 'http://sysrev2.cs.binghamton.edu:3001',
+  origin: 'http://sysrev2.cs.binghamton.edu/dart',
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
+
+
+const appname="dart"
 // const bodyParser = require('body-parser');
 
 
@@ -19,10 +22,12 @@ app.use(cors(corsOptions));
 
 // Serve the static build of your React app
 // Serve the static build of your React app
-app.use(express.static(path.join(__dirname, '../../build')));
+// app.use(express.static(path.join(__dirname, '../../build')));
+app.use(`/${appname}`, express.static(path.join(__dirname, '../../build')));
 
 
 
+console.log("listening to the node express app currently-----");
 
 
 // open api
@@ -39,7 +44,7 @@ app.use(express.static(path.join(__dirname, '../../build')));
 // const open = require('open');
 
 // Inside yo÷ur route handler
-app.post('/openapp', (req, res) => {
+app.post(`/${appname}/openapp`, (req, res) => {
   // Extract parameters from the request body
   const { param1, param2 } = req.body;
 
@@ -122,7 +127,8 @@ function getPdfFilePaths(folderPath) {
 
 // });
 
-app.post("/api/convert-pdf-to-html", (req, res) => {
+// app.post("/api/convert-pdf-to-html", (req, res) => {
+  app.post(`/${appname}/api/convert-pdf-to-html`, (req, res) => {
   console.log("Received a request to /api/convert-pdf-to-html");
   
   const { fileNames } = req.body;
@@ -291,7 +297,7 @@ const upload = multer({
   limits: { fileSize: 300000000 }, // 1MB
 }).array("myFile", 100);
 
-app.post("/api/upload", (req, res) => {
+app.post(`/${appname}/api/upload`, (req, res) => {
   console.log("hi its express server");
   console.log("react server url----  " + path.join(__dirname, "../../build"));
 
@@ -317,7 +323,10 @@ app.post("/api/upload", (req, res) => {
 
 
 
-app.get('/api/getFile/:fileName', (req, res) => {
+// app.get('/api/getFile/:fileName', (req, res) => {
+
+  app.get(`/${appname}/api/getFile/:fileName`, (req, res) => {
+
 
   console.log("react server url----  "+path.join(__dirname, 'my-app/build'));
   const fileName = req.params.fileName;
@@ -352,6 +361,12 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../../build', 'index.html'));
 });
 
-app.listen(3001, () => {
-  console.log("Server listening on port 3001");
+// app.listen(3002, () => {
+//   console.log("Server listening on port 3002");
+// });
+
+
+const port = process.env.PORT || 3002;
+app.listen(port, () => {
+    console.log(`Server listening on port ${port}`);
 });

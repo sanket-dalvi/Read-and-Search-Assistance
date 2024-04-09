@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./App.css";
+// import "./App.css";
 import HtmlViewer from "./HtmlViewer";
 import CheckboxList from "./CheckboxList";
 import FileUpload from "./FileUpload";
@@ -10,10 +10,16 @@ import Box from "./Box";
 import pdfjsLib from "pdfjs-dist";
 import axios from "axios";
 import Loader from "./Loader";
+import styles from './stylenew.css';
 
 import { useLocation } from 'react-router-dom';
 import DocumentList from "./DocumentList";
+import AddTerm from "./AddTerm";
+import TextInput from "./textinput";
 
+import FileInput from "./fileselector";
+
+import DocRankUI from "./DocRankUI";
 
 
 const apiUrl = process.env.REACT_APP_API_URL;
@@ -46,6 +52,138 @@ export default function App() {
   const [allHtmls, setAllHtmls] = useState({});
   const [currShowing, setCurrShowing] = useState("");
 
+  const [oninit, setonint] = useState(true);
+  const [onranked, setonranked] = useState(false);
+
+  const [newtermsupdate, setnewtermsupdate] = useState(false);
+  const [filesadded, setfilesadded] = useState(false);
+
+
+
+
+  const [showinitbox, setshowinitbox] = useState(true);
+
+  const [showtextinput, setshowtextinput] = useState(false)
+  const [showfileselector, setshowfileselector] = useState(false);
+  const [docrankscreen, setdocrankscreen] = useState(false);
+  const [showrankorpdf, setshowrankorpdf] = useState(true);
+
+  const [enablestartRanking, setenablestartRanking] = useState(false);
+
+  const openinitscreen = () => {
+    setonint(true);
+    setonranked(false);
+    setshowinitbox(true);
+    setshowtextinput(false);
+    setshowfileselector(false);
+    setdocrankscreen(false);
+    setshowrankorpdf(false);
+  }
+
+  const opentermeditor = () => {
+    setshowinitbox(false);
+    setshowtextinput(true);
+    setshowfileselector(false);
+    setdocrankscreen(false);
+    setshowrankorpdf(false);
+  }
+  const openfileuploader = () => {
+    setshowinitbox(false);
+    setshowtextinput(false);
+    setshowfileselector(true);
+    setdocrankscreen(false);
+    setshowrankorpdf(false);
+  }
+  const openrankeddocs = () => {
+    setonint(false);
+    setonranked(true);
+    setshowinitbox(false);
+    setshowtextinput(false);
+    setshowfileselector(false);
+    setdocrankscreen(true);
+    setshowrankorpdf(true);
+  }
+  const openshowpdffile = () => {
+    setonint(false);
+    setonranked(false);
+    setshowinitbox(false);
+    setshowtextinput(false);
+    setshowfileselector(false);
+    setdocrankscreen(true);
+    setshowrankorpdf(false);
+  }
+
+  const reloadPage = () => {
+    window.location.reload(true); // true indicates a hard reload
+  };
+
+  useEffect(() => {
+    console.log("currShowing");
+    console.log(currShowing);
+  }, [currShowing])
+
+  useEffect(() => {
+    console.log("fileNames");
+    console.log(fileNames);
+
+
+    if (queryterms.length > 0 && filesadded) {
+      setenablestartRanking(true);
+    }
+
+  }, [querymap, queryterms, fileNames, filesadded])
+
+
+
+
+  // const [file, setFile] = useState(null);
+
+  // const handleChange = (event) => {
+  //   setFile(event.target.files[0]);
+  // }
+
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+
+  //   const reader = new FileReader();
+
+  //   reader.onload = async (event) => {
+  //     const fileData = event.target.result;
+  //     const fileDataString = fileData.toString();
+  //     console.log(fileDataString)
+
+  //     const path = "./public/dataaaaaaaaaaaaaaaaaa.txt";
+  //     try {
+  //       localStorage.setItem(path, fileDataString);
+  //       console.log("Data written to localStorage!");
+  //     } catch (e) {
+  //       console.error("Error writing data to localStorage:", e);
+  //     }
+  //   };
+
+  //   reader.readAsText(file);
+
+  //   setFile(null);
+  // };
+
+
+
+  const closefileinput = () => {
+    setfilesadded(true);
+
+    oninit ? openinitscreen() :
+      onranked ? openrankeddocs() : openshowpdffile();
+
+
+  }
+
+
+  const movetorankscreen = () => {
+    setshowinitbox(false);
+    setshowfileselector(false);
+    setshowtextinput(false);
+    setdocrankscreen(true);
+  }
   const generateUniqueHighlightColors = () => {
     const result = [];
     const hues = [0, 45, 90, 135, 180, 225, 270, 315]; // More diverse hues
@@ -98,6 +236,7 @@ export default function App() {
   const [param2, setParam2] = useState('');
 
   useEffect(() => {
+
     const queryParams = new URLSearchParams(window.location.search);
     const param1Value = queryParams.get('param1');
     const param2Value = queryParams.get('param2');
@@ -114,7 +253,7 @@ export default function App() {
 
 
   const openReactAppInNewWindow = () => {
-    const url = 'http://sysrev2.cs.binghamton.edu:3001/openapp';
+    const url = 'http://sysrev2.cs.binghamton.edu/dart';
     const jsonString = JSON.stringify([{
       "resultId": 1971,
       "document": {
@@ -181,7 +320,7 @@ export default function App() {
     {
       "resultId": 1974,
       "document": {
-        "title": "Brain Distributional Reinforcement Learning in the.",
+        "title": "Brain Distributional Learning in the Reinforcement.",
         "articleDate": "2020 Dec",
         "authorNames": [
           "Lowet AS",
@@ -449,7 +588,7 @@ export default function App() {
         .then((response) => response.text())
         .then((html) => {
           html = html.replace(/<span class="_ _\d+"><\/span>/g, "");
-        
+
           setHtmls(html);
         });
     } catch (error) {
@@ -495,6 +634,13 @@ export default function App() {
 
 
   const startconversion = async () => {
+
+    if (!enablestartRanking) {
+      alert("Please upload documents and add search terms!");
+      return;
+    }
+
+    setnewtermsupdate(false);
     setIsLoading(true);
     await convertPDFToHTML()
       .then((html) => {
@@ -511,6 +657,7 @@ export default function App() {
         // getAllHTML();
         handleFetchFile();
         setIsLoading(false);
+        openrankeddocs();
       })
       .catch((error) => {
         setIsLoading(false);
@@ -520,7 +667,7 @@ export default function App() {
   function rerankjacc() {
     setIsLoading(true);
     const resultsdemo = rankTextsjacc(queryterms, fileText);
-    // openReactAppInNewWindow()
+    openReactAppInNewWindow()
     console.log(queryterms);
     console.log(fileText);
     console.log("xxxxxx the results doc" + JSON.stringify(resultsdemo));
@@ -837,12 +984,12 @@ export default function App() {
       const promises = fileNames.map(async (fn) => {
         fn = fn.replace("pdf", "html");
         const response = await axios.get(`${apiUrl}/api/getFile/${fn}`);
-        let hml=response.data;
+        let hml = response.data;
         const originalSubstring = "#page-container{bottom:0;right:0;overflow:auto}";
         const replacementSubstring = "#page-container{bottom:0;overflow:auto}";
-      
+
         hml = hml.replace(originalSubstring, replacementSubstring);
-      
+
 
         return { [fn]: hml }; // Return an object with file name as key and file content as value
       });
@@ -863,10 +1010,13 @@ export default function App() {
 
 
   function showranks() {
+    setshowrankorpdf(true)
     setshowpage(false);
   }
   function showthispdf(fnamme) {
     setshowpage(true);
+    openshowpdffile();
+    // setshowrankorpdf(false);
     fnamme = fnamme.replace("pdf", "html");
     setCurrShowing(fnamme);
     handleFetchFile(fnamme);
@@ -874,7 +1024,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <div className="container">
+      {/* <div className="container">
         <div className="first-row">
           <div className="header">
             <h2>PaperRank</h2>
@@ -918,9 +1068,7 @@ export default function App() {
                       <button onClick={rerankjacc}>Start jaccard ranking</button>
                     </div>
 
-                    {/* <div class="terms col-sm-2"> 
-                  <button onClick={rerankbm25}>Start bm25 ranking</button>
-                </div> */}
+                 
 
                     {documents.length > 0 && <div class="terms col-sm-2">
                       <button onClick={() => { setshowingdocs() }}>Show docs</button>
@@ -941,6 +1089,7 @@ export default function App() {
 
           </div>
         </div>
+
         <div className="second-row">
           <div className="afterupload">
             <div class="p row">
@@ -997,9 +1146,204 @@ export default function App() {
           </div>
 
         </div>
-      </div>
+      </div> */}
       {/* <div class="fotter">
       </div> */}
+
+      {/* new ui */}
+
+      <div className="app-container">
+        <Loader isLoading={isLoading} />
+
+        <div className="mac-book-pro141-container">
+          <div className="mac-book-pro141-mac-book-pro141">
+            <div className="mac-book-pro141-frame1">
+             
+              <span className="mac-book-pro141-text">
+                <span>  <span className="appnametext">DART</span> : Document Analysis and Research Tool</span>
+              </span>
+           
+              {/* <img
+                src="./assets/images/external/ictwotonereadmore2380-sg1m.svg"
+                alt="ictwotonereadmore2380"
+                className="mac-book-pro141-ictwotonereadmore"
+              /> */}
+              <div className="mac-book-pro141-iconparkoutlinemoreapp">
+                <div className="mac-book-pro141-group">
+                  {/* <img
+                    src="./assets/images/external/vector2392-vwv.svg"
+                    alt="Vector2392"
+                    className="mac-book-pro141-vector"
+                  /> */}
+                  {/* <img
+                    src="/assets/images/external/vector2393-328f.svg"
+                    alt="Vector2393"
+                    className="mac-book-pro141-vector1"
+                  /> */}
+
+                </div>
+              </div>
+            </div>
+
+
+            <div className="bodycontainer1">
+
+            {showDocs ? (
+                  <div className="showdocsdiv">
+                    <div id="showdocdivs">
+                      <DocumentList fileNames={fileNames} handleCheckboxChange={() => { console.log("hc---") }} documents={documents} />
+
+                    </div>
+                  </div>
+                ) : ''}
+
+              {showinitbox && !showtextinput && !showfileselector && (documents.length>0 || fileNames.length>0) && <div class="filelistbutdiv">
+                              <button className="filelistbut" onClick={() => { setshowdocs(!showDocs) }}>{!showDocs ? "Open Files List" : "Close File List"}</button>
+                            </div> 
+              }
+
+              {showinitbox && !showtextinput && !showfileselector ?
+                // {true ?
+
+
+                <div className="positioningrelative">
+
+                
+                  <div className="mac-book-pro141-initcomp">
+
+
+
+                    <div className="mac-book-pro141-searchboxmain">
+
+                      <button onClick={openfileuploader} className="mac-book-pro141-rectangle22">
+                        <div className="mac-book-pro141-materialsymbolsupload"></div>
+
+                        <div className="mac-book-pro141-text02">
+                          <span>UPLOAD PAPERS</span>
+                        </div>
+                      </button>
+
+
+
+
+                    </div>
+
+
+
+
+
+                    <div className="mac-book-pro141-searchboxmain2">
+
+                      <button onClick={opentermeditor} className="mac-book-pro141-rectangle22">
+                        <div className="mac-book-pro141-materialsymbolsupload"></div>
+
+                        <div className="mac-book-pro141-text02">
+                          <span>ADD SEARCH TERMS</span>
+                        </div>
+                      </button>
+                    </div>
+
+
+                    <button onClick={startconversion} className="mac-book-pro141-startbutton">
+
+                      <div className="mac-book-pro141-text16">
+                        <span>Start Ranking</span>
+                      </div>
+
+                    </button>
+
+
+
+
+                  </div>
+                </div> : ''}
+
+
+              {showfileselector ?
+                <FileInput fileNames={fileNames} setIsLoading={setIsLoading} setFileText={setFileText} setFileNames={setFileNames} closefileinput={closefileinput} />
+                : ''}
+
+              {showtextinput ?
+                <TextInput setnewtermsupdate={setnewtermsupdate} queryterms={queryterms} brightColors={brightColors} setbrightColors={setbrightColors} setcolorMap={setcolorMap} setqueryterms={setqueryterms} closetextinput={closefileinput} />
+                : ''}
+
+              {docrankscreen ? <>
+
+                <div className="menubuttons">
+                  <div class="terms cs1"></div>
+                  <div class="terms cs2">
+                    {
+                      newtermsupdate ? <button className="menubutton2-alert" onClick={startconversion}>Update Ranks</button>
+                        : <button className="menubutton2" onClick={startconversion}>Re-Rank Documents</button>
+
+                    }
+                  </div>
+                  <div class="terms cs2">
+                    <button className="menubutton2" onClick={opentermeditor}>EDIT TERMS</button>
+                  </div>
+
+                  {/* <div class="terms cs2">
+                    <button className="menubutton2" onClick={opentermeditor}>Uploaded Files</button>
+                  </div> */}
+
+                 {/* {documents.length>0  &&  */}
+                 <div class="terms cs2">
+                    <button className="menubutton2" onClick={() => { setshowdocs(!showDocs) }}>{!showDocs ? "Open Files List":"Close File List"}</button>
+                  </div>
+                   {/* } */}
+
+                  {/* <div class="terms cs2">
+                    <button className="menubutton2" onClick={rerankjacc}>test new tab</button>
+                  </div> */}
+
+
+                  <div class="terms cs2">
+                    <button className="menubuttonreset" onClick={reloadPage}>Start Again</button>
+                  </div>
+
+                  {/* {documents.length > 0 && <div class="terms col-sm-2">
+                    <button onClick={() => { fileuploader }}>Show docs</button>
+                  </div>} */}
+
+                  {!showrankorpdf &&
+                    <div class="terms cs2">
+                      <button className="menubutton2" onClick={openrankeddocs}>SHOW RANKS</button>
+                    </div>}
+                  <div class="terms cs1"></div>
+
+                </div>
+
+               
+                {showrankorpdf ?
+
+                  <DocRankUI results={docranks} showthispdf={showthispdf} />
+
+                  : <><div id="pdf-main-container">
+
+                    <HtmlViewer html={htmls} />
+                  </div>
+                    <div class="terms col-sm-3">
+
+                      <h1>Terms</h1>
+                      <CheckboxList
+                        currShowing={currShowing}
+                        results={docranks}
+                        terms={querymap}
+                        colorMap={colorMap}
+                        checkedTerms={checkedTerms}
+                        setCheckedTerms={setCheckedTerms}
+                        onCheckedTerms={handleCheckedTerms}
+                      />
+                    </div></>
+                }
+              </>
+                : ''}
+            </div>
+
+            {/* component 1 upload and input screen ---- */}
+          </div>
+        </div>
+      </div>
     </Provider>
   );
 }

@@ -1,0 +1,91 @@
+.div {
+    box-shadow: -4px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    text-transform: uppercase;
+    justify-content: center;
+    width: 700px; /* fixed width */
+    height: 300px; /* fixed height */
+  }
+  .div-2 {
+    border-radius: 25px;
+    background-color: rgba(120, 154, 159, 0.2);
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    padding: 59px 60px;
+  }
+  @media (max-width: 991px) {
+    .div-2 {
+      max-width: 100%;
+      padding: 0 20px;
+    }
+  }
+  .div-3 {
+    display: flex;
+    width: 100%;
+    max-width: 737px;
+    flex-direction: column;
+  }
+  @media (max-width: 991px) {
+    .div-3 {
+      max-width: 100%;
+    }
+  }
+  .div-4 {
+    border-radius: 20px;
+    background-color: rgba(252, 252, 252, 1);
+    border-color: rgba(120, 154, 159, 1);
+    border-style: solid;
+    border-width: 5px;
+    display: flex;
+    gap: 20px;
+    font-size: 32px;
+    color: #789a9f;
+    font-weight: 700;
+    white-space: nowrap;
+    padding: 9px 63px;
+  }
+  @media (max-width: 991px) {
+    .div-4 {
+      max-width: 100%;
+      flex-wrap: wrap;
+      white-space: initial;
+      padding: 0 20px;
+    }
+  }
+  .div-5 {
+    text-overflow: ellipsis;
+    font-family: ITF Devanagari, -apple-system, Roboto, Helvetica,
+      sans-serif;
+    align-self: end;
+    margin-top: 29px;
+    flex-grow: 1;
+    flex-basis: auto;
+  }
+  @media (max-width: 991px) {
+    .div-5 {
+      white-space: initial;
+    }
+  }
+  .div-6 {
+    background-color: rgba(144, 144, 144, 0);
+    width: 90px;
+    height: 64px;
+  }
+  .div-7 {
+    color: rgba(15, 15, 15, 0.72);
+    -webkit-text-stroke-width: 1;
+    -webkit-text-stroke-color: rgba(120, 154, 159, 0);
+    border-color: rgba(120, 154, 159, 0);
+    border-style: solid;
+    border-width: 1px;
+    align-self: center;
+    margin-top: 15px;
+    width: 482px;
+    font: 500 16px ITF Devanagari, -apple-system, Roboto, Helvetica,
+      sans-serif;
+  }
+  
