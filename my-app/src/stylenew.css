@@ -569,7 +569,8 @@
 
 .mac-book-pro141-text02 {
   color: #789a9f;
-  font-family: ITF Devanagari;
+
+
   font-stretch: normal;
   font-style: Bold;
   height: auto;
@@ -641,7 +642,7 @@
 .mac-book-pro141-text04 {
 
 
-  font-family: ITF Devanagari;
+
   font-stretch: normal;
   height: auto;
   line-height: normal;
@@ -711,7 +712,7 @@
   font-size: 32px;
   font-style: Bold;
   text-align: center;
-  font-family: ITF Devanagari;
+
   font-weight: 700;
   line-height: normal;
   font-stretch: normal;
@@ -728,7 +729,7 @@
   font-size: 16px;
   font-style: Medium;
   text-align: center;
-  font-family: ITF Devanagari;
+
   font-weight: 500;
   line-height: normal;
   font-stretch: normal;
@@ -765,7 +766,6 @@
 
 .mac-book-pro141-text16 {
   color: #ffffff;
-  font-family: ITF Devanagari;
   /* font-size: 2.5vh;
   font-stretch: normal;
   font-style: Bold;
@@ -1098,11 +1098,17 @@
 }
 
 .filelistbutdiv {
-  height: 5%;
+  height: 7%;
+    left: 85%;
+    position: absolute;
+    top: 2%;
+    width: 10%;
+
+  /* height: 5%;
   left: 2%;
   position: absolute;
   top: 2%;
-  width: 10%;
+  width: 10%; */
 }
 
 .filelistbut{

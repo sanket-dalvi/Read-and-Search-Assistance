@@ -78,9 +78,13 @@ function Fnames({ fname }) {
   );
 }
 
-export default function DocumentList({ fileNames, documents, handleCheckboxChange }) {
+export default function DocumentList({ fileNames, documents, handleCheckboxChange,setshowdocs }) {
   return (
     <div className="search-results-container">
+
+      <div class="filelistbutdiv">
+        <button className="filelistbut" onClick={() => { setshowdocs(false) }}>Close</button>
+      </div> 
      
       {  (fileNames.length==0 && documents.length == 0)  && <div className="sciresfilessec">
         <div className="sciresfiles">No Files Present</div>

@@ -566,10 +566,22 @@
 
   .filetext{
 
-    font-size: 12px;
+    font-size: 15px;
+    left: 27%;
+    position: absolute;
+    top: 26%;
+
+
+
+    /* left: 21%;
+    position: absolute;
+    font-size: 15px;
+    top: 35%; */
+
+    /* font-size: 12px;
     left: 29%;
     position: absolute;
-    top: 44%;
+    top: 44%; */
 
 
     /* left: 29%;

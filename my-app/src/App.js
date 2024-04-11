@@ -1191,7 +1191,7 @@ export default function App() {
             {showDocs ? (
                   <div className="showdocsdiv">
                     <div id="showdocdivs">
-                      <DocumentList fileNames={fileNames} handleCheckboxChange={() => { console.log("hc---") }} documents={documents} />
+                      <DocumentList setshowdocs={setshowdocs} fileNames={fileNames} handleCheckboxChange={() => { console.log("hc---") }} documents={documents} />
 
                     </div>
                   </div>
