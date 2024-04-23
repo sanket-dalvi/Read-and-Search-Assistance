@@ -1301,6 +1301,11 @@ export default function App() {
                     <button className="menubuttonreset" onClick={reloadPage}>Start Again</button>
                   </div>
 
+                  <div class="terms cs2">
+                    <button className="menubuttonreset"  onClick={openfileuploader} >Upload docs</button>
+                  </div>
+
+                 
                   {/* {documents.length > 0 && <div class="terms col-sm-2">
                     <button onClick={() => { fileuploader }}>Show docs</button>
                   </div>} */}
