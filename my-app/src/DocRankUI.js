@@ -27,7 +27,9 @@ function DocRankUI({ results,showthispdf }) {
     return (
         <div className="mac-book-pro142-group9">
             
-                <SearchResults results={results} showthispdf={showthispdf} />
+               {results.length>0 &&
+               <SearchResults results={results} showthispdf={showthispdf} />
+               } 
         
 
             {/* <div className="mac-book-pro142-donebutton" onClick={() => closefileinput()}>

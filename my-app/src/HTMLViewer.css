@@ -2,7 +2,7 @@
   width: 100%;
   height: 100%; 
   /* height: 300%; */
-  border: 12px solid rgb(119 154 159 / 66%);
+  border: 12px solid #22732c;
   border-radius: 12px;
   overflow: scroll; /* Ensure iframe scales within the container */
 }

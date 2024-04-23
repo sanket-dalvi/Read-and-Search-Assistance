@@ -45,7 +45,7 @@ function CheckboxList({ results,currShowing, terms, checkedTerms, setCheckedTerm
   return (
     <form>
       {Object.keys(terms).map((term) => (
-        <div key={term}>
+        <div style={{'font-size':'large'}} key={term}>
           <label>
             <input
               type="checkbox"

@@ -10,9 +10,9 @@ import Box from "./Box";
 import pdfjsLib from "pdfjs-dist";
 import axios from "axios";
 import Loader from "./Loader";
-import styles from './stylenew.css';
+import styles from "./stylenew.css";
 
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 import DocumentList from "./DocumentList";
 import AddTerm from "./AddTerm";
 import TextInput from "./textinput";
@@ -21,11 +21,21 @@ import FileInput from "./fileselector";
 
 import DocRankUI from "./DocRankUI";
 
+import HeaderPage from "./headercomp";
+import BodyPage from "./bodycomp";
+import FooterPage from "./footercomp";
+
+
+
+import "./assets/scss/common.scss";
+import "./assets/scss/style.scss";
+
+import { Card, Button, CardTitle, CardText } from "reactstrap";
+
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
 export default function App() {
-
   const [pdf, setPdf] = React.useState("");
   const [width, setWidth] = React.useState(0);
   const [images, setImages] = React.useState([]);
@@ -58,17 +68,16 @@ export default function App() {
   const [newtermsupdate, setnewtermsupdate] = useState(false);
   const [filesadded, setfilesadded] = useState(false);
 
-
-
-
   const [showinitbox, setshowinitbox] = useState(true);
 
-  const [showtextinput, setshowtextinput] = useState(false)
+  const [showtextinput, setshowtextinput] = useState(false);
   const [showfileselector, setshowfileselector] = useState(false);
-  const [docrankscreen, setdocrankscreen] = useState(false);
+  const [docrankscreen, setdocrankscreen] = useState(true);
   const [showrankorpdf, setshowrankorpdf] = useState(true);
 
   const [enablestartRanking, setenablestartRanking] = useState(false);
+
+  const [isonLanding, setisonLanding] = useState(true);
 
   const openinitscreen = () => {
     setonint(true);
@@ -78,22 +87,22 @@ export default function App() {
     setshowfileselector(false);
     setdocrankscreen(false);
     setshowrankorpdf(false);
-  }
+  };
 
   const opentermeditor = () => {
-    setshowinitbox(false);
+    // setshowinitbox(false);
     setshowtextinput(true);
-    setshowfileselector(false);
-    setdocrankscreen(false);
-    setshowrankorpdf(false);
-  }
+    // setshowfileselector(false);
+    // setdocrankscreen(false);
+    // setshowrankorpdf(false);
+  };
   const openfileuploader = () => {
     setshowinitbox(false);
     setshowtextinput(false);
     setshowfileselector(true);
-    setdocrankscreen(false);
-    setshowrankorpdf(false);
-  }
+    setdocrankscreen(true);
+    setshowrankorpdf(true);
+  };
   const openrankeddocs = () => {
     setonint(false);
     setonranked(true);
@@ -102,39 +111,29 @@ export default function App() {
     setshowfileselector(false);
     setdocrankscreen(true);
     setshowrankorpdf(true);
-  }
+  };
   const openshowpdffile = () => {
-    setonint(false);
-    setonranked(false);
-    setshowinitbox(false);
-    setshowtextinput(false);
-    setshowfileselector(false);
+    // setonint(false);
+    // setonranked(false);
+    // setshowinitbox(false);
+    // setshowtextinput(false);
+    // setshowfileselector(false);
     setdocrankscreen(true);
     setshowrankorpdf(false);
-  }
+  };
 
   const reloadPage = () => {
     window.location.reload(true); // true indicates a hard reload
   };
 
   useEffect(() => {
-    console.log("currShowing");
-    console.log(currShowing);
-  }, [currShowing])
-
-  useEffect(() => {
     console.log("fileNames");
     console.log(fileNames);
-
 
     if (queryterms.length > 0 && filesadded) {
       setenablestartRanking(true);
     }
-
-  }, [querymap, queryterms, fileNames, filesadded])
-
-
-
+  }, [querymap, queryterms, fileNames, filesadded]);
 
   // const [file, setFile] = useState(null);
 
@@ -166,24 +165,17 @@ export default function App() {
   //   setFile(null);
   // };
 
-
-
   const closefileinput = () => {
     setfilesadded(true);
-
-    oninit ? openinitscreen() :
-      onranked ? openrankeddocs() : openshowpdffile();
-
-
-  }
-
+    openrankeddocs();
+  };
 
   const movetorankscreen = () => {
     setshowinitbox(false);
     setshowfileselector(false);
     setshowtextinput(false);
     setdocrankscreen(true);
-  }
+  };
   const generateUniqueHighlightColors = () => {
     const result = [];
     const hues = [0, 45, 90, 135, 180, 225, 270, 315]; // More diverse hues
@@ -214,153 +206,139 @@ export default function App() {
   //   return result;
   // };
 
-
   // const brightColors = generateUniqueHighlightColors();
 
-  const [brightColors, setbrightColors] = useState(generateUniqueHighlightColors());
+  const [brightColors, setbrightColors] = useState(
+    generateUniqueHighlightColors()
+  );
 
   const colorObject = {};
 
-  brightColors.forEach(color => {
+  brightColors.forEach((color) => {
     colorObject[color] = false;
   });
 
+  const [documents, setDocuments] = useState([]);
 
-
-  const [documents, setDocuments] = useState(
-    []
-  );
-
-
-  const [param1, setParam1] = useState('');
-  const [param2, setParam2] = useState('');
+  const [param1, setParam1] = useState("");
+  const [param2, setParam2] = useState("");
 
   useEffect(() => {
-
     const queryParams = new URLSearchParams(window.location.search);
-    const param1Value = queryParams.get('param1');
-    const param2Value = queryParams.get('param2');
+    const param1Value = queryParams.get("param1");
+    const param2Value = queryParams.get("param2");
 
-    console.log("---------onsole.log(param1Value)")
-    console.log(param1Value)
-    console.log("---------onsole.log(param1Value)")
-    console.log(param2Value)
+    console.log("---------onsole.log(param1Value)");
+    console.log(param1Value);
+    console.log("---------onsole.log(param1Value)");
+    console.log(param2Value);
     setParam1(param1Value);
     setParam2(param2Value);
-
-
   }, []);
 
-
   const openReactAppInNewWindow = () => {
-    const url = 'http://sysrev2.cs.binghamton.edu/dart';
-    const jsonString = JSON.stringify([{
-      "resultId": 1971,
-      "document": {
-        "title": "Distributional Reinforcement Learning in the Brain.",
-        "articleDate": "2020 Dec",
-        "authorNames": [
-          "Lowet AS",
-          "Zheng Q",
-          "Matias S",
-          "Drugowitsch J",
-          "Uchida N"
-        ],
-        "affiliationCountry": null,
-        "publicationName": "distributional reinforcement learning in the brain",
-        "issn": "0166-2236",
-        "affiliationNames": null,
-        "url": "https://pubmed.ncbi.nlm.nih.gov/33092893"
+    const url = "http://sysrev2.cs.binghamton.edu/dart";
+    const jsonString = JSON.stringify([
+      {
+        resultId: 1971,
+        document: {
+          title: "Distributional Reinforcement Learning in the Brain.",
+          articleDate: "2020 Dec",
+          authorNames: [
+            "Lowet AS",
+            "Zheng Q",
+            "Matias S",
+            "Drugowitsch J",
+            "Uchida N",
+          ],
+          affiliationCountry: null,
+          publicationName: "distributional reinforcement learning in the brain",
+          issn: "0166-2236",
+          affiliationNames: null,
+          url: "https://pubmed.ncbi.nlm.nih.gov/33092893",
+        },
+        priority: 0,
+        datasource: "PUBMED",
       },
-      "priority": 0,
-      "datasource": "PUBMED"
-    },
-    {
-      "resultId": 1972,
-      "document": {
-        "title": "Reinforcement Distributional Learning in the Brain.",
-        "articleDate": "2020 Dec",
-        "authorNames": [
-          "Lowet AS",
-          "Zheng Q",
-          "Matias S",
-          "Drugowitsch J",
-          "Uchida N"
-        ],
-        "affiliationCountry": null,
-        "publicationName": "distributional reinforcement learning in the brain",
-        "issn": "0166-2236",
-        "affiliationNames": null,
-        "url": "https://pubmed.ncbi.nlm.nih.gov/33092893"
+      {
+        resultId: 1972,
+        document: {
+          title: "Reinforcement Distributional Learning in the Brain.",
+          articleDate: "2020 Dec",
+          authorNames: [
+            "Lowet AS",
+            "Zheng Q",
+            "Matias S",
+            "Drugowitsch J",
+            "Uchida N",
+          ],
+          affiliationCountry: null,
+          publicationName: "distributional reinforcement learning in the brain",
+          issn: "0166-2236",
+          affiliationNames: null,
+          url: "https://pubmed.ncbi.nlm.nih.gov/33092893",
+        },
+        priority: 0,
+        datasource: "PUBMED",
       },
-      "priority": 0,
-      "datasource": "PUBMED"
-    },
-    {
-      "resultId": 1973,
-      "document": {
-        "title": "Learning Distributional Reinforcement in the Brain.",
-        "articleDate": "2020 Dec",
-        "authorNames": [
-          "Lowet AS",
-          "Zheng Q",
-          "Matias S",
-          "Drugowitsch J",
-          "Uchida N"
-        ],
-        "affiliationCountry": null,
-        "publicationName": "distributional reinforcement learning in the brain",
-        "issn": "0166-2236",
-        "affiliationNames": null,
-        "url": "https://pubmed.ncbi.nlm.nih.gov/33092893"
+      {
+        resultId: 1973,
+        document: {
+          title: "Learning Distributional Reinforcement in the Brain.",
+          articleDate: "2020 Dec",
+          authorNames: [
+            "Lowet AS",
+            "Zheng Q",
+            "Matias S",
+            "Drugowitsch J",
+            "Uchida N",
+          ],
+          affiliationCountry: null,
+          publicationName: "distributional reinforcement learning in the brain",
+          issn: "0166-2236",
+          affiliationNames: null,
+          url: "https://pubmed.ncbi.nlm.nih.gov/33092893",
+        },
+        priority: 0,
+        datasource: "PUBMED",
       },
-      "priority": 0,
-      "datasource": "PUBMED"
-    },
-    {
-      "resultId": 1974,
-      "document": {
-        "title": "Brain Distributional Learning in the Reinforcement.",
-        "articleDate": "2020 Dec",
-        "authorNames": [
-          "Lowet AS",
-          "Zheng Q",
-          "Matias S",
-          "Drugowitsch J",
-          "Uchida N"
-        ],
-        "affiliationCountry": null,
-        "publicationName": "distributional reinforcement learning in the brain",
-        "issn": "0166-2236",
-        "affiliationNames": null,
-        "url": "https://pubmed.ncbi.nlm.nih.gov/33092893"
+      {
+        resultId: 1974,
+        document: {
+          title: "Brain Distributional Learning in the Reinforcement.",
+          articleDate: "2020 Dec",
+          authorNames: [
+            "Lowet AS",
+            "Zheng Q",
+            "Matias S",
+            "Drugowitsch J",
+            "Uchida N",
+          ],
+          affiliationCountry: null,
+          publicationName: "distributional reinforcement learning in the brain",
+          issn: "0166-2236",
+          affiliationNames: null,
+          url: "https://pubmed.ncbi.nlm.nih.gov/33092893",
+        },
+        priority: 0,
+        datasource: "PUBMED",
       },
-      "priority": 0,
-      "datasource": "PUBMED"
-    }]
-
-
-
-
-
-    );
+    ]);
     const queryParams = `json=${encodeURIComponent(jsonString)}`;
     const finalUrl = `${url}?${queryParams}`;
-    const newWindow = window.open(finalUrl, '_blank', 'width=800,height=600');
+    const newWindow = window.open(finalUrl, "_blank", "width=800,height=600");
 
     if (newWindow) {
       // Optional: Add any additional logic if needed, such as handling popup blockers
     } else {
       // Handle case where the new window could not be opened, e.g., due to popup blockers
-      console.error('Failed to open new window');
+      console.error("Failed to open new window");
     }
   };
-
 
   const [htmls, setHtmls] = React.useState("");
 
   const [checkedTerms, setCheckedTerms] = useState({});
-
 
   const onMount = async () => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -372,23 +350,20 @@ export default function App() {
       try {
         const jsonData = JSON.parse(decodeURIComponent(jsonDataParam));
 
-        setDocuments(jsonData)
-        console.log('Received JSON data:', jsonData);
+        setDocuments(jsonData);
+        console.log("Received JSON data:", jsonData);
         // Continue with your logic to process the received JSON data
       } catch (error) {
-        console.error('Error parsing JSON data:', error);
+        console.error("Error parsing JSON data:", error);
       }
     }
 
-
     console.log("data in api", jsonDataParam);
-
   };
 
   const downloadPdfFromUrl = async (pdfUrl) => {
     try {
-
-      console.log("downloading" + pdfUrl)
+      console.log("downloading" + pdfUrl);
       // const response = await axios.get(pdfUrl, { responseType: "arraybuffer" });
       // const pdfData = response.data;
       // // Here, you can save the PDF data or perform any necessary processing.
@@ -399,11 +374,9 @@ export default function App() {
     }
   };
 
-
   useEffect(() => {
     onMount();
   }, []); // Call onMount when the component mounts
-
 
   const handleCheckedTerms = (checkedTerms) => {
     console.log("Checked terms:", checkedTerms);
@@ -422,9 +395,6 @@ export default function App() {
 
     // for (let i = 0; i < falseTerms.length; i++) {
     //   const backgroundStyle = `background-color: white;`;
-
-
-
 
     //   htmltemp = htmltemp.replace(
     //     new RegExp(falseTerms[i], "gi"),
@@ -447,7 +417,10 @@ export default function App() {
 
       const re = new RegExp(`>${trueTerms[i]}<`, "gi");
       htmltemp = htmltemp.replace(re, (match) => {
-        return match.replace(/<span name = "highlightedtextdebug" style="[^"]*">(.*?)<\/span>/gi, "$1");
+        return match.replace(
+          /<span name = "highlightedtextdebug" style="[^"]*">(.*?)<\/span>/gi,
+          "$1"
+        );
       });
 
       // htmltemp = htmltemp.replace(
@@ -460,8 +433,7 @@ export default function App() {
       //   }
       // );
 
-      const iframe = document.getElementById('viewer-iframe');
-
+      const iframe = document.getElementById("viewer-iframe");
 
       iframe.contentWindow.handleClick = function (event, term) {
         event.preventDefault(); // Prevent default behavior of clicking on the span tag
@@ -487,33 +459,34 @@ export default function App() {
 
       // htmltemp = htmltemp.replace(originalSubstring, replacementSubstring);
 
-
-
       htmltemp = htmltemp.replace(
         new RegExp(`(?<![\\w</])(${trueTerms[i]})(?![\\w/>:=])`, "gi"),
 
-
         // new RegExp(`(?<=^|>)[^<]*(?<![:=])(${trueTerms[i]})(?![^<]*<|[:=])`, "gi"),
 
-
-
         (match, word, index) => {
-
           const sentence = htmltemp.substring(index - 15, index + 20);
           console.log("Sentence:", sentence);
           console.log("printing index", index);
-          const bodyStartIndex = htmltemp.indexOf('<body');
-          const bodyEndIndex = htmltemp.indexOf('</body>');
+          const bodyStartIndex = htmltemp.indexOf("<body");
+          const bodyEndIndex = htmltemp.indexOf("</body>");
 
           if (bodyStartIndex > index || bodyEndIndex < index) {
             return match;
           }
 
-
-          const lastopen = htmltemp.substring(bodyStartIndex, index).lastIndexOf("<");
-          const lastclosed = htmltemp.substring(bodyStartIndex, index).lastIndexOf(">");
-          const firstopen = htmltemp.substring(index, bodyEndIndex).indexOf("<");
-          const firstclose = htmltemp.substring(index, bodyEndIndex).indexOf(">");
+          const lastopen = htmltemp
+            .substring(bodyStartIndex, index)
+            .lastIndexOf("<");
+          const lastclosed = htmltemp
+            .substring(bodyStartIndex, index)
+            .lastIndexOf(">");
+          const firstopen = htmltemp
+            .substring(index, bodyEndIndex)
+            .indexOf("<");
+          const firstclose = htmltemp
+            .substring(index, bodyEndIndex)
+            .indexOf(">");
 
           console.log("lastopen words----", lastopen);
           console.log("lastclosed words----", lastclosed);
@@ -524,7 +497,7 @@ export default function App() {
             return match;
           }
 
-          console.log("matched words----", match)
+          console.log("matched words----", match);
 
           return match.replace(
             new RegExp(`(?<![\\w</])(${trueTerms[i]})(?![\\w/>:=])`, "gi"),
@@ -535,7 +508,6 @@ export default function App() {
             // `<span style="${backgroundStyle}" >$1</span>`
             // `<span style="${backgroundStyle}" pointer-events: none;>$1</span>`
             // <span style="${backgroundStyle}; pointer-events: auto;" onclick="window.location.href = 'http://sysrev2.cs.binghamton.edu:3001/#pf1'">$1</span>
-
           );
         }
       );
@@ -546,15 +518,10 @@ export default function App() {
       //     return `${before}<span style="${backgroundStyle}">${term}</span>${after}`;
       //   }
       // );
-
-
     }
 
     setHtmls(htmltemp);
   };
-
-
-
 
   function updateTermObject() {
     setquerymap((prevQueryMap) => {
@@ -615,16 +582,13 @@ export default function App() {
     console.log("name of all files--=-=-=-=-", fileNames);
     let pdfFilePath = "./sample.pdf";
     try {
-      const response = await fetch(
-        `${apiUrl}/api/convert-pdf-to-html`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ fileNames })
-        }
-      );
+      const response = await fetch(`${apiUrl}/api/convert-pdf-to-html`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ fileNames }),
+      });
       return await response.text();
     } catch (error) {
       console.error(error);
@@ -632,9 +596,7 @@ export default function App() {
     }
   };
 
-
   const startconversion = async () => {
-
     if (!enablestartRanking) {
       alert("Please upload documents and add search terms!");
       return;
@@ -667,7 +629,7 @@ export default function App() {
   function rerankjacc() {
     setIsLoading(true);
     const resultsdemo = rankTextsjacc(queryterms, fileText);
-    openReactAppInNewWindow()
+    openReactAppInNewWindow();
     console.log(queryterms);
     console.log(fileText);
     console.log("xxxxxx the results doc" + JSON.stringify(resultsdemo));
@@ -676,11 +638,9 @@ export default function App() {
     setIsLoading(false);
   }
 
-
   function setshowingdocs() {
-    setshowdocs(!showDocs)
+    setshowdocs(!showDocs);
   }
-
 
   function rerankbm25() {
     setIsLoading(true);
@@ -715,9 +675,6 @@ export default function App() {
     }
     return cleanObj;
   }
-
-
-
 
   async function renderPage() {
     setPageRendering(true);
@@ -974,7 +931,7 @@ export default function App() {
   // };
 
   const handleFetchFile = async (fileName = "") => {
-    console.log("handleFetchFile called")
+    console.log("handleFetchFile called");
 
     if (fileName != "" && allHtmls.hasOwnProperty(fileName)) {
       setHtmls(allHtmls[fileName]);
@@ -985,11 +942,11 @@ export default function App() {
         fn = fn.replace("pdf", "html");
         const response = await axios.get(`${apiUrl}/api/getFile/${fn}`);
         let hml = response.data;
-        const originalSubstring = "#page-container{bottom:0;right:0;overflow:auto}";
+        const originalSubstring =
+          "#page-container{bottom:0;right:0;overflow:auto}";
         const replacementSubstring = "#page-container{bottom:0;overflow:auto}";
 
         hml = hml.replace(originalSubstring, replacementSubstring);
-
 
         return { [fn]: hml }; // Return an object with file name as key and file content as value
       });
@@ -997,20 +954,21 @@ export default function App() {
       const filesData = await Promise.all(promises);
 
       // Combine file data into a single object
-      const filesObject = filesData.reduce((acc, cur) => ({ ...acc, ...cur }), {});
-      setAllHtmls(filesObject)
+      const filesObject = filesData.reduce(
+        (acc, cur) => ({ ...acc, ...cur }),
+        {}
+      );
+      setAllHtmls(filesObject);
       if (fileName != "") {
         setHtmls(filesObject[fileName]);
       }
-
     } catch (error) {
       console.error(`Error fetching files: ${error.message}`);
     }
   };
 
-
   function showranks() {
-    setshowrankorpdf(true)
+    setshowrankorpdf(true);
     setshowpage(false);
   }
   function showthispdf(fnamme) {
@@ -1155,197 +1113,185 @@ export default function App() {
       <div className="app-container">
         <Loader isLoading={isLoading} />
 
-        <div className="mac-book-pro141-container">
-          <div className="mac-book-pro141-mac-book-pro141">
-            <div className="mac-book-pro141-frame1">
-             
-              <span className="mac-book-pro141-text">
-                <span>  <span className="appnametext">DART</span> : Document Analysis and Research Tool</span>
-              </span>
-           
-              {/* <img
-                src="./assets/images/external/ictwotonereadmore2380-sg1m.svg"
-                alt="ictwotonereadmore2380"
-                className="mac-book-pro141-ictwotonereadmore"
-              /> */}
-              <div className="mac-book-pro141-iconparkoutlinemoreapp">
-                <div className="mac-book-pro141-group">
-                  {/* <img
-                    src="./assets/images/external/vector2392-vwv.svg"
-                    alt="Vector2392"
-                    className="mac-book-pro141-vector"
-                  /> */}
-                  {/* <img
-                    src="/assets/images/external/vector2393-328f.svg"
-                    alt="Vector2393"
-                    className="mac-book-pro141-vector1"
-                  /> */}
+        <div>
+          <div>
+            <div id="main-wrapper">
+              <div className="topbar" id="top">
+                <HeaderPage />
+                {isonLanding ? (
+                  <>
+                  <BodyPage setisonLanding={setisonLanding} />
 
-                </div>
+                  <FooterPage />
+                  </>
+                ) : (
+                  <div className="bodycontainer1">
+                    {showDocs ? (
+                      <div className="showdocsdiv">
+                        <div id="showdocdivs">
+                          <DocumentList
+                            setshowdocs={setshowdocs}
+                            fileNames={fileNames}
+                            handleCheckboxChange={() => {
+                              console.log("hc---");
+                            }}
+                            documents={documents}
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+
+                    {showfileselector ? (
+                    
+                      <FileInput
+                      setshowfileselector={setshowfileselector}
+                      showfileselector={showfileselector}
+                        fileNames={fileNames}
+                        setIsLoading={setIsLoading}
+                        setFileText={setFileText}
+                        setFileNames={setFileNames}
+                        closefileinput={closefileinput}
+                      />
+                  
+                    ) : (
+                      ""
+                    )}
+
+                    {showtextinput ? (
+                    
+                      <TextInput
+                        setnewtermsupdate={setnewtermsupdate}
+                        queryterms={queryterms}
+                        brightColors={brightColors}
+                        setbrightColors={setbrightColors}
+                        setcolorMap={setcolorMap}
+                        setqueryterms={setqueryterms}
+                        closetextinput={closefileinput}
+                      />
+                    ) : (
+                      ""
+                    )}
+
+                    {docrankscreen ? (
+                      <>
+                        <div className="menubuttons">
+                          <div class="terms cs1"></div>
+                          <div class="terms cs2">
+                            {newtermsupdate ? (
+                              <Button
+                                // className="menubutton2-alert"
+                                color="warning"
+                                onClick={startconversion}
+                              >
+                                Update Ranks
+                              </Button>
+                            ) : (
+                              <Button
+                              color="primary"
+                                className="menubutton2"
+                                onClick={startconversion}
+                              >
+                                Re-Rank Documents
+                              </Button>
+                            )}
+                          </div>
+                          <div class="terms cs2">
+                            <Button 
+                            color="primary"
+                              className="menubutton2"
+                              onClick={opentermeditor}
+                            >
+                              EDIT TERMS
+                            </Button>
+                          </div>
+
+                          <div class="terms cs2">
+                            <Button
+                             color="primary"
+                              className="menubutton2"
+                              onClick={() => {
+                                setshowdocs(!showDocs);
+                              }}
+                            >
+                              {!showDocs
+                                ? "Open Files List"
+                                : "Close File List"}
+                            </Button>
+                          </div>
+
+                          <div class="terms cs2">
+                            <Button
+                             color="danger"
+                              // className="menubuttonreset"
+                              onClick={reloadPage}
+                            >
+                              Start Again
+                            </Button>
+                          </div>
+                          <div class="terms cs2">
+                            <Button
+                             color="primary"
+                              // className="menubuttonreset"
+                              onClick={openfileuploader}
+                            >
+                              Upload Docs
+                            </Button>
+                          </div>
+
+                          {!showrankorpdf && (
+                            <div class="terms cs2">
+                              <Button
+                               color="primary"
+                                className="menubutton2"
+                                onClick={openrankeddocs}
+                              >
+                                SHOW RANKS
+                              </Button>
+                            </div>
+                          )}
+                          <div class="terms cs1"></div>
+                        </div>
+
+                        {showrankorpdf ? (
+                         
+                            <DocRankUI
+                              results={docranks}
+                              showthispdf={showthispdf}
+                            />
+                          
+                        ) : (
+                          <>
+                            <div className="mac-book-pro141-container">
+                              <div id="pdf-main-container">
+                                <HtmlViewer html={htmls} />
+                              </div>
+                              <div class="terms col-sm-3">
+                                <h1>Terms</h1>
+                                <CheckboxList
+                                  currShowing={currShowing}
+                                  results={docranks}
+                                  terms={querymap}
+                                  colorMap={colorMap}
+                                  checkedTerms={checkedTerms}
+                                  setCheckedTerms={setCheckedTerms}
+                                  onCheckedTerms={handleCheckedTerms}
+                                />
+                              </div>
+                            </div>
+                          </>
+                        )}
+                      </>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                )}
+            
+
               </div>
             </div>
-
-
-            <div className="bodycontainer1">
-
-            {showDocs ? (
-                  <div className="showdocsdiv">
-                    <div id="showdocdivs">
-                      <DocumentList setshowdocs={setshowdocs} fileNames={fileNames} handleCheckboxChange={() => { console.log("hc---") }} documents={documents} />
-
-                    </div>
-                  </div>
-                ) : ''}
-
-              {showinitbox && !showtextinput && !showfileselector && (documents.length>0 || fileNames.length>0) && <div class="filelistbutdiv">
-                              <button className="filelistbut" onClick={() => { setshowdocs(!showDocs) }}>{!showDocs ? "Open Files List" : "Close File List"}</button>
-                            </div> 
-              }
-
-              {showinitbox && !showtextinput && !showfileselector ?
-                // {true ?
-
-
-                <div className="positioningrelative">
-
-                
-                  <div className="mac-book-pro141-initcomp">
-
-
-
-                    <div className="mac-book-pro141-searchboxmain">
-
-                      <button onClick={openfileuploader} className="mac-book-pro141-rectangle22">
-                        <div className="mac-book-pro141-materialsymbolsupload"></div>
-
-                        <div className="mac-book-pro141-text02">
-                          <span>UPLOAD PAPERS</span>
-                        </div>
-                      </button>
-
-
-
-
-                    </div>
-
-
-
-
-
-                    <div className="mac-book-pro141-searchboxmain2">
-
-                      <button onClick={opentermeditor} className="mac-book-pro141-rectangle22">
-                        <div className="mac-book-pro141-materialsymbolsupload"></div>
-
-                        <div className="mac-book-pro141-text02">
-                          <span>ADD SEARCH TERMS</span>
-                        </div>
-                      </button>
-                    </div>
-
-
-                    <button onClick={startconversion} className="mac-book-pro141-startbutton">
-
-                      <div className="mac-book-pro141-text16">
-                        <span>Start Ranking</span>
-                      </div>
-
-                    </button>
-
-
-
-
-                  </div>
-                </div> : ''}
-
-
-              {showfileselector ?
-                <FileInput fileNames={fileNames} setIsLoading={setIsLoading} setFileText={setFileText} setFileNames={setFileNames} closefileinput={closefileinput} />
-                : ''}
-
-              {showtextinput ?
-                <TextInput setnewtermsupdate={setnewtermsupdate} queryterms={queryterms} brightColors={brightColors} setbrightColors={setbrightColors} setcolorMap={setcolorMap} setqueryterms={setqueryterms} closetextinput={closefileinput} />
-                : ''}
-
-              {docrankscreen ? <>
-
-                <div className="menubuttons">
-                  <div class="terms cs1"></div>
-                  <div class="terms cs2">
-                    {
-                      newtermsupdate ? <button className="menubutton2-alert" onClick={startconversion}>Update Ranks</button>
-                        : <button className="menubutton2" onClick={startconversion}>Re-Rank Documents</button>
-
-                    }
-                  </div>
-                  <div class="terms cs2">
-                    <button className="menubutton2" onClick={opentermeditor}>EDIT TERMS</button>
-                  </div>
-
-                  {/* <div class="terms cs2">
-                    <button className="menubutton2" onClick={opentermeditor}>Uploaded Files</button>
-                  </div> */}
-
-                 {/* {documents.length>0  &&  */}
-                 <div class="terms cs2">
-                    <button className="menubutton2" onClick={() => { setshowdocs(!showDocs) }}>{!showDocs ? "Open Files List":"Close File List"}</button>
-                  </div>
-                   {/* } */}
-
-                  {/* <div class="terms cs2">
-                    <button className="menubutton2" onClick={rerankjacc}>test new tab</button>
-                  </div> */}
-
-
-                  <div class="terms cs2">
-                    <button className="menubuttonreset" onClick={reloadPage}>Start Again</button>
-                  </div>
-
-                  <div class="terms cs2">
-                    <button className="menubuttonreset"  onClick={openfileuploader} >Upload docs</button>
-                  </div>
-
-                 
-                  {/* {documents.length > 0 && <div class="terms col-sm-2">
-                    <button onClick={() => { fileuploader }}>Show docs</button>
-                  </div>} */}
-
-                  {!showrankorpdf &&
-                    <div class="terms cs2">
-                      <button className="menubutton2" onClick={openrankeddocs}>SHOW RANKS</button>
-                    </div>}
-                  <div class="terms cs1"></div>
-
-                </div>
-
-               
-                {showrankorpdf ?
-
-                  <DocRankUI results={docranks} showthispdf={showthispdf} />
-
-                  : <><div id="pdf-main-container">
-
-                    <HtmlViewer html={htmls} />
-                  </div>
-                    <div class="terms col-sm-3">
-
-                      <h1>Terms</h1>
-                      <CheckboxList
-                        currShowing={currShowing}
-                        results={docranks}
-                        terms={querymap}
-                        colorMap={colorMap}
-                        checkedTerms={checkedTerms}
-                        setCheckedTerms={setCheckedTerms}
-                        onCheckedTerms={handleCheckedTerms}
-                      />
-                    </div></>
-                }
-              </>
-                : ''}
-            </div>
-
-            {/* component 1 upload and input screen ---- */}
           </div>
         </div>
       </div>

@@ -157,12 +157,13 @@ function getPdfFilePaths(folderPath) {
       console.log("currently trying to convert:  "+pdfFilePaths[i]);
   
       // D:\Grad\Sem 2\Web info ret\project2\my-app\htmls
-    // const cmd = `"D:\\Grad\\Sem 2\\WBINFO\\project2\\my-app\\cshell\\pdf2htmlEX.exe" "${pdfFilePaths[i]}"`;
+      // D:\Grad\ResearchRank\RASA\Read-and-Search-Assistance\my-app\htmls\server\index.js
+    const cmd = `"D:\\Grad\\ResearchRank\\RASA\\Read-and-Search-Assistance\\my-app\\cshell\\pdf2htmlEX.exe" "${pdfFilePaths[i]}"`;
     
     console.log("pdf2htmlExPath     ====  "+pdf2htmlExPath);
     console.log("pdfFilePaths[i]     ====  "+pdfFilePaths[i]);
     // const cmd = `"${pdf2htmlExPath}" "${pdfFilePaths[i]}"`;
-    const cmd = `/usr/local/bin/pdf2htmlEX "${pdfFilePaths[i]}"`;
+    // const cmd = `/usr/local/bin/pdf2htmlEX "${pdfFilePaths[i]}"`;
     // const cmd = `"C:\\pdf2htmlEX\\pdf2htmlEX.exe" "${pdfFilePaths[i]}"`;
   
     exec(cmd, (error, stdout, stderr) => {
