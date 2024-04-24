@@ -8,7 +8,7 @@ const cors = require("cors");
 const app = express();
 
 const corsOptions = {
-  origin: 'http://sysrev2.cs.binghamton.edu/dart',
+  origin: 'http://sysrev2.cs.binghamton.edu/argus',
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 

@@ -168,7 +168,7 @@ Header 6
     justify-content: center;
     min-height: 600px;
     overflow: auto;
-    background-color: #286528;
+    background-color: #005943;
     border-radius: 0 0 301px 300px;
 
     
@@ -1675,8 +1675,120 @@ Modal in center
 
 
 // ---------
-/* Global Styles */
-body {
+// /* Global Styles */
+// body {
+//     font-family: 'Segoe UI', sans-serif;
+//     margin: 0;
+//     padding: 0;
+//   }
+  
+//   .spacer {
+//     padding: 20px;
+//   }
+  
+//   .container {
+//     max-width: 1300px; /* Increased container width */
+//     margin: 0 auto;
+//   }
+  
+//   /* Section Styles */
+//   .section {
+//     margin-bottom: 60px; /* Increased margin bottom */
+//   }
+  
+//   .section-title {
+//     font-size: 28px; /* Doubled font size */
+//     color: #00796b; /* Emerald green */
+//     margin-bottom: 30px; /* Increased margin bottom */
+//   }
+  
+//   /* List Styles */
+//   ul, ol {
+//     margin: 0;
+//     padding: 0;
+//     list-style-type: none;
+//   }
+  
+//   li {
+//     margin-bottom: 15px; /* Increased margin bottom */
+//     color: #333; /* Black */
+//   }
+  
+//   /* Card Styles */
+//   .argus-card-title {
+//     font-size: 24px; /* Doubled font size */
+//     color: #00796b; /* Emerald green */
+//     margin-bottom: 20px; /* Increased margin bottom */
+//   }
+  
+//   /* Body Font */
+//   .bodyfont {
+//     font-size: 20px; /* Doubled font size */
+//   }
+  
+//   /* Functionalities Section */
+//   .functionalities h3 {
+//     font-size: 22px; /* Doubled font size */
+//     color: #00796b; /* Emerald green */
+//   }
+  
+//   /* Rationale and Uses Section */
+//   .rationale-uses p, .rationale-uses li {
+//     font-size: 20px; /* Doubled font size */
+//   }
+  
+//   /* How-to-Use Section */
+//   .how-to-use ol {
+//     counter-reset: custom-counter;
+//   }
+  
+//   .how-to-use ol li {
+//     font-size: 20px; /* Doubled font size */
+//     counter-increment: custom-counter;
+//     margin-left: 25px; /* Increased margin left */
+//   }
+  
+//   .how-to-use ol li::before {
+//     content: counter(custom-counter) ".";
+//     font-weight: bold;
+//     margin-right: 10px; /* Increased margin right */
+//   }
+  
+//   /* Benefits Section */
+//   .benefits li {
+//     font-size: 20px; /* Doubled font size */
+//     color: #00796b; /* Emerald green */
+//   }
+  
+//   /* Future Development Section */
+//   .future-development p, .future-development li {
+//     font-size: 20px; /* Doubled font size */
+//   }
+  
+  .logostyle{    height: 62px;}
+
+  .userstory{
+    width: 90%;
+    height: 10%;
+  }
+
+
+//   ---
+
+
+.bodyfont {
+    font-size: 20px;
+  }
+  
+  .section {
+    margin-bottom: 60px;
+  }
+  
+  .argus-card-title {
+    font-size: 24px;
+  }
+  
+  .landing-page {
     font-family: 'Segoe UI', sans-serif;
     margin: 0;
     padding: 0;
@@ -1686,88 +1798,51 @@ body {
     padding: 20px;
   }
   
-  .container {
-    max-width: 1300px; /* Increased container width */
-    margin: 0 auto;
-  }
-  
-  /* Section Styles */
-  .section {
-    margin-bottom: 60px; /* Increased margin bottom */
-  }
-  
-  .section-title {
-    font-size: 28px; /* Doubled font size */
-    color: #00796b; /* Emerald green */
-    margin-bottom: 30px; /* Increased margin bottom */
-  }
-  
-  /* List Styles */
-  ul, ol {
+  .argus-list {
     margin: 0;
     padding: 0;
     list-style-type: none;
   }
   
-  li {
-    margin-bottom: 15px; /* Increased margin bottom */
-    color: #333; /* Black */
+  .argus-list-item {
+    margin-bottom: 15px;
   }
   
-  /* Card Styles */
-  .argus-card-title {
-    font-size: 24px; /* Doubled font size */
-    color: #00796b; /* Emerald green */
-    margin-bottom: 20px; /* Increased margin bottom */
-  }
-  
-  /* Body Font */
-  .bodyfont {
-    font-size: 20px; /* Doubled font size */
-  }
-  
-  /* Functionalities Section */
   .functionalities h3 {
-    font-size: 22px; /* Doubled font size */
-    color: #00796b; /* Emerald green */
+    font-size: 22px;
   }
   
-  /* Rationale and Uses Section */
-  .rationale-uses p, .rationale-uses li {
-    font-size: 20px; /* Doubled font size */
+  .rationale-uses p,
+  .rationale-uses li {
+    font-size: 20px;
   }
   
-  /* How-to-Use Section */
   .how-to-use ol {
     counter-reset: custom-counter;
   }
   
   .how-to-use ol li {
-    font-size: 20px; /* Doubled font size */
+    font-size: 20px;
     counter-increment: custom-counter;
-    margin-left: 25px; /* Increased margin left */
+    margin-left: 25px;
   }
   
   .how-to-use ol li::before {
     content: counter(custom-counter) ".";
     font-weight: bold;
-    margin-right: 10px; /* Increased margin right */
+    margin-right: 10px;
   }
   
-  /* Benefits Section */
   .benefits li {
-    font-size: 20px; /* Doubled font size */
-    color: #00796b; /* Emerald green */
+    font-size: 20px;
   }
   
-  /* Future Development Section */
-  .future-development p, .future-development li {
-    font-size: 20px; /* Doubled font size */
+  .future-development p,
+  .future-development li {
+    font-size: 20px;
   }
-  
-  .logostyle{    height: 62px;}
 
-  .userstory{
-    width: 90%;
-    height: 10%;
+
+  .addmargin{
+    margin-left: 2%;
   }

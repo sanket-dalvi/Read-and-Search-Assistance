@@ -31,6 +31,7 @@ import "./assets/scss/common.scss";
 import "./assets/scss/style.scss";
 
 import { Card, Button, CardTitle, CardText } from "reactstrap";
+import About from "./about";
 
 
 const apiUrl = process.env.REACT_APP_API_URL;
@@ -78,6 +79,8 @@ export default function App() {
   const [enablestartRanking, setenablestartRanking] = useState(false);
 
   const [isonLanding, setisonLanding] = useState(true);
+
+  const [showabout,setshowabout] = useState(false);
 
   const openinitscreen = () => {
     setonint(true);
@@ -1120,7 +1123,11 @@ export default function App() {
                 <HeaderPage />
                 {isonLanding ? (
                   <>
-                  <BodyPage setisonLanding={setisonLanding} />
+                  
+                  {showabout?
+                  <BodyPage setisonLanding={setisonLanding} />:
+
+                  <About setisonLanding={setisonLanding} />}
 
                   <FooterPage />
                   </>
