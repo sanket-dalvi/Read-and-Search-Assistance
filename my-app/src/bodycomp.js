@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Pagination, PaginationItem, PaginationLink, Container, Row, Col } from 'reactstrap';
 
 
+import userstory from './assets/images/landingpage/userstory.png';
 
 import "./assets/scss/common.scss";
 import "./assets/scss/style.scss";
@@ -121,6 +122,14 @@ export default function BodyPage({setisonLanding}) {
             </ul>
             <p className="bodyfont">By leveraging ARGUS's capabilities, researchers can significantly improve the efficiency and accuracy of their systematic review processes, enabling them to delve deeper into research exploration.</p>
           </div>
+
+          <div className="section future-development">
+            <h4 className="argus-card-title">User Journey:</h4>
+            <p className="bodyfont"></p>
+            <img className = "userstory" src={userstory}></img>
+          </div>
+
+
         </Container>
       </div>
     </div>

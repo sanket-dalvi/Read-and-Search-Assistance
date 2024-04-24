@@ -1177,6 +1177,18 @@ export default function App() {
                     {docrankscreen ? (
                       <>
                         <div className="menubuttons">
+
+                        <div class="terms cs2">
+                            <Button
+                             color="danger"
+                              // className="menubuttonreset"
+                              onClick={reloadPage}
+                            >
+                              Go Back
+                            </Button>
+                          </div>
+
+
                           <div class="terms cs1"></div>
                           <div class="terms cs2">
                             {newtermsupdate ? (
@@ -1203,7 +1215,7 @@ export default function App() {
                               className="menubutton2"
                               onClick={opentermeditor}
                             >
-                              EDIT TERMS
+                              Edit Terms
                             </Button>
                           </div>
 
@@ -1221,15 +1233,7 @@ export default function App() {
                             </Button>
                           </div>
 
-                          <div class="terms cs2">
-                            <Button
-                             color="danger"
-                              // className="menubuttonreset"
-                              onClick={reloadPage}
-                            >
-                              Start Again
-                            </Button>
-                          </div>
+                         
                           <div class="terms cs2">
                             <Button
                              color="primary"

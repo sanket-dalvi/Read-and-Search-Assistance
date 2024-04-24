@@ -25,6 +25,7 @@ parts
 tmp
 .sass-cache
 node_modules/
+build/
 
 src/website/settingslocal.py
 stunnel.log
