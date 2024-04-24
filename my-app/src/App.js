@@ -80,7 +80,7 @@ export default function App() {
 
   const [isonLanding, setisonLanding] = useState(true);
 
-  const [showabout,setshowabout] = useState(false);
+  const [showabout,setshowabout] = useState(true);
 
   const openinitscreen = () => {
     setonint(true);
@@ -1120,7 +1120,7 @@ export default function App() {
           <div>
             <div id="main-wrapper">
               <div className="topbar" id="top">
-                <HeaderPage />
+                <HeaderPage  setshowabout={setshowabout} showabout={showabout}  />
                 {isonLanding ? (
                   <>
                   
