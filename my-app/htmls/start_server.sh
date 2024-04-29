@@ -4,6 +4,8 @@
 # cd /path/to/your/nodejs/project
 cd docpdf/pdfdoc/research-ranking-app/my-app/htmls/
 
+# /home/ashish/docpdf/pdfdoc/research-ranking-app/my-app/htmls/start_server.sh
+
 # Start your Node.js server using pm2
 pm2 start server/index.js --name "my-node-server2"
 

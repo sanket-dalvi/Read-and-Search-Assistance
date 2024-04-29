@@ -240,7 +240,9 @@ export default function App() {
   }, []);
 
   const openReactAppInNewWindow = () => {
-    const url = "http://sysrev2.cs.binghamton.edu/dart";
+
+    // appnamechange
+    const url = "http://sysrev2.cs.binghamton.edu/argus";
     const jsonString = JSON.stringify([
       {
         resultId: 1971,

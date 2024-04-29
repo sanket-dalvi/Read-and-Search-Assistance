@@ -26,6 +26,8 @@ $themecolor: #316ce8;
 $themecolor-alt: #26c6da;
 $themecolor-dark: #028ee1;
 
+$banner-image: url(../images/landingpage/banner.jpg);
+
 /*bootstrap Color*/
 $danger: #ff4d7e;
 $success: #2cdd9b;
@@ -84,7 +86,7 @@ $img-shadow:0px 0px 30px rgba(115, 128, 157, 0.3);
   background: linear-gradient($direction, $color-stops);
 }
 
-$banner-image: none;
+
 $c2a-image: none;
 $banner-slider: none;
 $form-banner: none;
@@ -169,6 +171,8 @@ Header 6
     min-height: 600px;
     overflow: auto;
     background-color: #005943;
+    // background-image: $banner-image;
+
     border-radius: 0 0 301px 300px;
 
     
@@ -1850,4 +1854,12 @@ Modal in center
     font-size: large;
     color:black;
     font-weight: 500;
+  }
+
+  .boldit{
+    font-weight: bold;
+  }
+
+  .greenit{
+    color:#1d6e2e
   }

@@ -12,8 +12,8 @@ const corsOptions = {
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
-
-const appname="dart"
+ // appnamechange
+const appname="argus"
 // const bodyParser = require('body-parser');
 
 
@@ -158,14 +158,22 @@ function getPdfFilePaths(folderPath) {
   
       // D:\Grad\Sem 2\Web info ret\project2\my-app\htmls
       // D:\Grad\ResearchRank\RASA\Read-and-Search-Assistance\my-app\htmls\server\index.js
-    const cmd = `"D:\\Grad\\ResearchRank\\RASA\\Read-and-Search-Assistance\\my-app\\cshell\\pdf2htmlEX.exe" "${pdfFilePaths[i]}"`;
     
-    console.log("pdf2htmlExPath     ====  "+pdf2htmlExPath);
-    console.log("pdfFilePaths[i]     ====  "+pdfFilePaths[i]);
+    // windows
+    // const cmd = `"D:\\Grad\\ResearchRank\\RASA\\Read-and-Search-Assistance\\my-app\\cshell\\pdf2htmlEX.exe" "${pdfFilePaths[i]}"`;
+    
+    // console.log("pdf2htmlExPath     ====  "+pdf2htmlExPath);
+    // console.log("pdfFilePaths[i]     ====  "+pdfFilePaths[i]);
     // const cmd = `"${pdf2htmlExPath}" "${pdfFilePaths[i]}"`;
     // const cmd = `/usr/local/bin/pdf2htmlEX "${pdfFilePaths[i]}"`;
     // const cmd = `"C:\\pdf2htmlEX\\pdf2htmlEX.exe" "${pdfFilePaths[i]}"`;
   
+
+    console.log("pdf2htmlExPath     ====  "+pdf2htmlExPath);
+    console.log("pdfFilePaths[i]     ====  "+pdfFilePaths[i]);
+    const cmd = `/usr/local/bin/pdf2htmlEX "${pdfFilePaths[i]}"`;
+
+
     exec(cmd, (error, stdout, stderr) => {
       if (error) {
   

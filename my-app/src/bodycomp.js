@@ -14,6 +14,7 @@ import {
 
 import "./assets/scss/common.scss";
 import "./assets/scss/style.scss";
+import banner from "./assets/images/landingpage/banner.jpg";
 
 export default function BodyPage({ setisonLanding }) {
 
@@ -71,7 +72,7 @@ export default function BodyPage({ setisonLanding }) {
             <div className="section future-development" style={{ backgroundColor: '#f9f9f9', padding: '40px', borderRadius: '15px' }}>
               <h4 className="argus-card-title" style={{ color: '#4caf50' }}>ARGUS: ARGUS: Drowning in PDFs? ARGUS can help!</h4>
               <ul className="argus-list" style={{ color: '#333' }}>
-                <li>ARGUS, is a software application designed to assist researchers in analyzing retrieved research articles as part of a systematic review process. It automates tedious tasks like reading and scanning text, extracting key information, and populating data into forms, significantly reducing manual effort.</li>
+                <li>Feeling buried under a mountain of research papers? <strong>ARGUS</strong> is your research power tool. Our user-friendly platform streamlines literature reviews by helping you find the most relevant articles fast.  Imagine instantly highlighting key terms, effortlessly navigating complex papers, and diving deeper into your research with intelligent tools. ARGUS automates the time-consuming tasks you dread, empowering you to find, analyze, and understand research like never before.  Explore ARGUS today and unlock a world of effortless discovery!</li>
               </ul>
               <p className="bodyfont" style={{ color: '#333' }}>By leveraging ARGUS's capabilities, researchers can significantly improve the efficiency and accuracy of their systematic review processes.</p>
             </div>
@@ -106,23 +107,25 @@ export default function BodyPage({ setisonLanding }) {
                   <AccordionItem>
                     <AccordionHeader targetId="1"> <h3 style={{ color: '#4caf50' }}>Increased Efficiency</h3></AccordionHeader>
                     <AccordionBody accordionId="1">
-                      <p className="bodyfont">Automates tedious tasks, such as text scanning and data extraction, speeding up research analysis and saving valuable time.</p>
+                      <p className="bodyfont">Stop wasting time wading through irrelevant results. ARGUS uses advanced search to pinpoint the articles that directly address your research question, saving you hours and boosting your efficiency.</p>
                     </AccordionBody>
                   </AccordionItem>
 
                   <AccordionItem>
-                    <AccordionHeader targetId="2"> <h3 style={{ color: '#4caf50' }}>Improved Accuracy</h3></AccordionHeader>
-                    <AccordionBody accordionId="2">
-                    <p className="bodyfont">Reduces errors associated with manual data entry, ensuring the accuracy and reliability of research findings.</p>
-                    </AccordionBody>
-                  </AccordionItem>
-
-                  <AccordionItem>
-                    <AccordionHeader targetId="3"> <h3 style={{ color: '#4caf50' }}>Streamlined Data Organization</h3></AccordionHeader>
+                    <AccordionHeader targetId="3"> <h3 style={{ color: '#4caf50' }}>Highlight Key Concepts Instantly</h3></AccordionHeader>
                     <AccordionBody accordionId="3">
-                    <p className="bodyfont">Automatically organizes extracted information, simplifying data management and enhancing workflow efficiency.</p>
+                    <p className="bodyfont">No more tedious scanning. Highlight your key terms and watch them instantly illuminated throughout the text. Grasp core concepts quickly.</p>
                     </AccordionBody>
                   </AccordionItem>
+
+                  <AccordionItem>
+                    <AccordionHeader targetId="2"> <h3 style={{ color: '#4caf50' }}>Error-Free Analysis </h3></AccordionHeader>
+                    <AccordionBody accordionId="2">
+                    <p className="bodyfont">Streamline data organization by highlighting key terms. This ensures you're capturing the right information, promoting improved accuracy for further analysis.</p>
+                    </AccordionBody>
+                  </AccordionItem>
+
+
                   <AccordionItem>
                     <AccordionHeader targetId="4"> <h3 style={{ color: '#4caf50' }}>Focused Research Exploration</h3></AccordionHeader>
                     <AccordionBody accordionId="4">

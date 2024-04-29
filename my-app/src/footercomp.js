@@ -40,7 +40,7 @@ export default function FooterPage() {
                         <p>Office :  <a href="#" className="link">info@wrappixel.com</a> <br />Site :  <a href="#" className="link">wrapkit@wrappixel.com</a></p>
                     </Col> */}
                     <Col lg="5" md="6">
-                        <h5 className="m-b-20">Binghamton University. All Rights Reserved.</h5>
+                        <h5 className="m-b-20"> © Binghamton University. All Rights Reserved.</h5>
                         {/* <div className="round-social light">
                             <a href="#" className="link"><i className="fa fa-facebook"></i></a>
                             <a href="#" className="link"><i className="fa fa-twitter"></i></a>

@@ -49,71 +49,77 @@ export default function About({ setisonLanding }) {
             <div className="section future-development" style={{ backgroundColor: '#f9f9f9', padding: '40px', borderRadius: '15px' }}>
               <h4 className="argus-card-title" style={{ color: '#4caf50' }}>ARGUS: ARGUS: Drowning in PDFs? ARGUS can help!</h4>
               <ul className="argus-list" style={{ color: '#333' }}>
-                <li>ARGUS, is a software application designed to assist researchers in analyzing retrieved research articles as part of a systematic review process. It automates tedious tasks like reading and scanning text, extracting key information, and populating data into forms, significantly reducing manual effort.</li>
+                <li>The cornerstone of scientific progress lies in the ability to effectively synthesize existing knowledge. Systematic reviews play a critical role in this process, offering researchers a comprehensive understanding of research within a specific domain. However, the traditional approach to conducting these reviews is often a laborious and error-prone endeavor. Manually sifting through vast collections of research articles, meticulously extracting relevant information, and synthesizing findings consumes significant research time and resources. This time-intensive process can hinder research progress and limit the depth of analysis.</li>
+               <br></br>
+                <li>
+                  Introducing <span className="boldit greenit">ARGUS</span>:<br></br>
+                  ARGUS emerges as a software application designed to empower researchers by streamlining the literature review process. It functions as a one-stop solution, offering a suite of functionalities that automate key tasks and enhance information visualization. This user-friendly application aims to revolutionize the way researchers approach literature reviews, allowing them to dedicate more time to critical analysis and discovery.
+                </li>
               </ul>
+              <br></br>
               <p className="bodyfont" style={{ color: '#333' }}>By leveraging ARGUS's capabilities, researchers can significantly improve the efficiency and accuracy of their systematic review processes.</p>
             </div>
 
-    
-      <div className="section how-to-use">
-        <h4 className="argus-card-title">How-to-Use:</h4>
-        <ol className="argus-list bodyfont">
-          <li>Define Keywords/Parameters: Specify the keywords or custom parameters for information extraction to guide ARGUS's focus during the analysis.</li>
-          <li>Upload Research Articles: Upload your research articles in PDF format (single or batch upload supported).</li>
-          <li>Run Analysis: Initiate the analysis process. ARGUS will scan the uploaded articles and extract information based on your defined criteria.</li>
-          <li>Review Extracted Data: Review the extracted information within the designated form or output format.</li>
-          <li>Refine (Optional): If needed, you can further refine the extraction rules or parameters for more precise results.</li>
-        </ol>
-      </div>
+
+            <div className="section how-to-use">
+              <h4 className="argus-card-title">How-to-Use:</h4>
+              <ol className="argus-list bodyfont">
+                <li>Define Keywords/Parameters: Specify the keywords or custom parameters for information extraction to guide ARGUS's focus during the analysis.</li>
+                <li>Upload Research Articles: Upload your research articles in PDF format (single or batch upload supported).</li>
+                <li>Run Analysis: Initiate the analysis process. ARGUS will scan the uploaded articles and extract information based on your defined criteria.</li>
+                <li>Review Extracted Data: Review the extracted information within the designated form or output format.</li>
+                <li>Refine (Optional): If needed, you can further refine the extraction rules or parameters for more precise results.</li>
+              </ol>
+            </div>
 
 
 
-      {/* ---- */}
+            {/* ---- */}
 
 
 
 
 
-      {/* Benefits */}
-     
-            <h4 className="argus-card-title">BENEFITS</h4>
+            {/* Benefits */}
+
+            <h4 className="argus-card-title">Dive Deeper, Faster: Effortless Discovery with ARGUS</h4>
             <div className="section functionalities" style={{ backgroundColor: '#f9f9f9', padding: '40px', borderRadius: '15px' }}>
               <div>
                 <Accordion flush open={open} toggle={toggle}>
 
                   <AccordionItem>
-                    <AccordionHeader targetId="1"> <h3 style={{ color: '#4caf50' }}>Increased Efficiency</h3></AccordionHeader>
+                    <AccordionHeader targetId="1"> <h3 style={{ color: '#4caf50' }}>Increased Efficiency- Cut Through the Noise: Find Exactly What You Need </h3></AccordionHeader>
                     <AccordionBody accordionId="1">
-                      <p className="bodyfont">Automates tedious tasks, such as text scanning and data extraction, speeding up research analysis and saving valuable time.</p>
+                      <p className="bodyfont">No more endless searches or irrelevant results. ARGUS uses advanced search techniques to understand the true meaning behind your research question. It pinpoints the most relevant articles that directly address your specific needs, saving you hours of sifting through irrelevant literature and getting you straight to the research that matters most. This translates to significant gains in efficiency, allowing you to dedicate more time to analyzing and interpreting the information you've found.</p>
                     </AccordionBody>
                   </AccordionItem>
 
                   <AccordionItem>
-                    <AccordionHeader targetId="2"> <h3 style={{ color: '#4caf50' }}>Improved Accuracy</h3></AccordionHeader>
+                    <AccordionHeader targetId="2"> <h3 style={{ color: '#4caf50' }}>Improved Accuracy & Streamlined Data Organization- Focus on the Gems, Not the Gravel: Highlight Key Concepts Instantly</h3></AccordionHeader>
                     <AccordionBody accordionId="2">
-                      <p className="bodyfont">Reduces errors associated with manual data entry, ensuring the accuracy and reliability of research findings.</p>
+                      <p className="bodyfont">Stop wasting time scanning page after page.  With ARGUS, simply define your key research terms and watch them instantly highlighted throughout the article. This allows you to focus on the most important information and quickly grasp the core concepts within each research paper, accelerating your comprehension and saving you valuable time.  Additionally, highlighting ensures you're capturing the right data points, promoting improved accuracy and streamlined data organization for further analysis.</p>
                     </AccordionBody>
                   </AccordionItem>
 
                   <AccordionItem>
-                    <AccordionHeader targetId="3"> <h3 style={{ color: '#4caf50' }}>Streamlined Data Organization</h3></AccordionHeader>
+                    <AccordionHeader targetId="3"> <h3 style={{ color: '#4caf50' }}>Focused Research Exploration- Effortless Navigation:  Turn Complex Papers into Open Books</h3></AccordionHeader>
                     <AccordionBody accordionId="3">
-                      <p className="bodyfont">Automatically organizes extracted information, simplifying data management and enhancing workflow efficiency.</p>
+                      <p className="bodyfont">Ditch the clunky interfaces! Our user-friendly platform is specifically designed for researchers.  Enjoy a smooth and intuitive reading experience, allowing you to navigate complex research articles with ease. Plus, ARGUS offers advanced search functionalities within the articles themselves. This means you can drill down and find specific details with minimal effort, eliminating the frustration of endlessly scrolling through long documents. This effortless navigation empowers you to focus on exploring the research in depth, uncovering valuable insights and propelling your research forward.</p>
                     </AccordionBody>
                   </AccordionItem>
-                  <AccordionItem>
+                  {/* <AccordionItem>
                     <AccordionHeader targetId="4"> <h3 style={{ color: '#4caf50' }}>Focused Research Exploration</h3></AccordionHeader>
                     <AccordionBody accordionId="4">
                       <p className="bodyfont">Allows researchers to dedicate more time to analyzing data and gaining insights, leading to more informed decisions and deeper exploration.
                       </p>
                     </AccordionBody>
-                  </AccordionItem>
+                  </AccordionItem> */}
                 </Accordion>
               </div>
             </div>
-       
 
-      {/* Benefits */}
+
+            {/* Benefits */}
 
 
 
@@ -179,7 +185,7 @@ export default function About({ setisonLanding }) {
                 <li className="argus-list-item">
                   <h3>Integration with Elastic Search</h3>
                   <p className="bodyfont addmargin">We are investigating the integration of Elastic Search, a powerful search engine technology. This will enable ARGUS to handle massive datasets and facilitate lightning-fast information retrieval, even from large document collections.</p>
-              
+
                 </li>
                 <li className="argus-list-item">
                   <h3>Machine Learning for Deep Insights</h3>
@@ -192,7 +198,7 @@ export default function About({ setisonLanding }) {
             {/* how to use */}
 
 
-    
+
 
 
 
