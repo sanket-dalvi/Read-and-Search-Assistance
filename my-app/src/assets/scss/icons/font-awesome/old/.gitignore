@@ -33,4 +33,4 @@ stunnel.log
 .ruby-version
 
 
-build
+build/
