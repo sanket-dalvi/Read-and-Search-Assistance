@@ -1,0 +1,174 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Engine</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url("{% static 'a.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column; 
+        }
+        #upload-container {
+            width: 35%;
+            height: 30%;
+            padding: 20px;
+            background-color: transparent; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  
+            border: 2px dashed #666;           
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-left: 3%;
+        }
+
+        #upload-icon {
+            font-size: 10px;
+            color: #666;
+            width: 30px;
+            display: flex;
+            justify-content: center; 
+            align-items: center; 
+            margin-bottom: 0px;
+            margin-top: 2%;
+        }
+
+        #upload-text {
+            font-size: 18px;
+            font-weight: bold;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        h4 {
+            margin: 10px 0; 
+        }
+
+        .choose-file-btn {
+            padding: 10px 20px;
+            font-size: 13px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .navigation-buttons a{
+            width: 10%;
+            height: 73%;
+            font-size: 18px;
+            background-color: #4893a0;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            margin-top: 1%;
+        }
+
+        .drop-zone--over {
+        border-style: solid;
+        }
+
+        .drop-zone__thumb {
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        overflow: hidden;
+        background-color: #cccccc;
+        background-size: cover;
+        position: relative;
+        }
+
+        .drop-zone__thumb::after {
+        content: attr(data-label);
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 5px 0;
+        color: #ffffff;
+        background: rgba(0, 0, 0, 0.75);
+        font-size: 14px;
+        text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+    <h1 style="font-family: 'Dancing Script' , cursive; font-size: 6vh; margin-bottom: 5px; margin-top: -105px;">Upload Files</h1>
+    <div id="upload-container" class="drop-zone">
+        <div id="upload-icon" style="padding-top: 25px;">
+            <img src="{% static 'upload.png' %}" alt="Upload Icon" style="width: 100px;">
+        </div>
+            <p id="upload-text" style="padding-top: -35px;">Drag & Drop files here</p>
+            <span class="drop-zone__prompt"></span>    
+            <h4>or</h4>
+            <form method="post" action="{% url 'upload' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input id="file-input" class="choose-file-btn" type="file" name="file" accept=".jpg, .jpeg, .bmp, .doc, .docx, .csv, .pdf, .txt, .html, .htm" multiple>
+                <button class="choose-file-btn" type="submit" style="height: 42px;">Upload</button>
+            </form>
+        {% if message %}
+        <p>{{ message }}</p>
+        {% endif %}
+        <ul id="file-list"></ul>
+    </div>
+    <div class="navigation-buttons" style="display: flex; width: 100%;">
+        <p></p>
+        <a href="{% url 'homepage' %}" style="font-family: 'Dancing Script', cursive; margin-left: 41%; margin-right: 1%;">Back to Home</a>
+        <a href="{% url 'search' %}" style="font-family: 'Dancing Script', cursive;">Go to Search</a>
+    </div>  
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        const dropZone = document.querySelector(".drop-zone");
+        const fileInput = document.getElementById("file-input");
+
+        dropZone.addEventListener("dragover", function (e) {
+            e.preventDefault(); // Prevent default behavior (Prevent file from being opened)
+            dropZone.classList.add("drop-zone--over");
+        });
+
+        ["dragleave", "dragend", "drop"].forEach(type => {
+            dropZone.addEventListener(type, function (e) {
+                dropZone.classList.remove("drop-zone--over");
+            });
+        });
+
+        dropZone.addEventListener("drop", function (e) {
+            e.preventDefault(); // This stops the file from being opened if dropped outside of the drop zone
+
+            if (e.dataTransfer.files.length) {
+                fileInput.files = e.dataTransfer.files; // As mentioned earlier, this doesn't work due to security reasons in JavaScript
+                // Display the filename or handle the files as needed
+                console.log("Dropped file:", e.dataTransfer.files[0].name);
+            }
+        });
+
+        fileInput.addEventListener("change", function () {
+            if (this.files.length) {
+                console.log("File chosen via input:", this.files[0].name);
+            }
+        });
+    });
+
+    </script>
+</body>
+</html>
