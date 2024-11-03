@@ -23,10 +23,10 @@ from app import urls as app_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-     # Redirect root URL to /searchLite/
-    path('', RedirectView.as_view(url='searchLite/', permanent=False)),
+     # Redirect root URL to /argus/
+    path('', RedirectView.as_view(url='argus/', permanent=False)),
     # Include the URLs of the searchLite app
-    path('searchLite/', include(app_urls)),
+    path('argus/', include(app_urls)),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

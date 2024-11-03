@@ -1,0 +1,116 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Style */
+body {
+    color: #8d97ad;
+    font-family: Montserrat, sans-serif;
+    font-weight: 300;
+    margin: 0;
+    overflow-x: hidden;
+    display: flex; /* Use flexbox for row layout */
+    flex-direction: column; /* Stack rows vertically */
+    height: 100vh; /* Full viewport height */
+
+}
+
+/* Centering main container */
+.main-container {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+}
+
+/* Styling the menu box with shadow and padding */
+.menu-box {
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    justify-content: center;
+    height: 70vh;
+}
+
+/* Additional styles for buttons */
+.menubuttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.terms {
+    margin: 5px;
+}
+
+.argus-logo {
+    float: left;
+}
+
+/* Top Bar and Bottom Bar Styles */
+.top-bar, .bottom-bar {
+    display: flex; /* Use flex for alignment */
+    align-items: center; /* Center content vertically */
+    padding: 0 20px; /* Horizontal padding */
+    background: transparent; /* Make background transparent */
+}
+
+/* Navbar link style */
+.navbar-link {
+    color: #005943; /* Link color */
+    text-decoration: none;
+    font-size: 16px;
+    margin-left: auto; /* Push the link to the right */
+}
+
+.logostyle {
+    height: 62px; /* Set the logo height */
+    display: block; /* Display as block */
+}
+
+.main-container-box {
+    width: 100vw;
+    height: 100vh;
+    padding: 10px 10px;
+}
+
+
+.left-button {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.center-buttons {
+    flex: 2;
+    display: flex;
+    gap: 10px; /* space between buttons */
+    justify-content: left;
+}
+
+.btn-primary {
+    background: #22732c;
+    border: 1px solid #22732c;
+    transition: .2s ease-in;
+}
+
+.btn-primary.disabled:hover, .btn-primary:hover {
+    background: #0f3e15;
+    border: 1px solid #0e3f14;
+}
+
+.btn-danger, .btn-danger.disabled {
+    background: #ff9c21;
+    border: 1px solid #ff9c21;
+    transition: .2s ease-in;
+}
+
+.btn-danger:hover {
+    background: #a76616;
+    border: 1px solid #db7e0c;
+}
+

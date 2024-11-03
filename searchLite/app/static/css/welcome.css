@@ -1,0 +1,173 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Style */
+body {
+    color: #8d97ad;
+    font-family: Montserrat, sans-serif;
+    font-weight: 300;
+    margin: 0;
+    overflow-x: hidden;
+    display: flex; /* Use flexbox for row layout */
+    flex-direction: column; /* Stack rows vertically */
+    height: 100vh; /* Full viewport height */
+
+}
+
+.argus-logo {
+    float: left;
+}
+
+/* Top Bar and Bottom Bar Styles */
+.top-bar, .bottom-bar {
+    display: flex; /* Use flex for alignment */
+    align-items: center; /* Center content vertically */
+    padding: 0 20px; /* Horizontal padding */
+    background: transparent; /* Make background transparent */
+}
+
+.bottom-bar {
+    justify-content: center; /* Center content horizontally */
+}
+
+/* Navbar link style */
+.navbar-link {
+    color: #005943; /* Link color */
+    text-decoration: none;
+    font-size: 16px;
+    margin-left: auto; /* Push the link to the right */
+}
+
+/* Container Fluid Styles */
+.container-fluid {
+    background-color: #005943; /* Background color */
+    background-position: 50%;
+    background-size: cover;
+    border-radius: 0 0 301px 300px; /* Curved bottom */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically */
+    min-height: calc(100vh - 120px); /* Minimum height adjusted for top and bottom bars */
+    overflow: auto; /* Allow overflow */
+    color: white;
+    text-align: center; /* Center align all text */
+    width: 100%; /* Full width */
+    padding: 30px 0; /* Vertical padding */
+    margin: 0; /* Ensure no margin */
+}
+
+/* Button Styles */
+.font-14 {
+    font-size: 14px; /* Font size */
+}
+
+.m-t-30 {
+    margin-top: 30px; /* Margin top */
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.align-self-center {
+    align-self: center !important;
+}
+
+.logostyle {
+    height: 62px; /* Set the logo height */
+    display: block; /* Display as block */
+}
+
+.title {
+    color: #fff;
+    font-size: 70px;
+    font-weight: 700;
+    line-height: 100px;
+    margin: 20px 0 15px;
+    font-family: Montserrat, sans-serif;
+}
+
+.subtitle {
+    text-align: center!important;
+    box-sizing: border-box;
+    outline: none;
+    margin-bottom: .5rem;
+    margin-top: 0;
+    font-family: Montserrat,sans-serif;
+    font-size: 21px;
+    font-weight: 300;
+    color: #fff;
+    line-height: 30px;
+}
+
+.font-light {
+    font-weight: 300;
+}
+
+.btn-info-gradiant {
+    background: #fff;
+    background: linear-gradient(90deg, #fff 0, #fff); /* Gradient background */
+    border: 0; /* No border */
+    color: #286528; /* Text color */
+}
+
+.btn-md {
+    font-size: 16px; /* Font size for medium button */
+    padding: 15px 45px; /* Padding for button */
+}
+
+.btn {
+    box-shadow: 0 2px 5px #00000024; /* Shadow effect */
+    cursor: pointer; /* Pointer on hover */
+    transition: background 0.3s, color 0.3s; /* Smooth transition for background and text color */
+}
+
+/* Hover Effects */
+.btn:hover {
+    background: linear-gradient(90deg, #7ecf7f 0, #188ef4); /* New gradient background on hover */
+    color: #fff; /* Change text color on hover */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .top-bar, .bottom-bar {
+        flex-direction: column; /* Stack items vertically on small screens */
+        height: auto; /* Adjust height for smaller screens */
+        padding: 10px; /* Reduce padding */
+    }
+
+    .navbar-link {
+        margin-left: 0; /* Reset margin for small screens */
+        margin-top: 10px; /* Space between logo and link */
+    }
+
+    .title {
+        font-size: 32px; /* Smaller title size for mobile */
+    }
+
+    .subtitle {
+        font-size: 16px; /* Smaller subtitle size for mobile */
+    }
+
+    .btn {
+        padding: 12px 24px; /* Adjust button padding for mobile */
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 28px; /* Further reduce title size for very small screens */
+    }
+
+    .subtitle {
+        font-size: 14px; /* Further reduce subtitle size for very small screens */
+    }
+
+    .btn {
+        padding: 10px 20px; /* Further adjust button padding for very small screens */
+    }
+}
