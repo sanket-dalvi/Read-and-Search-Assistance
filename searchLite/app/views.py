@@ -8,10 +8,13 @@ from .models import CorpusFile
 from datetime import datetime
 from .text_extractor import *
 from .mongo_services import *
-from docx2pdf import convert
+
 from .utils import *
 import filetype
-import pythoncom
+
+from .document_converter import convert_docx_to_pdf, convert_txt_to_pdf
+
+
 import shutil
 import os
 from reportlab.lib.pagesizes import letter
@@ -159,11 +162,12 @@ def fetch_document(request, doc_id):
     return FileResponse(open(pdf_path, 'rb'))
 
 def update_document(request, doc_id):
-    query = request.GET.get('query', '')  
+    query = request.GET.get('query', '')
     if query == '':
         document = get_object_or_404(CorpusFile, id=doc_id)
         pdf_path = os.path.join(settings.BASE_DIR, 'highlighted_pdfs', f'{document.stored_file_name}.pdf')
         return FileResponse(open(pdf_path, 'rb'))
+    
     queries = query.split('|||')
     color = request.GET.get('colors', '')
     colors = color.split(',')
@@ -176,7 +180,6 @@ def update_document(request, doc_id):
     pdf_path = os.path.join(settings.BASE_DIR, 'highlighted_pdfs', f'{filename}_highlighted.pdf')
     return FileResponse(open(pdf_path, 'rb'))
 
-
 def load_image_document(request, doc_id):
     document = get_object_or_404(CorpusFile, id=doc_id)
     image_path = os.path.join(settings.BASE_DIR, 'corpus', document.stored_file_name)
@@ -185,24 +188,23 @@ def load_image_document(request, doc_id):
 def view_document(request, doc_id):
     query = request.GET.get('query', '')
     queries = query.split('|||')
-
-    document = get_object_or_404(CorpusFile, id=doc_id)
-
-    if document.stored_file_name.endswith(('.html', '.htm')):
-        return render(request, 'doc_viewer.html', {'doc_id': doc_id, 'query_info': []})
     
-    if document.stored_file_name.endswith(('.jpg', '.jpeg', '.png', '.bmp')):
-        return render(request, 'doc_viewer.html', {'doc_id': doc_id, 'query_info': []})
-
-    filename, query_counts, query_colors = load_document(doc_id, queries)
-
-    query_info = []
-    for query in queries:
-        if query in query_counts and query in query_colors:
-            query_info.append((query, query_counts[query], query_colors[query]))
-
-    return render(request, 'doc_viewer.html', {'doc_id': doc_id, 'query_info': query_info})
-
+    print(f"Searching for queries: {queries}")  # Debug output
+    
+    document = get_object_or_404(CorpusFile, id=doc_id)
+    
+    if document.stored_file_name.endswith('.pdf'):
+        filename, query_counts, query_colors = load_document(doc_id, queries)
+        print(f"Query counts: {query_counts}")  # Debug output
+        query_info = []
+        for query in queries:
+            if query in query_counts and query in query_colors:
+                query_info.append((query, query_counts[query], query_colors[query]))
+        return render(request, 'doc_viewer.html', {
+            'doc_id': doc_id,
+            'query_info': query_info
+        })
+    
 def load_document(doc_id, queries, color_map={}):
     # Get the document object based on the doc_id
     document = get_object_or_404(CorpusFile, id=doc_id)
@@ -215,14 +217,11 @@ def load_document(doc_id, queries, color_map={}):
     elif document.stored_file_name.endswith(('.doc', '.docx')):
         # Convert DOCX to PDF and then view the PDF document
         try:
-
             docx_file = os.path.join(settings.BASE_DIR, 'corpus', document.stored_file_name)
             pdf_file = os.path.join(settings.BASE_DIR, 'highlighted_pdfs', f"{document.stored_file_name}.pdf")
-            convert(docx_file, pdf_file, pythoncom.CoInitialize())
-
-            pdf_path = pdf_file
-           
-            return view_pdf_document(pdf_path, f"{document.stored_file_name}.pdf", queries, color_map=color_map)
+            
+            convert_docx_to_pdf(docx_file, pdf_file)
+            return view_pdf_document(pdf_file, f"{document.stored_file_name}.pdf", queries, color_map=color_map)
             
         except Exception as e:
             print(f"Error converting DOCX to PDF: {e}")
@@ -254,7 +253,6 @@ def load_document(doc_id, queries, color_map={}):
         pass
     else:
         return ''
-
 def view_pdf_document(pdf_path, filename, queries, color_map={}):
     
     # Check if the file exists and is a PDF
@@ -288,6 +286,85 @@ def process_documents(file_hashes):
         # Update the CorpusFile object to mark processing as completed
         corpus_file.processed = True
         corpus_file.save()
+def highlight_text_in_html(html_path, filename, queries, color_map={}):
+    """
+    Highlight search terms in HTML content and count occurrences
+    """
+    # Read the HTML file
+    with open(html_path, 'r', encoding='utf-8') as file:
+        soup = BeautifulSoup(file, 'lxml')
+
+    # Initialize counters and colors
+    query_counts = {query: 0 for query in queries}
+    query_colors = {}
+    
+    # Generate colors if not provided
+    for query in queries:
+        if query in color_map:
+            query_colors[query] = color_map[query]
+        else:
+            # Generate a random color if none provided
+            random_color = f"#{os.urandom(3).hex()}"
+            query_colors[query] = random_color
+
+    # Function to process text nodes
+    def process_text_node(text_node):
+        text = text_node.string
+        if not text or text.isspace():
+            return
+
+        modified = False
+        for query in queries:
+            # Clean and stem both the query and the text for matching
+            cleaned_query = ' '.join(clean_and_stem(query))
+            cleaned_text = ' '.join(clean_and_stem(text))
+            
+            # Create a regex pattern for the query
+            pattern = re.compile(re.escape(cleaned_query), re.IGNORECASE)
+            
+            # Find all matches in the cleaned text
+            matches = list(pattern.finditer(cleaned_text))
+            
+            if matches:
+                modified = True
+                query_counts[query] += len(matches)
+                
+                # Create highlighted version
+                new_text = text
+                offset = 0
+                for match in matches:
+                    start = match.start()
+                    end = match.end()
+                    
+                    # Get the original text substring that matches
+                    original_match = text[start:end]
+                    
+                    # Create highlight span
+                    highlight = soup.new_tag('span')
+                    highlight['style'] = f"background-color: {query_colors[query]};"
+                    highlight.string = original_match
+                    
+                    # Replace the text with highlighted version
+                    new_text = new_text[:start + offset] + str(highlight) + new_text[end + offset:]
+                    offset += len(str(highlight)) - len(original_match)
+                
+                if modified:
+                    new_node = BeautifulSoup(new_text, 'lxml').find('body').contents[0]
+                    text_node.replace_with(new_node)
+
+    # Process all text nodes in the HTML
+    for text_node in soup.find_all(text=True):
+        if text_node.parent.name not in ['script', 'style']:  # Skip script and style tags
+            process_text_node(text_node)
+
+    # Save the modified HTML
+    highlighted_path = os.path.join(os.path.dirname(html_path), f"{filename}_highlighted.html")
+    with open(highlighted_path, 'w', encoding='utf-8') as file:
+        file.write(str(soup))
+
+    return highlighted_path, query_counts, query_colors
+
+
 
 def convert_txt_to_pdf(txt_file, pdf_file):
     # Create a SimpleDocTemplate object with specified page size
