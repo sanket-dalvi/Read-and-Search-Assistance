@@ -41,16 +41,17 @@ Certainly! Here's the information in a formatted list:
       ```bash
       virtualenv virtual_environment_name 
       ```
-   'virtual_environment_name' is your virtual environment name.
+      'virtual_environment_name' is your virtual environment name.
 
    2. Activate virtual evironment
 
-    For mac/ linux:
-      
+        For mac/ linux:
+       
       ```bash
        source env/bin/activate 
       ```
-    windows:
+         
+        Windows:
 
       ```bash
        .\env\Scripts\activate
