@@ -34,9 +34,33 @@ Certainly! Here's the information in a formatted list:
 
 3. Install the required dependencies:
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+   Before installing dependecies, 
+   
+   1. Create a virtual environment
+   
+      ```bash
+      virtualenv virtual_environment_name 
+      ```
+   'virtual_environment_name' is your virtual environment name.
+
+   2. Activate virtual evironment
+
+    For mac/ linux:
+      
+      ```bash
+       source env/bin/activate 
+      ```
+    windows:
+
+      ```bash
+       .\env\Scripts\activate
+       ```
+
+   3. Install dependencies
+
+      ```bash
+      pip install -r requirements.txt
+      ```
 
 4. Install Tesseract OCR:
 
@@ -91,6 +115,15 @@ Certainly! Here's the information in a formatted list:
 
 8. Access the application at [http://127.0.0.1:8000/](http://127.0.0.1:8000/).
 
+
+9. When exiting the server and closing the application
+
+   deactivate your virtual environment using:
+
+   ```bash
+   deactivate
+   ```
+
 ## Usage
 
 1. **Homepage**: Access the homepage of the application.
@@ -104,9 +137,9 @@ Certainly! Here's the information in a formatted list:
   ![alt text](searchLite/searchLite/static/image-8.png)
 5. **Document Viewer**: View documents with highlighted terms in PDF format.
   ![alt text](searchLite/searchLite/static/image-9.png)
-## Technologies Used
 
-Certainly! Here's the list of technologies used in SearchLite in the requested format:
+
+## Technologies Used
 
 - **Python**
 - **Django**
@@ -123,3 +156,4 @@ Certainly! Here's the list of technologies used in SearchLite in the requested f
 
 - [Alisha Bingewar](https://github.com/abingewar)
 - [Animesh Patil](https://github.com/apatil2332)
+- [Sathya](https://github.com/Sathya0990)
