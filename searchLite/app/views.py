@@ -28,6 +28,12 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph
 def homepage(request):
     return render(request, 'index.html')
 
+def welcome(request):
+    return render(request, 'welcome.html')
+
+def home(request):
+    return render(request, 'home.html')
+
 
 def upload(request):
     valid_files = []

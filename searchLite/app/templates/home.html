@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARGUS</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+<body>
+    <div id="bodycontainer" class="bodycontainer">
+        <div class="top-bar">
+            <a class="argus-logo" href="{% url 'welcome' %}">
+                <img class="logostyle" src="{% static 'argus_logo.jpg' %}" alt="Argus Logo">
+            </a>
+            <a href="#" class="navbar-link">Read More</a>
+        </div>
+
+        <!-- Center Box -->
+        <div class="main-container">
+            <div id="main-container-box" class="main-container-box">
+                <div id="menu-btns" class="menubuttons">
+                    <div class="left-button">
+                        <a href="{% url 'welcome' %}"><button type="button" class="btn btn-danger">Go Back</button></a>
+                    </div>
+                    <div class="center-buttons">
+                        <button type="button" class="menubutton2 btn btn-primary">Edit Terms</button>
+                        <button type="button" class="menubutton2 btn btn-primary">Open Files List</button>
+                        <button type="button" class="btn btn-primary">Upload Docs</button>
+                    </div>
+                </div>
+                <div id="menu-box" class="menu-box"></div>
+        </div>
+    </div>
+</body>
+</html>

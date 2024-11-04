@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARGUS</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/welcome.css' %}">
+</head>
+<body>
+    <div id="bodycontainer" class="bodycontainer">
+        <div class="top-bar">
+            <a class="argus-logo" href="{% url 'welcome' %}">
+                <img class="logostyle" src="{% static 'argus_logo.jpg' %}" alt="Argus Logo">
+            </a>
+            <a href="#" class="navbar-link">Read More</a>
+        </div>
+
+        <!-- Center Box -->
+        <div class="container-fluid">
+            <div class="align-self-center text-center">
+                <h1 class="title">ARGUS</h1>
+                <h4 class="subtitle font-light">Automated Research Guidance &amp; User Support</h4>
+                <a href="{% url 'home' %}" > <div class="btn btn-md m-t-30 btn-info-gradiant font-14">Go To Tool</div> </a>
+            </div>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="bottom-bar">
+            <p>&copy; 2024 ARGUS. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
