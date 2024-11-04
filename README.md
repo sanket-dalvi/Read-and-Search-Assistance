@@ -54,7 +54,7 @@ Certainly! Here's the information in a formatted list:
 
       ```bash
        .\env\Scripts\activate
-       ```
+      ```
 
    3. Install dependencies
 
