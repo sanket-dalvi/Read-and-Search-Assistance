@@ -14,7 +14,7 @@
             <a class="argus-logo" href="{% url 'welcome' %}">
                 <img class="logostyle" src="{% static 'argus_logo.jpg' %}" alt="Argus Logo">
             </a>
-            <a href="#" class="navbar-link">Read More</a>
+            <a href="#" class="navbar-link" aria-label="Read more about Argus">Read More</a>
         </div>
 
         <!-- Center Box -->
@@ -25,13 +25,51 @@
                         <a href="{% url 'welcome' %}"><button type="button" class="btn btn-danger">Go Back</button></a>
                     </div>
                     <div class="center-buttons">
-                        <button type="button" class="menubutton2 btn btn-primary">Edit Terms</button>
-                        <button type="button" class="menubutton2 btn btn-primary">Open Files List</button>
-                        <button type="button" class="btn btn-primary">Upload Docs</button>
+                        <button id="upload-docs-btn" type="button" class="btn btn-primary">Upload Docs</button>
+                        <button id="search-btn" type="button" class="menubutton2 btn btn-primary">Edit Search Terms</button>
+                        <button id="result-btn" type="button" class="menubutton2 btn btn-primary">Search Results</button>
+                        {% comment %} <button id="open-files-btn" type="button" class="menubutton2 btn btn-primary">Open Files List</button> {% endcomment %}
+                    </div>
+                    <div class="right-button">
+                        <a href="#"><button type="button" class="btn btn-danger">Clear Session</button></a>
                     </div>
                 </div>
-                <div id="menu-box" class="menu-box"></div>
+
+                <!-- Menu Box with Included Templates -->
+                <div id="menu-box" class="menu-box">
+                    {% if active_template %}
+                        <div class="upload-docs" style="display: {% if active_template == 'upload_docs' %}block{% else %}none{% endif %};">
+                            {% include 'upload_docs.html' %}
+                        </div>
+                        <div class="open-file-list" style="display: {% if active_template == 'open_files' %}block{% else %}none{% endif %};">
+                            {% include 'open_files.html' %}
+                        </div>
+                        <div class="search-page" style="display: {% if active_template == 'search_page' %}block{% else %}none{% endif %};">
+                            {% include 'search_page.html' %}
+                        </div>
+                        <div class="result-page" style="display: {% if active_template == 'result_page' %}block{% else %}none{% endif %};">
+                            {% include 'result_page.html' %}
+                        </div>
+                    {% else %}
+                        <!-- Default: show all templates hidden -->
+                        <div class="upload-docs" style="display: none;">
+                            {% include 'upload_docs.html' %}
+                        </div>
+                        <div class="open-file-list" style="display: none;">
+                            {% include 'open_files.html' %}
+                        </div>
+                        <div class="search-page" style="display: none;">
+                            {% include 'search_page.html' %}
+                        </div>
+                    {% endif %}
+                </div>                  
+            </div>
         </div>
     </div>
+    
+    <!-- Link to the JavaScript file -->
+    <script src="{% static 'js/menu_switcher.js' %}"></script>
+    <script src="{% static 'js/submit_search_form.js' %}"></script>
+
 </body>
 </html>

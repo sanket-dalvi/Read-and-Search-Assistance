@@ -1,0 +1,62 @@
+/* Style for the upload container */
+#upload-container {
+    border: 2px dashed #005943; /* Dashed border with a blue color */
+    border-radius: 10px; /* Rounded corners */
+    padding: 20px; /* Space inside the box */
+    margin: 20px auto; /* Centering the container */
+    text-align: center; /* Center align text and content */
+    background-color: #f9f9f9; /* Light background color */
+    max-width: 500px; /* Maximum width to fit nicely */
+}
+
+/* Style for upload icon */
+#upload-icon img {
+    width: 80px; /* Width of the upload icon */
+    height: auto; /* Maintain aspect ratio */
+}
+
+/* Style for upload text */
+#upload-text {
+    font-size: 18px; /* Font size for the upload text */
+    margin: 15px 0; /* Margins above and below the text */
+}
+
+/* Style for navigation buttons */
+.navigation-buttons {
+    justify-content: center; /* Center align buttons */
+    margin-top: 20px; /* Margin above the navigation */
+}
+
+.navigation-buttons a {
+    margin: 0 15px; /* Space between links */
+    text-decoration: none; /* Remove underline */
+    color: #005943; /* Link color */
+}
+
+.navigation-buttons a:hover {
+    text-decoration: underline; /* Underline on hover */
+}
+
+/* Style for the button group to align buttons horizontally */
+.button-group {
+    display: flex; /* Use flexbox for alignment */
+    justify-content: center; /* Center align buttons */
+    margin-top: 10px; /* Space above the button group */
+}
+
+/* General button styles */
+.choose-file-btn {
+    padding: 10px 15px; /* Padding inside the button */
+    margin: 0 5px; /* Space between buttons */
+    background-color: #005943; /* Button background color */
+    color: white; /* Text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Change cursor to pointer */
+    transition: background-color 0.3s; /* Smooth background color change */
+    width: 100vh;
+}
+
+.choose-file-btn:hover {
+    background-color: #005943; /* Darker shade on hover */
+}

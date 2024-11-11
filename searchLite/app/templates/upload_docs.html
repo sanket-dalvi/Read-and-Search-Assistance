@@ -1,0 +1,32 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/upload_docs.css' %}">
+
+<body>
+  <h1>Upload Files</h1>
+  <div id="upload-container" class="drop-zone">
+    <div id="upload-icon">
+      <img src="{% static 'upload.png' %}" alt="Upload Icon" />
+    </div>
+    <p id="upload-text">Drag & Drop files here</p>
+    <span class="drop-zone__prompt"></span>
+    <h4>or</h4>
+    <form method="post" action="{% url 'upload' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="hidden" name="argus_upload" value="True"/>
+      <div class="button-group">
+        <input id="file-input" class="choose-file-btn" type="file" name="file" accept=".jpg, .jpeg, .bmp, .doc, .docx, .csv, .pdf, .txt, .html, .htm" multiple />
+      </div>
+        <div class="button-group">
+        <button class="choose-file-btn" type="submit">Upload</button>
+        <button id="clear-selection-btn" type="button" class="choose-file-btn">Clear Selection</button>
+      </div>
+    </form>
+    {% if message %}
+      <p>{{ message }}</p>
+    {% endif %}
+    <ul id="file-list"></ul>
+  </div>
+</body>
+
+<!-- Link to the JavaScript file -->
+<script src="{% static 'js/docs_uploader.js' %}"></script>
