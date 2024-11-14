@@ -27,6 +27,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+import os 
+
+from dotenv import load_dotenv
+
+
 
 # Application definition
 
@@ -79,7 +84,7 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',  # Create a SQLite database file in your project directory
+        'NAME': BASE_DIR / 'db.sqlite3', 
     }
 }
 
