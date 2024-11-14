@@ -1,0 +1,29 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/search_page.css' %}" />
+<body>
+  <h1>Add Search Terms</h1>
+  <div class="search-container">
+    <form method="post" action="{% url 'search' %}" id="searchForm" class="search-form">
+      {% csrf_token %}
+      <div class="add-serch-terms-div">
+        <input type="text" class="search-input" name="search_input" id="searchInput" placeholder="Enter your search term" />
+        <button type="button" class="add-term-button" id="addTermButton">Add Term</button>
+      </div>
+      <div class="search-btn-div">
+        <button class="search-button" type="submit">Search</button>
+      </div>
+      <div id="termsList" class="terms-list">
+        <!-- Render existing terms dynamically on page load -->
+        {% for term in search_terms %}
+        <div class="term-item">
+          <span>{{ term }}</span> <span class="delete-term">X</span>
+          <input type="hidden" name="search_terms" value="{{ term }}" />
+        </div>
+        {% endfor %}
+      </div>
+    </form>
+  </div>
+</body>
+
+<script src="{% static 'js/search_terms.js' %}"></script>

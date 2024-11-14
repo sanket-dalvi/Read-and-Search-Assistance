@@ -1,0 +1,50 @@
+.filter-buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.filter-button {
+    margin-right: 10px;
+    padding: 5px 10px;
+    font-size: 14px;
+    background-color: #4CAF50;
+    border: 1px solid #4CAF50;
+    border-radius: 3px;
+    cursor: pointer;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.filter-button:hover {
+    background-color: #0f3e15;
+    border-color: #0f3e15;
+    border-width: 50%;
+}
+
+.filter-button.active {
+    background-color: #0f3e15;
+    border-color: #0f3e15;
+    border-width: 25%;
+}
+
+
+.document-card {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    align-items: center;
+    display: grid;
+    justify-content: center;
+}
+
+.document-card * {
+    justify-self: center;
+}
+
+.document-card h2 {
+    color: black;
+}

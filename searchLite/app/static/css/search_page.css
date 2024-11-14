@@ -1,0 +1,67 @@
+/* Style the search container */
+.search-container {
+    width: 100%;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    display: flex;
+    justify-content: center;
+}
+
+.search-form {
+    height: 100vh;
+    width: 100vw;
+}
+
+.search-btn-div {
+    display: grid;
+    padding: 10px;
+}
+
+/* Style the search input */
+.search-input {
+    width: calc(100% - 120px);
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Style the button */
+.search-button, .add-term-button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search-button:hover, .add-term-button:hover {
+    background-color: #45a049;
+}
+
+/* Style the term list */
+.terms-list {
+    margin-top: 20px;
+    padding: 10px 0;
+    list-style-type: none;
+}
+
+.term-item {
+    background-color: #f1f1f1;
+    padding: 8px;
+    margin: 5px 0px 0px 5px;
+    border-radius: 4px;
+    display: inline-block;
+    font-size: 14px;
+}
+
+.delete-term {
+    color: red;
+    cursor: pointer;
+    margin-left: 10px;
+    font-weight: bold;
+}

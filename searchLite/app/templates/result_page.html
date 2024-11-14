@@ -1,0 +1,42 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/result_page.css' %}" />
+<body>
+    <h1>Search Results</h1>
+
+    <!-- Filter buttons -->
+    <div class="filter-buttons" style="margin-bottom: 1%;">
+        <button id="allFilterButton" class="filter-button active" data-filter="all">All</button>
+        <button id="pdfFilterButton" class="filter-button" data-filter="pdf">PDF</button>
+        <button id="imagesFilterButton" class="filter-button" data-filter="images">Images</button>
+        <button id="docFilterButton" class="filter-button" data-filter="doc">Word Documents</button>
+        <button id="txtFilterButton" class="filter-button" data-filter="txt">Text Documents</button>
+        <button id="sheetFilterButton" class="filter-button" data-filter="sheets">Sheets</button>
+        <button id="htmlFilterButton" class="filter-button" data-filter="html">HTML</button>
+        <button id="urlFilterButton" class="filter-button" data-filter="urls">URLs</button>
+    </div>
+
+    <!-- Results container -->
+    <div class="results-container">
+        {% if matching_documents %}
+        {% for document in matching_documents %}
+        <div class="document-card" data-type="{{ document.file_type }}">
+            <h2>{{ document.uploaded_file_name }}</h2>
+            <p>{{ document.file_type }}</p>
+            <p>{{ document.file_size_kb }} KB / {{ document.file_size_mb }} MB</p>
+            <p>Uploaded: {{ document.uploaded_date }}</p>
+            {% if document.file_type|slice:":6" == "image/" %}
+            <button class="show-image-button">Show Image</button>
+            <img class="document-image" src="{% url 'load_image_document' document.id %}" alt="Document Image" style="display: none;">
+            {% endif %}
+            <a href="/argus/view/{{ document.id }}?query={{ search_terms|join:'|||' }}" target="_blank">Click here to view Document</a>
+            <p></p>
+        </div>
+        {% endfor %}
+        {% else %}
+            <p>No Results Found</p>
+        {% endif %}
+    </div>
+
+    <script src="{% static 'js/result_page.js' %}"></script>
+</body>

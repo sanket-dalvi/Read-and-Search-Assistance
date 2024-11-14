@@ -85,6 +85,12 @@ def upload(request):
         if file_hashes:
             process_documents(file_hashes)
 
+        # check if this request is coming from new UI
+        flag = request.POST.get('argus_upload', '')
+        if flag == "True":
+            # Return to home and render the upload_docs.html section
+            return render(request, 'home.html', {'active_template': 'upload_docs', 'message': message})
+
         return render(request, 'upload.html', {'message': message})
 
     return render(request, 'upload.html')
@@ -93,8 +99,7 @@ def upload(request):
 
 def search(request):
     if request.method == 'POST':
-        search_query = request.POST.get('search_input', '')
-        queries = search_query.split('|||')
+        queries = request.POST.getlist('search_terms')
         cleaned_and_stemmed_queries = [clean_and_stem(query) for query in queries]
 
         # Find documents matching the exact sequence of query terms
@@ -130,7 +135,7 @@ def search(request):
                             if all(len(final_positions[term]) > 0 for term in cleaned_and_stemmed_query):
                                 result[doc_id] = final_positions
         except:
-            return render(request, 'results.html', {'search_query': search_query})
+            return render(request, 'home.html', {'active_template': 'result_page', 'search_terms': queries})
         
         # Retrieve the matching documents from your CorpusFile model
         matching_documents = CorpusFile.objects.filter(id__in=result.keys())
@@ -142,7 +147,7 @@ def search(request):
             document.file_size_mb = round(file_size_bytes / (1024 * 1024), 2)
             document.uploaded_date = timezone.localtime(document.uploaded_at).strftime('%Y-%m-%d %H:%M:%S')
 
-        return render(request, 'results.html', {'matching_documents': matching_documents, 'search_query': search_query})
+        return render(request, 'home.html', {'active_template': 'result_page', 'matching_documents': matching_documents, 'search_terms': queries})
     
     return render(request, 'search.html')
 
